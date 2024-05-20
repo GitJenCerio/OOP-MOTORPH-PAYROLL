@@ -1,0 +1,819 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+  <Properties>
+    <Property name="defaultCloseOperation" type="int" value="3"/>
+    <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+      <Dimension value="[1200, 800]"/>
+    </Property>
+    <Property name="resizable" type="boolean" value="false"/>
+  </Properties>
+  <SyntheticProperties>
+    <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
+  </SyntheticProperties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="1" attributes="0">
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+              <Component id="adminPanel" min="-2" max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Component id="adminPanel" alignment="1" min="-2" max="-2" attributes="0"/>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Container class="javax.swing.JPanel" name="adminPanel">
+      <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="e7" green="e7" red="e7" type="rgb"/>
+        </Property>
+        <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[1200, 800]"/>
+        </Property>
+        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[1200, 800]"/>
+        </Property>
+      </Properties>
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Component id="headerPanel" alignment="0" pref="1212" max="32767" attributes="0"/>
+              <Group type="102" attributes="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="adminMenuPanel" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="DashboardPanel" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <EmptySpace min="346" pref="346" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="empMgmtPanel" min="-2" max="-2" attributes="0"/>
+                              <Component id="payrollMgmtPanel" min="-2" max="-2" attributes="0"/>
+                              <Component id="attendancePanel" min="-2" max="-2" attributes="0"/>
+                              <Component id="requestsPanel" min="-2" max="-2" attributes="0"/>
+                              <Component id="disputesPanel" min="-2" max="-2" attributes="0"/>
+                              <Component id="taxReportsPanel" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                  </Group>
+                  <EmptySpace max="32767" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="1" attributes="0">
+                  <Component id="headerPanel" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <Component id="DashboardPanel" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="disputesPanel" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="taxReportsPanel" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="requestsPanel" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="attendancePanel" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="payrollMgmtPanel" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="empMgmtPanel" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Component id="adminMenuPanel" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="145" max="-2" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+      <SubComponents>
+        <Container class="javax.swing.JPanel" name="adminMenuPanel">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="a3" green="e" red="4" type="rgb"/>
+            </Property>
+            <Property name="alignmentX" type="float" value="0.0"/>
+            <Property name="alignmentY" type="float" value="0.0"/>
+            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[340, 655]"/>
+            </Property>
+            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[340, 655]"/>
+            </Property>
+          </Properties>
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace pref="39" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="logoutLabel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="208" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="employeeMgmtBtn" min="-2" max="-2" attributes="0"/>
+                                  <Component id="payrollMgmtBtn" min="-2" max="-2" attributes="0"/>
+                                  <Component id="attendanceBtn" min="-2" max="-2" attributes="0"/>
+                                  <Component id="requestsBtn" min="-2" max="-2" attributes="0"/>
+                                  <Component id="disputesBtn" min="-2" max="-2" attributes="0"/>
+                                  <Component id="taxReportsBtn" min="-2" max="-2" attributes="0"/>
+                                  <Component id="dashboardBtn" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="logoutBtn" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
+                      <Component id="dashboardBtn" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="employeeMgmtBtn" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="payrollMgmtBtn" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="attendanceBtn" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="requestsBtn" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="disputesBtn" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="taxReportsBtn" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
+                      <Component id="logoutBtn" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="547" max="-2" attributes="0"/>
+                      <Component id="logoutLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+          <SubComponents>
+            <Component class="javax.swing.JLabel" name="logoutLabel">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Poppins SemiBold" size="18" style="0"/>
+                </Property>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Logout"/>
+              </Properties>
+            </Component>
+            <Container class="javax.swing.JPanel" name="dashboardBtn">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor" postCode="// Manually simulate mouse exited event&#xa;&#xa;&#xa;// Manually simulate mouse clicked event">
+                  <Color blue="99" green="99" red="99" type="rgb"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" value=""/>
+              </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="dashboardBtnMouseClicked"/>
+              </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new RoundedPanel(new Color(4,14,163))"/>
+              </AuxValues>
+
+              <Layout>
+                <DimensionLayout dim="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+                          <Component id="adminMenuLabel1" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace pref="28" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+                <DimensionLayout dim="1">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="adminMenuLabel1" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+              </Layout>
+              <SubComponents>
+                <Component class="javax.swing.JLabel" name="adminMenuLabel1">
+                  <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Poppins SemiBold" size="18" style="0"/>
+                    </Property>
+                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Dashboard"/>
+                  </Properties>
+                </Component>
+              </SubComponents>
+            </Container>
+            <Container class="javax.swing.JPanel" name="employeeMgmtBtn">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="99" green="99" red="99" type="rgb"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" value=""/>
+              </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="employeeMgmtBtnMouseClicked"/>
+              </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new RoundedPanel(new Color(4,14,163))"/>
+              </AuxValues>
+
+              <Layout>
+                <DimensionLayout dim="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace pref="26" max="32767" attributes="0"/>
+                          <Component id="adminMenuLabel2" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+                <DimensionLayout dim="1">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="adminMenuLabel2" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+              </Layout>
+              <SubComponents>
+                <Component class="javax.swing.JLabel" name="adminMenuLabel2">
+                  <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Poppins SemiBold" size="18" style="0"/>
+                    </Property>
+                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Employee Management"/>
+                  </Properties>
+                </Component>
+              </SubComponents>
+            </Container>
+            <Container class="javax.swing.JPanel" name="payrollMgmtBtn">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="99" green="99" red="99" type="rgb"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" value=""/>
+              </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="payrollMgmtBtnMouseClicked"/>
+              </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new RoundedPanel(new Color(4,14,163))"/>
+              </AuxValues>
+
+              <Layout>
+                <DimensionLayout dim="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace pref="26" max="32767" attributes="0"/>
+                          <Component id="adminMenuLabel3" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+                <DimensionLayout dim="1">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="adminMenuLabel3" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+              </Layout>
+              <SubComponents>
+                <Component class="javax.swing.JLabel" name="adminMenuLabel3">
+                  <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Poppins SemiBold" size="18" style="0"/>
+                    </Property>
+                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Payroll Management"/>
+                  </Properties>
+                </Component>
+              </SubComponents>
+            </Container>
+            <Container class="javax.swing.JPanel" name="attendanceBtn">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="99" green="99" red="99" type="rgb"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" value=""/>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new RoundedPanel(new Color(4,14,163))"/>
+              </AuxValues>
+
+              <Layout>
+                <DimensionLayout dim="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace pref="26" max="32767" attributes="0"/>
+                          <Component id="adminMenuLabel4" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+                <DimensionLayout dim="1">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="adminMenuLabel4" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+              </Layout>
+              <SubComponents>
+                <Component class="javax.swing.JLabel" name="adminMenuLabel4">
+                  <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Poppins SemiBold" size="18" style="0"/>
+                    </Property>
+                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Attendance"/>
+                  </Properties>
+                </Component>
+              </SubComponents>
+            </Container>
+            <Container class="javax.swing.JPanel" name="requestsBtn">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="99" green="99" red="99" type="rgb"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" value=""/>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new RoundedPanel(new Color(4,14,163))"/>
+              </AuxValues>
+
+              <Layout>
+                <DimensionLayout dim="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace pref="26" max="32767" attributes="0"/>
+                          <Component id="adminMenuLabel5" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+                <DimensionLayout dim="1">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="adminMenuLabel5" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+              </Layout>
+              <SubComponents>
+                <Component class="javax.swing.JLabel" name="adminMenuLabel5">
+                  <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Poppins SemiBold" size="18" style="0"/>
+                    </Property>
+                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Requests"/>
+                  </Properties>
+                </Component>
+              </SubComponents>
+            </Container>
+            <Container class="javax.swing.JPanel" name="disputesBtn">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="99" green="99" red="99" type="rgb"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" value=""/>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new RoundedPanel(new Color(4,14,163))"/>
+              </AuxValues>
+
+              <Layout>
+                <DimensionLayout dim="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace pref="26" max="32767" attributes="0"/>
+                          <Component id="adminMenuLabel6" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+                <DimensionLayout dim="1">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="adminMenuLabel6" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+              </Layout>
+              <SubComponents>
+                <Component class="javax.swing.JLabel" name="adminMenuLabel6">
+                  <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Poppins SemiBold" size="18" style="0"/>
+                    </Property>
+                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Disputes"/>
+                  </Properties>
+                </Component>
+              </SubComponents>
+            </Container>
+            <Container class="javax.swing.JPanel" name="taxReportsBtn">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="99" green="99" red="99" type="rgb"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" value=""/>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new RoundedPanel(new Color(4,14,163))"/>
+              </AuxValues>
+
+              <Layout>
+                <DimensionLayout dim="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace pref="26" max="32767" attributes="0"/>
+                          <Component id="adminMenuLabel7" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+                <DimensionLayout dim="1">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="adminMenuLabel7" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+              </Layout>
+              <SubComponents>
+                <Component class="javax.swing.JLabel" name="adminMenuLabel7">
+                  <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Poppins SemiBold" size="18" style="0"/>
+                    </Property>
+                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Tax Reports"/>
+                  </Properties>
+                </Component>
+              </SubComponents>
+            </Container>
+            <Container class="javax.swing.JPanel" name="logoutBtn">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="99" green="99" red="99" type="rgb"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" value=""/>
+              </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="logoutBtnMouseClicked"/>
+              </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new RoundedPanel(new Color(4,14,163))"/>
+              </AuxValues>
+
+              <Layout>
+                <DimensionLayout dim="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace pref="26" max="32767" attributes="0"/>
+                          <Component id="adminLogoutLbl" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+                <DimensionLayout dim="1">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="adminLogoutLbl" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+              </Layout>
+              <SubComponents>
+                <Component class="javax.swing.JLabel" name="adminLogoutLbl">
+                  <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Poppins SemiBold" size="18" style="0"/>
+                    </Property>
+                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Logout"/>
+                  </Properties>
+                </Component>
+              </SubComponents>
+            </Container>
+          </SubComponents>
+        </Container>
+        <Container class="javax.swing.JPanel" name="DashboardPanel">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="fc" green="f3" red="f0" type="rgb"/>
+            </Property>
+            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[860, 655]"/>
+            </Property>
+            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[860, 655]"/>
+            </Property>
+            <Property name="verifyInputWhenFocusTarget" type="boolean" value="false"/>
+          </Properties>
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <EmptySpace min="0" pref="860" max="32767" attributes="0"/>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <EmptySpace min="0" pref="655" max="32767" attributes="0"/>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+        </Container>
+        <Container class="javax.swing.JPanel" name="headerPanel">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+            </Property>
+            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[1200, 145]"/>
+            </Property>
+            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[1200, 145]"/>
+            </Property>
+          </Properties>
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
+                      <Component id="motorPHLogo" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="150" max="-2" attributes="0"/>
+                      <Component id="HeaderLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
+                      <Component id="motorPHLogo" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="HeaderLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+          <SubComponents>
+            <Component class="javax.swing.JLabel" name="motorPHLogo">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="2" name="C:\Users\admin\Documents\NetBeansProjects\OOP-MotorPH\src\main\java\icons\MotorPH (4).png"/>
+                </Property>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="HeaderLabel">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Poppins SemiBold" size="36" style="0"/>
+                </Property>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="a3" green="0" red="0" type="rgb"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Dashboard"/>
+              </Properties>
+            </Component>
+          </SubComponents>
+        </Container>
+        <Container class="javax.swing.JPanel" name="empMgmtPanel">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="66" green="66" red="0" type="rgb"/>
+            </Property>
+            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[860, 655]"/>
+            </Property>
+            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[860, 655]"/>
+            </Property>
+            <Property name="verifyInputWhenFocusTarget" type="boolean" value="false"/>
+          </Properties>
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <EmptySpace min="0" pref="860" max="32767" attributes="0"/>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <EmptySpace min="0" pref="655" max="32767" attributes="0"/>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+        </Container>
+        <Container class="javax.swing.JPanel" name="payrollMgmtPanel">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="cc" red="66" type="rgb"/>
+            </Property>
+            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[860, 655]"/>
+            </Property>
+            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[860, 655]"/>
+            </Property>
+            <Property name="verifyInputWhenFocusTarget" type="boolean" value="false"/>
+          </Properties>
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <EmptySpace min="0" pref="860" max="32767" attributes="0"/>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <EmptySpace min="0" pref="655" max="32767" attributes="0"/>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+        </Container>
+        <Container class="javax.swing.JPanel" name="attendancePanel">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="33" green="33" red="ff" type="rgb"/>
+            </Property>
+            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[860, 655]"/>
+            </Property>
+            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[860, 655]"/>
+            </Property>
+            <Property name="verifyInputWhenFocusTarget" type="boolean" value="false"/>
+          </Properties>
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <EmptySpace min="0" pref="860" max="32767" attributes="0"/>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <EmptySpace min="0" pref="655" max="32767" attributes="0"/>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+        </Container>
+        <Container class="javax.swing.JPanel" name="requestsPanel">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="ff" green="99" red="ff" type="rgb"/>
+            </Property>
+            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[860, 655]"/>
+            </Property>
+            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[860, 655]"/>
+            </Property>
+            <Property name="verifyInputWhenFocusTarget" type="boolean" value="false"/>
+          </Properties>
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <EmptySpace min="0" pref="860" max="32767" attributes="0"/>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <EmptySpace min="0" pref="655" max="32767" attributes="0"/>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+        </Container>
+        <Container class="javax.swing.JPanel" name="disputesPanel">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="cc" green="ff" red="cc" type="rgb"/>
+            </Property>
+            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[860, 655]"/>
+            </Property>
+            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[860, 655]"/>
+            </Property>
+            <Property name="verifyInputWhenFocusTarget" type="boolean" value="false"/>
+          </Properties>
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <EmptySpace min="0" pref="860" max="32767" attributes="0"/>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <EmptySpace min="0" pref="655" max="32767" attributes="0"/>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+        </Container>
+        <Container class="javax.swing.JPanel" name="taxReportsPanel">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="33" green="ff" red="ff" type="rgb"/>
+            </Property>
+            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[860, 655]"/>
+            </Property>
+            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[860, 655]"/>
+            </Property>
+            <Property name="verifyInputWhenFocusTarget" type="boolean" value="false"/>
+          </Properties>
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <EmptySpace min="0" pref="860" max="32767" attributes="0"/>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <EmptySpace min="0" pref="655" max="32767" attributes="0"/>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+        </Container>
+      </SubComponents>
+    </Container>
+  </SubComponents>
+</Form>
