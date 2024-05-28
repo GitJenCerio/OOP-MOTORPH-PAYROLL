@@ -2,13 +2,7 @@
 package UI;
 
 import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 
 public class UI_EmployeeDashboard extends javax.swing.JFrame {
@@ -138,7 +132,7 @@ public class UI_EmployeeDashboard extends javax.swing.JFrame {
             .addGroup(dashboardBtnLayout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addComponent(empMenuLbl1)
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         dashboardBtnLayout.setVerticalGroup(
             dashboardBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -158,17 +152,17 @@ public class UI_EmployeeDashboard extends javax.swing.JFrame {
         profileBtn.setLayout(profileBtnLayout);
         profileBtnLayout.setHorizontalGroup(
             profileBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, profileBtnLayout.createSequentialGroup()
-                .addContainerGap(26, Short.MAX_VALUE)
+            .addGroup(profileBtnLayout.createSequentialGroup()
+                .addGap(28, 28, 28)
                 .addComponent(empMenuLbl2)
-                .addGap(21, 21, 21))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         profileBtnLayout.setVerticalGroup(
             profileBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, profileBtnLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(profileBtnLayout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(empMenuLbl2)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         payslipBtn.setBackground(new java.awt.Color(153, 153, 153));
@@ -181,10 +175,10 @@ public class UI_EmployeeDashboard extends javax.swing.JFrame {
         payslipBtn.setLayout(payslipBtnLayout);
         payslipBtnLayout.setHorizontalGroup(
             payslipBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, payslipBtnLayout.createSequentialGroup()
-                .addContainerGap(26, Short.MAX_VALUE)
+            .addGroup(payslipBtnLayout.createSequentialGroup()
+                .addGap(28, 28, 28)
                 .addComponent(empMenuLbl3)
-                .addGap(21, 21, 21))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         payslipBtnLayout.setVerticalGroup(
             payslipBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -204,10 +198,10 @@ public class UI_EmployeeDashboard extends javax.swing.JFrame {
         attendanceBtn.setLayout(attendanceBtnLayout);
         attendanceBtnLayout.setHorizontalGroup(
             attendanceBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, attendanceBtnLayout.createSequentialGroup()
-                .addContainerGap(26, Short.MAX_VALUE)
+            .addGroup(attendanceBtnLayout.createSequentialGroup()
+                .addGap(28, 28, 28)
                 .addComponent(empMenuLbl4)
-                .addGap(21, 21, 21))
+                .addContainerGap(64, Short.MAX_VALUE))
         );
         attendanceBtnLayout.setVerticalGroup(
             attendanceBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -221,39 +215,39 @@ public class UI_EmployeeDashboard extends javax.swing.JFrame {
 
         empMenuLbl5.setFont(new java.awt.Font("Poppins SemiBold", 0, 18)); // NOI18N
         empMenuLbl5.setForeground(new java.awt.Color(255, 255, 255));
-        empMenuLbl5.setText("Requests");
+        empMenuLbl5.setText("Self Service Hub");
 
         javax.swing.GroupLayout requestsBtnLayout = new javax.swing.GroupLayout(requestsBtn);
         requestsBtn.setLayout(requestsBtnLayout);
         requestsBtnLayout.setHorizontalGroup(
             requestsBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, requestsBtnLayout.createSequentialGroup()
-                .addContainerGap(26, Short.MAX_VALUE)
+            .addGroup(requestsBtnLayout.createSequentialGroup()
+                .addGap(28, 28, 28)
                 .addComponent(empMenuLbl5)
-                .addGap(21, 21, 21))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         requestsBtnLayout.setVerticalGroup(
             requestsBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, requestsBtnLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(requestsBtnLayout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(empMenuLbl5)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         disputesBtn.setBackground(new java.awt.Color(153, 153, 153));
 
         empMenuLbl6.setFont(new java.awt.Font("Poppins SemiBold", 0, 18)); // NOI18N
         empMenuLbl6.setForeground(new java.awt.Color(255, 255, 255));
-        empMenuLbl6.setText("Disputes");
+        empMenuLbl6.setText("Tax reports");
 
         javax.swing.GroupLayout disputesBtnLayout = new javax.swing.GroupLayout(disputesBtn);
         disputesBtn.setLayout(disputesBtnLayout);
         disputesBtnLayout.setHorizontalGroup(
             disputesBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, disputesBtnLayout.createSequentialGroup()
-                .addContainerGap(26, Short.MAX_VALUE)
+            .addGroup(disputesBtnLayout.createSequentialGroup()
+                .addGap(28, 28, 28)
                 .addComponent(empMenuLbl6)
-                .addGap(21, 21, 21))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         disputesBtnLayout.setVerticalGroup(
             disputesBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -267,23 +261,23 @@ public class UI_EmployeeDashboard extends javax.swing.JFrame {
 
         empMenuLbl7.setFont(new java.awt.Font("Poppins SemiBold", 0, 18)); // NOI18N
         empMenuLbl7.setForeground(new java.awt.Color(255, 255, 255));
-        empMenuLbl7.setText("Tax Reports");
+        empMenuLbl7.setText("Announcements");
 
         javax.swing.GroupLayout taxReportsBtnLayout = new javax.swing.GroupLayout(taxReportsBtn);
         taxReportsBtn.setLayout(taxReportsBtnLayout);
         taxReportsBtnLayout.setHorizontalGroup(
             taxReportsBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, taxReportsBtnLayout.createSequentialGroup()
-                .addContainerGap(26, Short.MAX_VALUE)
+            .addGroup(taxReportsBtnLayout.createSequentialGroup()
+                .addGap(28, 28, 28)
                 .addComponent(empMenuLbl7)
-                .addGap(21, 21, 21))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         taxReportsBtnLayout.setVerticalGroup(
             taxReportsBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, taxReportsBtnLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(taxReportsBtnLayout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(empMenuLbl7)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         logoutBtn.setBackground(new java.awt.Color(153, 153, 153));
@@ -320,17 +314,17 @@ public class UI_EmployeeDashboard extends javax.swing.JFrame {
             employeeMenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, employeeMenuPanelLayout.createSequentialGroup()
                 .addGap(39, 39, 39)
-                .addGroup(employeeMenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(profileBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(payslipBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(attendanceBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(requestsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(disputesBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(taxReportsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(dashboardBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(employeeMenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(logoutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(logoutLabel))
-                .addGap(113, 113, 113))
+                    .addComponent(logoutLabel)
+                    .addComponent(dashboardBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(profileBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(payslipBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(attendanceBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(requestsBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(disputesBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(taxReportsBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         employeeMenuPanelLayout.setVerticalGroup(
             employeeMenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -526,8 +520,8 @@ public class UI_EmployeeDashboard extends javax.swing.JFrame {
 
     private void logoutBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutBtnMouseClicked
         
-       UI_Main mainUI = new UI_Main();
-       mainUI.goToMainUI();
+       UI_Login loginUI = new UI_Login();
+       loginUI.goToLoginUI();
        dispose();
     }//GEN-LAST:event_logoutBtnMouseClicked
 
@@ -561,7 +555,7 @@ public class UI_EmployeeDashboard extends javax.swing.JFrame {
         });
     }
     
-     public void openEmployeeDashBoard() {
+     public void openEmployeeDashboard() {
         // Create an instance of UI_Admin
         UI_EmployeeDashboard employeeDashboard = new UI_EmployeeDashboard();
 
@@ -608,13 +602,6 @@ public class UI_EmployeeDashboard extends javax.swing.JFrame {
             DashboardPanel, payslipPanel, attendancePanel, disputesPanel, profilePanel, requestsPanel, taxReportsPanel);
     }
 
-    public void goToMainUI() {
-        UI_Main mainUI = new UI_Main();
-        mainUI.setVisible(true);
-        dispose();
-    }
-    
-    
     
     
 }

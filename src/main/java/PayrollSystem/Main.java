@@ -5,12 +5,12 @@
 package PayrollSystem;
 import UI.*;
 
-public class OOPMotorPH {
+public class Main {
 
     public static void main(String[] args) {
-         UI_Main mainUI = new UI_Main();
-            mainUI.setVisible(true);
-            mainUI.setLocationRelativeTo(null);
+         UI_Login loginUI = new UI_Login();
+            loginUI.setVisible(true);
+            loginUI.setLocationRelativeTo(null);
             
     }
 }

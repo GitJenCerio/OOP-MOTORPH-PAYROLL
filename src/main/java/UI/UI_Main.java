@@ -1,16 +1,14 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package UI;
 
-import javax.swing.JOptionPane;
+import AccessControl.RoleAccess;
 
 public class UI_Main extends javax.swing.JFrame {
+    private int userId;
 
-   
-    public UI_Main() {
-        initComponents(); 
+    public UI_Main(int userId) {
+        this.userId = userId;
+        initComponents();
         setLocationRelativeTo(null);
     }
 
@@ -24,7 +22,7 @@ public class UI_Main extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         empButton = new javax.swing.JButton();
-        adminButton = new javax.swing.JButton();
+        authorizedUserButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(1000, 800));
@@ -59,35 +57,25 @@ public class UI_Main extends javax.swing.JFrame {
         });
 
         empButton.setBackground(new java.awt.Color(0, 0, 163));
-        empButton.setFont(new java.awt.Font("Montserrat Medium", 0, 36)); // NOI18N
+        empButton.setFont(new java.awt.Font("Montserrat Medium", 0, 30)); // NOI18N
         empButton.setForeground(new java.awt.Color(255, 255, 255));
-        empButton.setText("EMPLOYEE");
+        empButton.setText("EMPLOYEE LOGIN");
         empButton.setBorder(null);
         empButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 empButtonMouseClicked(evt);
             }
         });
-        empButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                empButtonActionPerformed(evt);
-            }
-        });
 
-        adminButton.setBackground(new java.awt.Color(0, 0, 163));
-        adminButton.setFont(new java.awt.Font("Montserrat Medium", 0, 36)); // NOI18N
-        adminButton.setForeground(new java.awt.Color(255, 255, 255));
-        adminButton.setText("ADMIN");
-        adminButton.setToolTipText("");
-        adminButton.setBorder(null);
-        adminButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                adminButtonMouseClicked(evt);
-            }
-        });
-        adminButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                adminButtonActionPerformed(evt);
+        authorizedUserButton.setBackground(new java.awt.Color(0, 0, 163));
+        authorizedUserButton.setFont(new java.awt.Font("Montserrat Medium", 0, 30)); // NOI18N
+        authorizedUserButton.setForeground(new java.awt.Color(255, 255, 255));
+        authorizedUserButton.setText("AUTHORIZED USER");
+        authorizedUserButton.setBorder(null);
+        authorizedUserButton.setFocusPainted(false);
+        authorizedUserButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                authorizedUserButtonMousePressed(evt);
             }
         });
 
@@ -96,22 +84,21 @@ public class UI_Main extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(30, 30, 30)
-                        .addComponent(Logo))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(244, 244, 244)
-                        .addComponent(adminButton, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(36, 36, 36)
-                        .addComponent(empButton, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(217, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
+                .addComponent(Logo)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(262, 262, 262))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(140, Short.MAX_VALUE)
+                .addComponent(authorizedUserButton, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(36, 36, 36)
+                .addComponent(empButton, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(139, 139, 139))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -125,11 +112,11 @@ public class UI_Main extends javax.swing.JFrame {
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel1)
-                .addGap(69, 69, 69)
+                .addGap(65, 65, 65)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(empButton, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(adminButton, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(212, Short.MAX_VALUE))
+                    .addComponent(authorizedUserButton, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(216, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -146,21 +133,11 @@ public class UI_Main extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void empButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_empButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_empButtonActionPerformed
-
     private void empButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_empButtonMouseClicked
-        UI_Emp1 empUI = new UI_Emp1();
-        empUI.openEmpUI();
+        UI_EmployeeDashboard empUI = new UI_EmployeeDashboard();
+        empUI.openEmployeeDashboard();
         dispose();
     }//GEN-LAST:event_empButtonMouseClicked
-
-    private void adminButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_adminButtonMouseClicked
-        UI_Admin1 adminUI = new UI_Admin1();
-        adminUI.openAdminUI();
-        dispose();
-    }//GEN-LAST:event_adminButtonMouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
@@ -168,45 +145,21 @@ public class UI_Main extends javax.swing.JFrame {
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
 
-        // Create and display the employeeUI
-        try {
-            UI_Emp1 empUI = new UI_Emp1();
-            empUI.setVisible(true);
-        } catch (Exception ex) {
-            // Handle any exceptions that occur during UI creation and display
-            JOptionPane.showMessageDialog(this, "Error occurred while opening the employee interface.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-
-        // Close the current UI_Main window
-        dispose();
+        
     }//GEN-LAST:event_jButton1MouseClicked
 
-    private void adminButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adminButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_adminButtonActionPerformed
+    private void authorizedUserButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_authorizedUserButtonMousePressed
+      
+    RoleAccess.authorizedUserLogin(authorizedUserButton, userId);
+
+
+    }//GEN-LAST:event_authorizedUserButtonMousePressed
 
   
-    public static void main(String args[]) {
-       
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new UI_Main().setVisible(true);
-            }
-        });
-    }
-    
-    public void goToMainUI() {
-        // Create and display the main UI
-        UI_Main mainUI = new UI_Main();
-        mainUI.setVisible(true);
-
-        // Close the current UI window
-        dispose();
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Logo;
-    private javax.swing.JButton adminButton;
+    private javax.swing.JButton authorizedUserButton;
     private javax.swing.JButton empButton;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;

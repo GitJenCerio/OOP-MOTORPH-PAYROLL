@@ -12,8 +12,8 @@ public class RoundedPanel extends JPanel {
     private Color defaultColor = new Color(4, 14, 163);
     private Color backgroundColor = new Color(4, 14, 163);
     private final int cornerRadius = 50;
-    private final Color hoverColor = Color.GRAY;
-    private Color clickedColor = Color.GRAY;
+    private final Color hoverColor = new Color(214, 224, 233  );
+    private Color clickedColor = new Color(107, 151, 177);
     private boolean isHovered = false;
     private boolean isClicked = false;
     private static RoundedPanel prevClickedButton = null;
@@ -55,8 +55,8 @@ public class RoundedPanel extends JPanel {
 
         if (targetPanel != null) {
             JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
-            if (parentFrame instanceof UI_AdminDashboard) {
-                ((UI_AdminDashboard) parentFrame).showPanel(targetPanel, headerText);
+            if (parentFrame instanceof UI_AuthorizedUserDashboard) {
+                ((UI_AuthorizedUserDashboard) parentFrame).showPanel(targetPanel, headerText);
             } else if (parentFrame instanceof UI_EmployeeDashboard) {
                 ((UI_EmployeeDashboard) parentFrame).showPanel(targetPanel, headerText);
             }
@@ -89,8 +89,8 @@ public class RoundedPanel extends JPanel {
 
                 if (targetPanel != null) {
                     JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(RoundedPanel.this);
-                    if (parentFrame instanceof UI_AdminDashboard) {
-                        ((UI_AdminDashboard) parentFrame).showPanel(targetPanel, headerText);
+                    if (parentFrame instanceof UI_AuthorizedUserDashboard) {
+                        ((UI_AuthorizedUserDashboard) parentFrame).showPanel(targetPanel, headerText);
                     } else if (parentFrame instanceof UI_EmployeeDashboard) {
                         ((UI_EmployeeDashboard) parentFrame).showPanel(targetPanel, headerText);
                     }
