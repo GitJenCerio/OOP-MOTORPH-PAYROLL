@@ -76,7 +76,7 @@ public class UI_EmployeeDashboard extends javax.swing.JFrame {
         headerPanel.setMinimumSize(new java.awt.Dimension(1200, 145));
         headerPanel.setPreferredSize(new java.awt.Dimension(1200, 145));
 
-        motorPHLogo.setIcon(new javax.swing.ImageIcon("C:\\Users\\admin\\Documents\\NetBeansProjects\\OOP-MotorPH\\src\\main\\java\\icons\\MotorPH (4).png")); // NOI18N
+        motorPHLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/MotorPH (4).png"))); // NOI18N
 
         HeaderLabel.setFont(new java.awt.Font("Poppins SemiBold", 0, 36)); // NOI18N
         HeaderLabel.setForeground(new java.awt.Color(0, 0, 163));
@@ -91,7 +91,7 @@ public class UI_EmployeeDashboard extends javax.swing.JFrame {
                 .addComponent(motorPHLogo)
                 .addGap(150, 150, 150)
                 .addComponent(HeaderLabel)
-                .addContainerGap(594, Short.MAX_VALUE))
+                .addContainerGap(794, Short.MAX_VALUE))
         );
         headerPanelLayout.setVerticalGroup(
             headerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -100,7 +100,7 @@ public class UI_EmployeeDashboard extends javax.swing.JFrame {
                 .addComponent(motorPHLogo)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, headerPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(49, Short.MAX_VALUE)
                 .addComponent(HeaderLabel)
                 .addGap(41, 41, 41))
         );

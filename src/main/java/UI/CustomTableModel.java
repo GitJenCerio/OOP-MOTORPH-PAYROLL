@@ -16,9 +16,7 @@ public class CustomTableModel extends AbstractTableModel {
     private List<Object[]> data = new ArrayList<>();
 
     public CustomTableModel(String tableName) {
-        // Fetch column names from the database
         fetchColumnNamesFromDatabase(tableName);
-        // Fetch data from the database using the table name
         fetchDataFromDatabase(tableName);
     }
 
@@ -32,7 +30,7 @@ public class CustomTableModel extends AbstractTableModel {
 
             columnNames = new String[columnCount];
             for (int i = 0; i < columnCount; i++) {
-                columnNames[i] = metaData.getColumnName(i + 1); // Column index starts from 1
+                columnNames[i] = metaData.getColumnName(i + 1);
             }
 
         } catch (SQLException e) {
@@ -51,7 +49,7 @@ public class CustomTableModel extends AbstractTableModel {
             while (resultSet.next()) {
                 Object[] row = new Object[columnCount];
                 for (int i = 0; i < columnCount; i++) {
-                    row[i] = resultSet.getObject(i + 1); // ResultSet column index starts from 1
+                    row[i] = resultSet.getObject(i + 1);
                 }
                 data.add(row);
             }
@@ -73,22 +71,18 @@ public class CustomTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int row, int column) {
-        // Check if the column corresponds to the password column
-        if (columnNames[column].equals("UserPassword")){
-            // Return a placeholder string for the password
-            return "********"; // You can use any placeholder you prefer
+        if (columnNames[column].equals("UserPassword")) {
+            return "********";
         } else {
-            // Return the actual value for other columns
             return data.get(row)[column];
         }
-    
     }
 
     @Override
     public String getColumnName(int column) {
         return columnNames[column];
     }
-
-    // Implement other methods as needed, such as setValueAt() for editable cells
 }
+
+
 

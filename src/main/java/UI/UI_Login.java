@@ -60,7 +60,7 @@ public class UI_Login extends javax.swing.JFrame {
         passwordPanel.setMinimumSize(new java.awt.Dimension(215, 37));
 
         passwordIcon.setForeground(new java.awt.Color(255, 255, 255));
-        passwordIcon.setIcon(new javax.swing.ImageIcon("C:\\Users\\admin\\Documents\\NetBeansProjects\\OOP-MotorPH\\src\\main\\java\\icons\\icons8-password-16 (1).png")); // NOI18N
+        passwordIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons8-password-16 (1).png"))); // NOI18N
 
         jPasswordField1.setBackground(new java.awt.Color(0, 0, 163));
         jPasswordField1.setForeground(new java.awt.Color(255, 255, 255));
@@ -112,7 +112,7 @@ public class UI_Login extends javax.swing.JFrame {
         usernamePanel.setPreferredSize(new java.awt.Dimension(215, 37));
 
         usernameIcon.setForeground(new java.awt.Color(255, 255, 255));
-        usernameIcon.setIcon(new javax.swing.ImageIcon("C:\\Users\\admin\\Documents\\NetBeansProjects\\OOP-MotorPH\\src\\main\\java\\icons\\icons8-user-16 (1).png")); // NOI18N
+        usernameIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons8-user-16 (1).png"))); // NOI18N
 
         usernameField.setBackground(new java.awt.Color(0, 0, 163));
         usernameField.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
@@ -177,7 +177,11 @@ public class UI_Login extends javax.swing.JFrame {
         jPanel2.setMinimumSize(new java.awt.Dimension(600, 800));
         jPanel2.setPreferredSize(new java.awt.Dimension(600, 800));
 
-        Logo.setIcon(new javax.swing.ImageIcon("C:\\Users\\admin\\Downloads\\MotorPH (3).png")); // NOI18N
+        Logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icon_logo.png"))); // NOI18N
+        Logo.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        Logo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        Logo.setIconTextGap(0);
+        Logo.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
 
         jLabel1.setFont(new java.awt.Font("Montserrat Medium", 1, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 153));
@@ -195,29 +199,29 @@ public class UI_Login extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(100, 100, 100)
-                        .addComponent(Logo))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(205, 205, 205)
-                        .addComponent(backToMainBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(100, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabel1)
+                        .addGap(73, 73, 73)
+                        .addComponent(backToMainBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(124, 124, 124))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(43, 43, 43)
+                .addComponent(Logo, javax.swing.GroupLayout.PREFERRED_SIZE, 471, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(86, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(114, 114, 114)
-                .addComponent(Logo)
-                .addGap(37, 37, 37)
+                .addGap(21, 21, 21)
+                .addComponent(Logo, javax.swing.GroupLayout.PREFERRED_SIZE, 311, Short.MAX_VALUE)
+                .addGap(33, 33, 33)
                 .addComponent(jLabel1)
                 .addGap(142, 142, 142)
                 .addComponent(backToMainBtn)
-                .addContainerGap(183, Short.MAX_VALUE))
+                .addGap(219, 219, 219))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
