@@ -1,23 +1,25 @@
 package authentication;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import DatabaseConnection.EmployeeDAO;
+import entities.Employee;
 import java.sql.SQLException;
-import Database.DatabaseConnector;
+import javax.naming.AuthenticationException;
 
 public class LoginController {
-    
-    
-    private final Authentication authentication;
-    
-    public LoginController() {
-        this.authentication = new Authentication();
+    private final AuthenticationService authenticationService;
+    private final EmployeeDAO employeeDAO;
+
+    public LoginController(AuthenticationService authenticationService, EmployeeDAO employeeDAO) {
+        this.authenticationService = authenticationService;
+        this.employeeDAO = employeeDAO;
     }
-    
-    // Method to handle user login and fetch user ID and role ID
-    public int[] loginAndGetUserId(String username, String password) {
-        // Delegate the authentication to the Authentication class
-        return authentication.authenticate(username, password);
+
+    public Employee loginAndGetUserInfo(String username, String password) throws SQLException, AuthenticationException {
+        int[] userInfo = authenticationService.authenticate(username, password);
+
+        if (userInfo.length > 0) {
+            return employeeDAO.getEmployeeById(userInfo[0]);
+        }
+        return null;
     }
 }

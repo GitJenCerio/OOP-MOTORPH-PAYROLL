@@ -1,6 +1,6 @@
 package AccessControl;
 
-import Database.DatabaseConnector;
+import DatabaseConnection.DatabaseConnector;
 import UI.UI_AuthorizedUserDashboard;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -30,8 +30,9 @@ public class RoleAccess {
             case 3:
                 // Configuration for roles 1, 2, and 3
                 authorizedUserButton.addActionListener(e -> {
+                    
                     // Redirect to Authorized User Dashboard or perform other actions
-                    UI_AuthorizedUserDashboard authorizedUI = new UI_AuthorizedUserDashboard();
+                    UI_AuthorizedUserDashboard authorizedUI = new UI_AuthorizedUserDashboard(userId);
                     authorizedUI.openAuthorizedUserDashboard();
                 });
                 break;

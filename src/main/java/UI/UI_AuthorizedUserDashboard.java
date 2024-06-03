@@ -1,25 +1,37 @@
 
 package UI;
 
+
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.SwingUtilities;
-import javax.swing.table.JTableHeader;
+import authentication.AuthenticateUser;
+import authentication.AuthenticationService;
+import authentication.LoginController;
+import DatabaseConnection.*;
+import entities.*;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
 
 
 public class UI_AuthorizedUserDashboard extends javax.swing.JFrame {
+    private int loggedInUserId;
+    private LoginController loginController;
+    private EmployeeDAO employeeDAO;
+ 
+    
+   
+    
+
 
  
-   public UI_AuthorizedUserDashboard() {
-       initComponents();
+   public UI_AuthorizedUserDashboard(int loggedInUserId) {
+       this.loggedInUserId = loggedInUserId;
+        initComponents();
         setLocationRelativeTo(null);
+        initializeDependencies();
+        displayUserInfo(loggedInUserId);
+        
+        
        ((RoundedPanel) dashboardBtn).setTargetPanel(DashboardPanel, "Dashboard");
         ((RoundedPanel) employeeMgmtBtn).setTargetPanel(empMgmtPanel, "Employee Management");
         ((RoundedPanel) attendanceBtn).setTargetPanel(attendancePanel, "Attendance");
@@ -27,7 +39,7 @@ public class UI_AuthorizedUserDashboard extends javax.swing.JFrame {
         ((RoundedPanel) payrollMgmtBtn).setTargetPanel(payrollMgmtPanel, "Payroll Management");
         ((RoundedPanel) requestsBtn).setTargetPanel(requestsPanel, "Requests");
         ((RoundedPanel) taxReportsBtn).setTargetPanel(taxReportsPanel, "Tax Reports");
-        ((RoundedPanel) userMgmtBtn).setTargetPanel(userMgmtPanel, "User Management");
+        ((RoundedPanel) userMgmtBtn).setTargetPanel(UserMgmtPanel, "User Management");
 
         // Simulate click to show the initial panel
         ((RoundedPanel) dashboardBtn).simulateClick();
@@ -63,51 +75,36 @@ public class UI_AuthorizedUserDashboard extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         loggedInUserName = new javax.swing.JLabel();
         loggedInUserPosition = new javax.swing.JLabel();
-        DashboardPanel = new javax.swing.JPanel();
         headerPanel = new javax.swing.JPanel();
         motorPHLogo = new javax.swing.JLabel();
         HeaderLabel = new javax.swing.JLabel();
+        DashboardPanel = new javax.swing.JPanel();
+        UserMgmtPanel = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        userTable =  createStyledTable("Users");
+        updateUserBtn = new javax.swing.JButton();
+        deleteUserBtn = new javax.swing.JButton();
+        addUserBtn = new javax.swing.JButton();
+        userIDTxtField = new javax.swing.JTextField();
+        passwordTxtField = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        empIDTxtField = new javax.swing.JTextField();
+        userNameTxtField = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        roleIDTxtField = new javax.swing.JTextField();
+        generateUserIDBtn = new javax.swing.JButton();
         empMgmtPanel = new javax.swing.JPanel();
         payrollMgmtPanel = new javax.swing.JPanel();
         attendancePanel = new javax.swing.JPanel();
         requestsPanel = new javax.swing.JPanel();
         disputesPanel = new javax.swing.JPanel();
         taxReportsPanel = new javax.swing.JPanel();
-        userMgmtPanel = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        usersTable = new javax.swing.JTable();
-
-        JScrollPane jScrollPane2 = new JScrollPane(usersTable);
-
-        // Set up the table model
-        String tableName = "users";
-        CustomTableModel userModel = new CustomTableModel(tableName);
-        usersTable.setModel(userModel);
-
-        // Apply the custom cell renderer
-        CustomTableCellRenderer cellRenderer = new CustomTableCellRenderer();
-        usersTable.setDefaultRenderer(Object.class, cellRenderer);
-
-        // Set table header to use the custom renderer
-        JTableHeader header = usersTable.getTableHeader();
-        header.setDefaultRenderer(cellRenderer);
-
-        // Set the header height
-        header.setPreferredSize(new Dimension(header.getPreferredSize().width, 30));
-
-        // Set table properties
-        usersTable.setBackground(Color.WHITE);
-        usersTable.setShowGrid(false);
-        usersTable.setIntercellSpacing(new java.awt.Dimension(0, 0));
-        usersTable.setRowMargin(2);
-        usersTable.setRowHeight(20);
-        usersTable.setFont(new java.awt.Font("Poppins", 0, 12));
-        usersTable.setSelectionBackground(new java.awt.Color(174, 203, 255));
-        usersTable.setSelectionForeground(Color.WHITE);
-
-        ;
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(1200, 800));
         setResizable(false);
 
         adminPanel.setBackground(new java.awt.Color(231, 231, 231));
@@ -362,13 +359,11 @@ public class UI_AuthorizedUserDashboard extends javax.swing.JFrame {
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons8-test-account-64.png"))); // NOI18N
         jLabel1.setText("jLabel1");
 
-        loggedInUserName.setFont(new java.awt.Font("Poppins Medium", 0, 14)); // NOI18N
+        loggedInUserName.setFont(new java.awt.Font("Poppins SemiBold", 0, 15)); // NOI18N
         loggedInUserName.setForeground(new java.awt.Color(255, 255, 255));
-        loggedInUserName.setText("jLabel2");
 
         loggedInUserPosition.setFont(new java.awt.Font("Poppins Medium", 0, 14)); // NOI18N
         loggedInUserPosition.setForeground(new java.awt.Color(255, 255, 255));
-        loggedInUserPosition.setText("jLabel2");
 
         javax.swing.GroupLayout adminMenuPanelLayout = new javax.swing.GroupLayout(adminMenuPanel);
         adminMenuPanel.setLayout(adminMenuPanelLayout);
@@ -392,8 +387,8 @@ public class UI_AuthorizedUserDashboard extends javax.swing.JFrame {
                             .addComponent(employeeMgmtBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(logoutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(adminMenuPanelLayout.createSequentialGroup()
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(15, 15, 15)
                                 .addGroup(adminMenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(loggedInUserName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addGroup(adminMenuPanelLayout.createSequentialGroup()
@@ -406,14 +401,14 @@ public class UI_AuthorizedUserDashboard extends javax.swing.JFrame {
             .addGroup(adminMenuPanelLayout.createSequentialGroup()
                 .addGroup(adminMenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(adminMenuPanelLayout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(adminMenuPanelLayout.createSequentialGroup()
                         .addGap(31, 31, 31)
                         .addComponent(loggedInUserName)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(loggedInUserPosition)))
-                .addGap(34, 34, 34)
+                        .addComponent(loggedInUserPosition))
+                    .addGroup(adminMenuPanelLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(32, 32, 32)
                 .addComponent(dashboardBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12)
                 .addComponent(userMgmtBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -436,22 +431,6 @@ public class UI_AuthorizedUserDashboard extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        DashboardPanel.setBackground(new java.awt.Color(240, 243, 252));
-        DashboardPanel.setMaximumSize(new java.awt.Dimension(860, 655));
-        DashboardPanel.setPreferredSize(new java.awt.Dimension(860, 655));
-        DashboardPanel.setVerifyInputWhenFocusTarget(false);
-
-        javax.swing.GroupLayout DashboardPanelLayout = new javax.swing.GroupLayout(DashboardPanel);
-        DashboardPanel.setLayout(DashboardPanelLayout);
-        DashboardPanelLayout.setHorizontalGroup(
-            DashboardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 860, Short.MAX_VALUE)
-        );
-        DashboardPanelLayout.setVerticalGroup(
-            DashboardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 655, Short.MAX_VALUE)
-        );
-
         headerPanel.setBackground(new java.awt.Color(255, 255, 255));
         headerPanel.setMaximumSize(new java.awt.Dimension(1200, 130));
         headerPanel.setMinimumSize(new java.awt.Dimension(1200, 130));
@@ -470,22 +449,233 @@ public class UI_AuthorizedUserDashboard extends javax.swing.JFrame {
             .addGroup(headerPanelLayout.createSequentialGroup()
                 .addGap(51, 51, 51)
                 .addComponent(motorPHLogo)
-                .addGap(151, 151, 151)
+                .addGap(152, 152, 152)
                 .addComponent(HeaderLabel)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         headerPanelLayout.setVerticalGroup(
             headerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, headerPanelLayout.createSequentialGroup()
-                .addContainerGap(34, Short.MAX_VALUE)
-                .addComponent(HeaderLabel)
-                .addGap(41, 41, 41))
             .addGroup(headerPanelLayout.createSequentialGroup()
                 .addComponent(motorPHLogo)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 5, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, headerPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(HeaderLabel)
+                .addGap(36, 36, 36))
         );
 
-        empMgmtPanel.setBackground(new java.awt.Color(0, 102, 102));
+        DashboardPanel.setBackground(new java.awt.Color(240, 243, 252));
+        DashboardPanel.setMaximumSize(new java.awt.Dimension(860, 655));
+        DashboardPanel.setPreferredSize(new java.awt.Dimension(860, 655));
+        DashboardPanel.setVerifyInputWhenFocusTarget(false);
+
+        javax.swing.GroupLayout DashboardPanelLayout = new javax.swing.GroupLayout(DashboardPanel);
+        DashboardPanel.setLayout(DashboardPanelLayout);
+        DashboardPanelLayout.setHorizontalGroup(
+            DashboardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 860, Short.MAX_VALUE)
+        );
+        DashboardPanelLayout.setVerticalGroup(
+            DashboardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 670, Short.MAX_VALUE)
+        );
+
+        UserMgmtPanel.setBackground(new java.awt.Color(240, 243, 252));
+        UserMgmtPanel.setMaximumSize(new java.awt.Dimension(860, 655));
+        UserMgmtPanel.setPreferredSize(new java.awt.Dimension(860, 655));
+        UserMgmtPanel.setVerifyInputWhenFocusTarget(false);
+
+        jScrollPane1.setBackground(Color.WHITE);
+        jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
+        jScrollPane1.setBorder(null);
+        jScrollPane1.setViewportView(userTable);
+
+        updateUserBtn.setBackground(new java.awt.Color(45, 51, 241));
+        updateUserBtn.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
+        updateUserBtn.setForeground(new java.awt.Color(255, 255, 255));
+        updateUserBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons8-edit-user-24.png"))); // NOI18N
+        updateUserBtn.setText("Update User");
+        updateUserBtn.setMaximumSize(new java.awt.Dimension(164, 31));
+        updateUserBtn.setMinimumSize(new java.awt.Dimension(164, 31));
+        updateUserBtn.setPreferredSize(new java.awt.Dimension(164, 31));
+        updateUserBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateUserBtnActionPerformed(evt);
+            }
+        });
+
+        deleteUserBtn.setBackground(new java.awt.Color(45, 51, 241));
+        deleteUserBtn.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
+        deleteUserBtn.setForeground(new java.awt.Color(255, 255, 255));
+        deleteUserBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons8-delete-user-24 (1).png"))); // NOI18N
+        deleteUserBtn.setText("Delete User");
+        deleteUserBtn.setMaximumSize(new java.awt.Dimension(164, 31));
+        deleteUserBtn.setMinimumSize(new java.awt.Dimension(164, 31));
+        deleteUserBtn.setPreferredSize(new java.awt.Dimension(164, 31));
+
+        addUserBtn.setBackground(new java.awt.Color(45, 51, 241));
+        addUserBtn.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
+        addUserBtn.setForeground(new java.awt.Color(255, 255, 255));
+        addUserBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons8-add-user-24.png"))); // NOI18N
+        addUserBtn.setText("Add User");
+        addUserBtn.setMaximumSize(new java.awt.Dimension(164, 31));
+        addUserBtn.setMinimumSize(new java.awt.Dimension(164, 31));
+        addUserBtn.setName(""); // NOI18N
+        addUserBtn.setPreferredSize(new java.awt.Dimension(164, 31));
+        addUserBtn.setRolloverEnabled(false);
+        addUserBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addUserBtnActionPerformed(evt);
+            }
+        });
+
+        userIDTxtField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                userIDTxtFieldActionPerformed(evt);
+            }
+        });
+
+        passwordTxtField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                passwordTxtFieldActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setFont(new java.awt.Font("Poppins Medium", 0, 12)); // NOI18N
+        jLabel2.setText("Username");
+
+        empIDTxtField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                empIDTxtFieldActionPerformed(evt);
+            }
+        });
+
+        userNameTxtField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                userNameTxtFieldActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setFont(new java.awt.Font("Poppins Medium", 0, 12)); // NOI18N
+        jLabel4.setText("User ID");
+
+        jLabel5.setFont(new java.awt.Font("Poppins Medium", 0, 12)); // NOI18N
+        jLabel5.setText("Employee ID");
+
+        jLabel6.setFont(new java.awt.Font("Poppins Medium", 0, 12)); // NOI18N
+        jLabel6.setText("Password");
+
+        jLabel8.setFont(new java.awt.Font("Poppins Medium", 0, 12)); // NOI18N
+        jLabel8.setText("Role ID");
+
+        roleIDTxtField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                roleIDTxtFieldActionPerformed(evt);
+            }
+        });
+
+        generateUserIDBtn.setBackground(new java.awt.Color(45, 51, 241));
+        generateUserIDBtn.setFont(new java.awt.Font("Montserrat SemiBold", 0, 12)); // NOI18N
+        generateUserIDBtn.setForeground(new java.awt.Color(255, 255, 255));
+        generateUserIDBtn.setText("Generate User ID");
+        generateUserIDBtn.setMaximumSize(new java.awt.Dimension(164, 22));
+        generateUserIDBtn.setMinimumSize(new java.awt.Dimension(164, 22));
+        generateUserIDBtn.setName(""); // NOI18N
+        generateUserIDBtn.setPreferredSize(new java.awt.Dimension(164, 22));
+        generateUserIDBtn.setRolloverEnabled(false);
+        generateUserIDBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                generateUserIDBtnActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout UserMgmtPanelLayout = new javax.swing.GroupLayout(UserMgmtPanel);
+        UserMgmtPanel.setLayout(UserMgmtPanelLayout);
+        UserMgmtPanelLayout.setHorizontalGroup(
+            UserMgmtPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(UserMgmtPanelLayout.createSequentialGroup()
+                .addGap(66, 66, 66)
+                .addGroup(UserMgmtPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, UserMgmtPanelLayout.createSequentialGroup()
+                        .addComponent(jScrollPane1)
+                        .addGap(70, 70, 70))
+                    .addGroup(UserMgmtPanelLayout.createSequentialGroup()
+                        .addGroup(UserMgmtPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(UserMgmtPanelLayout.createSequentialGroup()
+                                .addGroup(UserMgmtPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(UserMgmtPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(userIDTxtField)
+                                        .addComponent(addUserBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(jLabel4))
+                                .addGap(25, 25, 25))
+                            .addGroup(UserMgmtPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(UserMgmtPanelLayout.createSequentialGroup()
+                                    .addComponent(jLabel5)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(UserMgmtPanelLayout.createSequentialGroup()
+                                    .addComponent(empIDTxtField)
+                                    .addGap(25, 25, 25))))
+                        .addGroup(UserMgmtPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(UserMgmtPanelLayout.createSequentialGroup()
+                                .addGroup(UserMgmtPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(userNameTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel2))
+                                .addGap(25, 25, 25)
+                                .addGroup(UserMgmtPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel6)
+                                    .addComponent(passwordTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(25, 25, 25)
+                                .addGroup(UserMgmtPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel8)
+                                    .addGroup(UserMgmtPanelLayout.createSequentialGroup()
+                                        .addComponent(roleIDTxtField)
+                                        .addGap(70, 70, 70))))
+                            .addGroup(UserMgmtPanelLayout.createSequentialGroup()
+                                .addGroup(UserMgmtPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(generateUserIDBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(updateUserBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(25, 25, 25)
+                                .addComponent(deleteUserBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(252, Short.MAX_VALUE))))))
+        );
+        UserMgmtPanelLayout.setVerticalGroup(
+            UserMgmtPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, UserMgmtPanelLayout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addGroup(UserMgmtPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(updateUserBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(deleteUserBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(addUserBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20)
+                .addComponent(jLabel4)
+                .addGap(3, 3, 3)
+                .addGroup(UserMgmtPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(generateUserIDBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE)
+                    .addComponent(userIDTxtField))
+                .addGap(18, 18, 18)
+                .addGroup(UserMgmtPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(UserMgmtPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addGap(3, 3, 3)
+                        .addComponent(empIDTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(UserMgmtPanelLayout.createSequentialGroup()
+                        .addGroup(UserMgmtPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel6))
+                        .addGap(3, 3, 3)
+                        .addGroup(UserMgmtPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(passwordTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(userNameTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(UserMgmtPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addGap(3, 3, 3)
+                        .addComponent(roleIDTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27))
+        );
+
+        empMgmtPanel.setBackground(new java.awt.Color(240, 243, 252));
         empMgmtPanel.setMaximumSize(new java.awt.Dimension(860, 655));
         empMgmtPanel.setPreferredSize(new java.awt.Dimension(860, 655));
         empMgmtPanel.setVerifyInputWhenFocusTarget(false);
@@ -498,10 +688,10 @@ public class UI_AuthorizedUserDashboard extends javax.swing.JFrame {
         );
         empMgmtPanelLayout.setVerticalGroup(
             empMgmtPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 655, Short.MAX_VALUE)
+            .addGap(0, 670, Short.MAX_VALUE)
         );
 
-        payrollMgmtPanel.setBackground(new java.awt.Color(102, 204, 0));
+        payrollMgmtPanel.setBackground(new java.awt.Color(240, 243, 252));
         payrollMgmtPanel.setMaximumSize(new java.awt.Dimension(860, 655));
         payrollMgmtPanel.setPreferredSize(new java.awt.Dimension(860, 655));
         payrollMgmtPanel.setVerifyInputWhenFocusTarget(false);
@@ -514,10 +704,10 @@ public class UI_AuthorizedUserDashboard extends javax.swing.JFrame {
         );
         payrollMgmtPanelLayout.setVerticalGroup(
             payrollMgmtPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 655, Short.MAX_VALUE)
+            .addGap(0, 670, Short.MAX_VALUE)
         );
 
-        attendancePanel.setBackground(new java.awt.Color(255, 51, 51));
+        attendancePanel.setBackground(new java.awt.Color(240, 243, 252));
         attendancePanel.setMaximumSize(new java.awt.Dimension(860, 655));
         attendancePanel.setPreferredSize(new java.awt.Dimension(860, 655));
         attendancePanel.setVerifyInputWhenFocusTarget(false);
@@ -530,10 +720,10 @@ public class UI_AuthorizedUserDashboard extends javax.swing.JFrame {
         );
         attendancePanelLayout.setVerticalGroup(
             attendancePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 655, Short.MAX_VALUE)
+            .addGap(0, 670, Short.MAX_VALUE)
         );
 
-        requestsPanel.setBackground(new java.awt.Color(255, 153, 255));
+        requestsPanel.setBackground(new java.awt.Color(240, 243, 252));
         requestsPanel.setMaximumSize(new java.awt.Dimension(860, 655));
         requestsPanel.setPreferredSize(new java.awt.Dimension(860, 655));
         requestsPanel.setVerifyInputWhenFocusTarget(false);
@@ -546,10 +736,10 @@ public class UI_AuthorizedUserDashboard extends javax.swing.JFrame {
         );
         requestsPanelLayout.setVerticalGroup(
             requestsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 655, Short.MAX_VALUE)
+            .addGap(0, 670, Short.MAX_VALUE)
         );
 
-        disputesPanel.setBackground(new java.awt.Color(204, 255, 204));
+        disputesPanel.setBackground(new java.awt.Color(240, 243, 252));
         disputesPanel.setMaximumSize(new java.awt.Dimension(860, 655));
         disputesPanel.setPreferredSize(new java.awt.Dimension(860, 655));
         disputesPanel.setVerifyInputWhenFocusTarget(false);
@@ -562,10 +752,10 @@ public class UI_AuthorizedUserDashboard extends javax.swing.JFrame {
         );
         disputesPanelLayout.setVerticalGroup(
             disputesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 655, Short.MAX_VALUE)
+            .addGap(0, 670, Short.MAX_VALUE)
         );
 
-        taxReportsPanel.setBackground(new java.awt.Color(255, 255, 51));
+        taxReportsPanel.setBackground(new java.awt.Color(240, 243, 252));
         taxReportsPanel.setMaximumSize(new java.awt.Dimension(860, 655));
         taxReportsPanel.setPreferredSize(new java.awt.Dimension(860, 655));
         taxReportsPanel.setVerifyInputWhenFocusTarget(false);
@@ -578,95 +768,76 @@ public class UI_AuthorizedUserDashboard extends javax.swing.JFrame {
         );
         taxReportsPanelLayout.setVerticalGroup(
             taxReportsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 655, Short.MAX_VALUE)
-        );
-
-        userMgmtPanel.setBackground(new java.awt.Color(0, 204, 204));
-        userMgmtPanel.setMaximumSize(new java.awt.Dimension(860, 655));
-        userMgmtPanel.setPreferredSize(new java.awt.Dimension(860, 655));
-        userMgmtPanel.setVerifyInputWhenFocusTarget(false);
-
-        jScrollPane2.setBackground(new java.awt.Color(255, 255, 255));
-        jScrollPane2.setBorder(null);
-        jScrollPane2.setForeground(new java.awt.Color(255, 255, 255));
-        jScrollPane2.setViewportView(usersTable);
-
-        javax.swing.GroupLayout userMgmtPanelLayout = new javax.swing.GroupLayout(userMgmtPanel);
-        userMgmtPanel.setLayout(userMgmtPanelLayout);
-        userMgmtPanelLayout.setHorizontalGroup(
-            userMgmtPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, userMgmtPanelLayout.createSequentialGroup()
-                .addContainerGap(28, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 814, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18))
-        );
-        userMgmtPanelLayout.setVerticalGroup(
-            userMgmtPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, userMgmtPanelLayout.createSequentialGroup()
-                .addContainerGap(223, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30))
+            .addGap(0, 670, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout adminPanelLayout = new javax.swing.GroupLayout(adminPanel);
         adminPanel.setLayout(adminPanelLayout);
         adminPanelLayout.setHorizontalGroup(
             adminPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(headerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 1212, Short.MAX_VALUE)
             .addGroup(adminPanelLayout.createSequentialGroup()
                 .addGroup(adminPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(headerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(adminPanelLayout.createSequentialGroup()
-                        .addComponent(adminMenuPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, 0)
-                        .addComponent(DashboardPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(adminPanelLayout.createSequentialGroup()
-                        .addGap(346, 346, 346)
                         .addGroup(adminPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(empMgmtPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(payrollMgmtPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(attendancePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(requestsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(disputesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(taxReportsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(userMgmtPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(adminPanelLayout.createSequentialGroup()
+                                .addComponent(adminMenuPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, 0)
+                                .addComponent(DashboardPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(adminPanelLayout.createSequentialGroup()
+                                .addGap(340, 340, 340)
+                                .addGroup(adminPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(UserMgmtPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(empMgmtPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(payrollMgmtPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(attendancePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(requestsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(disputesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(taxReportsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         adminPanelLayout.setVerticalGroup(
             adminPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, adminPanelLayout.createSequentialGroup()
                 .addComponent(headerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(adminMenuPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 670, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(DashboardPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(disputesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(taxReportsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(userMgmtPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(requestsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(attendancePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(payrollMgmtPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(empMgmtPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(145, 145, 145))
+                .addGroup(adminPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(adminMenuPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 670, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(adminPanelLayout.createSequentialGroup()
+                        .addComponent(DashboardPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 670, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(taxReportsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 670, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(disputesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 670, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(requestsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 670, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(attendancePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 670, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(payrollMgmtPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 670, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(empMgmtPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 670, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(UserMgmtPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 670, Short.MAX_VALUE)))
+                .addGap(5433, 5433, 5433))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(adminPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addComponent(adminPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(adminPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(adminPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0))
         );
 
         pack();
@@ -695,39 +866,62 @@ public class UI_AuthorizedUserDashboard extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_userMgmtBtnMouseClicked
 
-    
-    public static void main(String args[]) {
-        
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(UI_AuthorizedUserDashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(UI_AuthorizedUserDashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(UI_AuthorizedUserDashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(UI_AuthorizedUserDashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
+    private void updateUserBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateUserBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_updateUserBtnActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new UI_AuthorizedUserDashboard().setVisible(true);
-            }
-        });
+    private void userIDTxtFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userIDTxtFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_userIDTxtFieldActionPerformed
+
+    private void passwordTxtFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordTxtFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_passwordTxtFieldActionPerformed
+
+    private void empIDTxtFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_empIDTxtFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_empIDTxtFieldActionPerformed
+
+    private void userNameTxtFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userNameTxtFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_userNameTxtFieldActionPerformed
+
+    private void roleIDTxtFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roleIDTxtFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_roleIDTxtFieldActionPerformed
+
+    private void generateUserIDBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateUserIDBtnActionPerformed
+         String generatedUserID = DatabaseEmployeeDAO.generateUserID();
+        // Set the generated user ID in the userIDTxtField
+        userIDTxtField.setText(generatedUserID);
+    
+    }//GEN-LAST:event_generateUserIDBtnActionPerformed
+
+    private void addUserBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addUserBtnActionPerformed
+        
+       
+    }//GEN-LAST:event_addUserBtnActionPerformed
+
+private void initializeDependencies() {
+        AuthenticationService authenticationService = new AuthenticateUser();
+        this.employeeDAO = new DatabaseEmployeeDAO();
+        this.loginController = new LoginController(authenticationService, employeeDAO);
     }
+
+    private void displayUserInfo(int userId) {
+    Employee employee = employeeDAO.getEmployeeById(userId);
+    if (employee != null) {
+        loggedInUserName.setText(employee.getFirstName() + " " + employee.getLastName());
+        loggedInUserPosition.setText(employee.getPosition());
+        
+    } else {
+        JOptionPane.showMessageDialog(this, "User not found", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+}
     
      public void openAuthorizedUserDashboard() {
         // Create an instance of UI_Admin
-        UI_AuthorizedUserDashboard adminDashboard = new UI_AuthorizedUserDashboard();
+        UI_AuthorizedUserDashboard adminDashboard = new UI_AuthorizedUserDashboard(loggedInUserId);
 
         // Make the UI_Admin visible
         adminDashboard.setVisible(true);
@@ -738,6 +932,8 @@ public class UI_AuthorizedUserDashboard extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel DashboardPanel;
     private javax.swing.JLabel HeaderLabel;
+    private javax.swing.JPanel UserMgmtPanel;
+    private javax.swing.JButton addUserBtn;
     private javax.swing.JLabel adminLogoutLbl;
     private javax.swing.JLabel adminMenuLabel1;
     private javax.swing.JLabel adminMenuLabel2;
@@ -752,35 +948,51 @@ public class UI_AuthorizedUserDashboard extends javax.swing.JFrame {
     private javax.swing.JPanel attendanceBtn;
     private javax.swing.JPanel attendancePanel;
     private javax.swing.JPanel dashboardBtn;
+    private javax.swing.JButton deleteUserBtn;
     private javax.swing.JPanel disputesBtn;
     private javax.swing.JPanel disputesPanel;
+    private javax.swing.JTextField empIDTxtField;
     private javax.swing.JPanel empMgmtPanel;
     private javax.swing.JPanel employeeMgmtBtn;
+    private javax.swing.JButton generateUserIDBtn;
     private javax.swing.JPanel headerPanel;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel loggedInUserName;
     private javax.swing.JLabel loggedInUserPosition;
     private javax.swing.JPanel logoutBtn;
     private javax.swing.JLabel logoutLabel;
     private javax.swing.JLabel motorPHLogo;
+    private javax.swing.JTextField passwordTxtField;
     private javax.swing.JPanel payrollMgmtBtn;
     private javax.swing.JPanel payrollMgmtPanel;
     private javax.swing.JPanel requestsBtn;
     private javax.swing.JPanel requestsPanel;
+    private javax.swing.JTextField roleIDTxtField;
     private javax.swing.JPanel taxReportsBtn;
     private javax.swing.JPanel taxReportsPanel;
+    private javax.swing.JButton updateUserBtn;
+    private javax.swing.JTextField userIDTxtField;
     private javax.swing.JPanel userMgmtBtn;
-    private javax.swing.JPanel userMgmtPanel;
-    private javax.swing.JTable usersTable;
+    private javax.swing.JTextField userNameTxtField;
+    private javax.swing.JTable userTable;
     // End of variables declaration//GEN-END:variables
 
     public void showPanel(JPanel panelToShow, String headerText) {
         PanelSwitcher.showPanel(panelToShow, headerText, HeaderLabel, 
-            DashboardPanel, empMgmtPanel, userMgmtPanel, attendancePanel, disputesPanel, payrollMgmtPanel, requestsPanel, taxReportsPanel);
+            DashboardPanel, empMgmtPanel, UserMgmtPanel, attendancePanel, disputesPanel, payrollMgmtPanel, requestsPanel, taxReportsPanel);
     }
+    public static JTable createStyledTable(String tableName) {
+    CustomTableModel model = new CustomTableModel(tableName);
+    return model.createStyledTable();
+    
 
   
-    
-    
+    }
+
 }

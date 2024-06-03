@@ -1,23 +1,33 @@
 
 package UI;
 
+import DatabaseConnection.DatabaseEmployeeDAO;
+import DatabaseConnection.EmployeeDAO;
+import authentication.AuthenticateUser;
+import authentication.AuthenticationService;
 import authentication.LoginController;
+import entities.Employee;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
+import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.naming.AuthenticationException;
 import javax.swing.JOptionPane;
 
 public class UI_Login extends javax.swing.JFrame {
     
-    private final LoginController loginController;
+    private LoginController loginController;
 
   
     public UI_Login() {
         initComponents();
         setLocationRelativeTo(null);
         setDefaultText();
-        loginController = new LoginController();
+        initializeLoginController();
     }
 
     
@@ -94,11 +104,6 @@ public class UI_Login extends javax.swing.JFrame {
         loginBtn.setFont(new java.awt.Font("Montserrat Medium", 0, 20)); // NOI18N
         loginBtn.setForeground(new java.awt.Color(0, 102, 255));
         loginBtn.setText("LOGIN");
-        loginBtn.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                loginBtnMouseClicked(evt);
-            }
-        });
         loginBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loginBtnActionPerformed(evt);
@@ -243,84 +248,53 @@ public class UI_Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void loginBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginBtnActionPerformed
-    String username = usernameField.getText();
-    String password = new String(jPasswordField1.getPassword());
+  String username = usernameField.getText().trim();
+String password = new String(jPasswordField1.getPassword()).trim();
 
-    String usernamePlaceholder = "Username";
-    String passwordPlaceholder = "";  // Assuming password field is initially empty with dots
+// Placeholder texts
+String usernamePlaceholder = "Username";
+String passwordPlaceholder = "";  // Assuming password field is initially empty with dots
 
-    // Treat placeholder texts as empty
-    if (username.equals(usernamePlaceholder)) {
-        username = "";
-    }
+// Treat placeholder texts as empty
+if (username.equals(usernamePlaceholder)) {
+    username = "";
+}
 
-    if (password.equals(passwordPlaceholder)) {
-        password = "";
-    }
+if (password.equals(passwordPlaceholder)) {
+    password = "";
+}
 
-    if (username.isEmpty() || password.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Please enter both username and password.");
-    } else {
-        // Authenticate user and retrieve user ID
-        int[] loginResult = loginController.loginAndGetUserId(username, password);
-
-        if (loginResult != null && loginResult.length > 0) {
-            int userId = loginResult[0];
-            if (userId != -1) {
-                // Proceed to the next frame with the user ID
-                UI_Main mainFrame = new UI_Main(userId);
-                mainFrame.setVisible(true);
-                this.setVisible(false); // Hide the login frame
-            } else {
-                JOptionPane.showMessageDialog(this, "Invalid username or password.");
-            }
+if (username.isEmpty() || password.isEmpty()) {
+    // If username or password is empty, show a message dialog prompting the user to enter both
+    JOptionPane.showMessageDialog(this, "Please enter both username and password.");
+} else {
+    // Authenticate user and retrieve user info
+    try {
+        
+        Employee employee = loginController.loginAndGetUserInfo(username, password);
+        
+        if (employee != null) {
+            // If authentication successful, display a welcome message with the full name of the logged-in user
+            String fullName = employee.getFirstName() + " " + employee.getLastName();
+            String welcomeMessage = "Welcome, " + fullName + "!";
+            JOptionPane.showMessageDialog(this, welcomeMessage);
+            
+            // Proceed to the main frame with the user ID
+            UI_Main mainFrame = new UI_Main(employee.getEmployeeId());
+            mainFrame.setVisible(true);
+            this.setVisible(false); // Hide the login frame
         } else {
-            JOptionPane.showMessageDialog(this, "Login failed. Please try again.");
+            // If authentication failed, show a message dialog indicating invalid username or password
+            JOptionPane.showMessageDialog(this, "Invalid username or password.");
         }
+    } catch (SQLException | AuthenticationException ex) {
+        // If an error occurs during authentication, log the error and show a generic error message
+        Logger.getLogger(UI_Login.class.getName()).log(Level.SEVERE, null, ex);
+        JOptionPane.showMessageDialog(this, "An error occurred during login. Please try again later.");
     }
-
-
-
+    }
     }//GEN-LAST:event_loginBtnActionPerformed
 
-    private void loginBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loginBtnMouseClicked
-        
-    }//GEN-LAST:event_loginBtnMouseClicked
-
-
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(UI_Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(UI_Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(UI_Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(UI_Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-     
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new UI_Login().setVisible(true);
-            }
-        });
-    }
     public void goToLoginUI() {
         // Create an instance of UI_Admin
         UI_Login loginUI = new UI_Login();
@@ -328,6 +302,7 @@ public class UI_Login extends javax.swing.JFrame {
         // Make the UI_Admin visible
         loginUI.setVisible(true);
     }
+
 
     
 
@@ -407,5 +382,12 @@ public class UI_Login extends javax.swing.JFrame {
         
       
     
-    } 
+    }
+
+    private void initializeLoginController() {
+       AuthenticationService authenticationService = new AuthenticateUser();
+    EmployeeDAO employeeDAO = new DatabaseEmployeeDAO();
+    loginController = new LoginController(authenticationService, employeeDAO);
+    }
 }
+

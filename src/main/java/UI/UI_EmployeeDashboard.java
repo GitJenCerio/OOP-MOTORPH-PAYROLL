@@ -91,7 +91,7 @@ public class UI_EmployeeDashboard extends javax.swing.JFrame {
                 .addComponent(motorPHLogo)
                 .addGap(150, 150, 150)
                 .addComponent(HeaderLabel)
-                .addContainerGap(794, Short.MAX_VALUE))
+                .addContainerGap(594, Short.MAX_VALUE))
         );
         headerPanelLayout.setVerticalGroup(
             headerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -100,7 +100,7 @@ public class UI_EmployeeDashboard extends javax.swing.JFrame {
                 .addComponent(motorPHLogo)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, headerPanelLayout.createSequentialGroup()
-                .addContainerGap(49, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(HeaderLabel)
                 .addGap(41, 41, 41))
         );
