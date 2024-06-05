@@ -118,6 +118,7 @@ public class UI_Main extends javax.swing.JFrame {
     private void authorizedUserButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_authorizedUserButtonMousePressed
       
     RoleAccess.authorizedUserLogin(authorizedUserButton, userId);
+    dispose();
 
 
     }//GEN-LAST:event_authorizedUserButtonMousePressed

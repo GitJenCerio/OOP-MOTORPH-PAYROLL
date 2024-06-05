@@ -47,6 +47,16 @@ public class CustomTableModel extends AbstractTableModel {
         }
     }
 
+    public void clearData() {
+        data.clear();
+        fireTableDataChanged(); // Notify the table model that the data has changed
+    }
+
+    public void addRow(Object[] row) {
+        data.add(row);
+        fireTableRowsInserted(data.size() - 1, data.size() - 1); // Notify the table model about the new row
+    }
+
     @Override
     public int getRowCount() {
         return data.size();

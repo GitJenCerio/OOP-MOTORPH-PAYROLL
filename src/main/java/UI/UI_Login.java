@@ -182,7 +182,7 @@ public class UI_Login extends javax.swing.JFrame {
         jPanel2.setMinimumSize(new java.awt.Dimension(600, 800));
         jPanel2.setPreferredSize(new java.awt.Dimension(600, 800));
 
-        Logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icon_logo.png"))); // NOI18N
+        Logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/MotorPH-Big.png"))); // NOI18N
         Logo.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         Logo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         Logo.setIconTextGap(0);
@@ -221,8 +221,8 @@ public class UI_Login extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(21, 21, 21)
-                .addComponent(Logo, javax.swing.GroupLayout.PREFERRED_SIZE, 311, Short.MAX_VALUE)
-                .addGap(33, 33, 33)
+                .addComponent(Logo, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(142, 142, 142)
                 .addComponent(backToMainBtn)
