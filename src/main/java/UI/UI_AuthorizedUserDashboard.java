@@ -22,6 +22,7 @@ public class UI_AuthorizedUserDashboard extends javax.swing.JFrame {
     private EmployeeDAO employeeDAO;
     private DatabaseUserDAO userDAO = new DatabaseUserDAO();
     
+    
  
  
    public UI_AuthorizedUserDashboard(int loggedInUserId) {
@@ -30,6 +31,13 @@ public class UI_AuthorizedUserDashboard extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         initializeDependencies();
         displayUserInfo(loggedInUserId);
+        addUserPanel.setVisible(true); // Set the panel visible
+        deleteUserPanel.setVisible(false); // Set other panels invisible
+        updateUserPanel.setVisible(false);
+        addUserBtn.doClick(); // Programmatically trigger the action of the "Add User" button
+        addUserBtn.setBackground(new Color(45, 51, 241));
+
+        
         
        
         
@@ -522,9 +530,16 @@ public class UI_AuthorizedUserDashboard extends javax.swing.JFrame {
         jScrollPane1.setBackground(Color.WHITE);
         jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
         jScrollPane1.setBorder(null);
+        jScrollPane1.setForeground(new java.awt.Color(255, 255, 255));
+
+        userTable.setFocusable(false);
+        userTable.setGridColor(new java.awt.Color(255, 255, 255));
+        userTable.setRequestFocusEnabled(false);
+        userTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        userTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(userTable);
 
-        userMgmtPanel.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 293, 720, 350));
+        userMgmtPanel.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 313, 720, 340));
 
         addUserBtn.setBackground(new java.awt.Color(107, 151, 177));
         addUserBtn.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
@@ -577,7 +592,7 @@ public class UI_AuthorizedUserDashboard extends javax.swing.JFrame {
         });
         userMgmtPanel.add(deleteUserBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 30, -1, 44));
 
-        addUserPanel.setBackground(new java.awt.Color(208, 225, 234));
+        addUserPanel.setBackground(new java.awt.Color(255, 255, 255));
 
         userIDTxtField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -709,13 +724,12 @@ public class UI_AuthorizedUserDashboard extends javax.swing.JFrame {
                     .addComponent(roleIDTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(confirmAddUserBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(10, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
-        userMgmtPanel.add(addUserPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 70, 720, 220));
+        userMgmtPanel.add(addUserPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 70, 720, 230));
 
         deleteUserPanel.setBackground(new java.awt.Color(102, 255, 204));
-        deleteUserPanel.setOpaque(false);
 
         userIDTxtField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -748,7 +762,7 @@ public class UI_AuthorizedUserDashboard extends javax.swing.JFrame {
         generateUserIDBtn1.setBackground(new java.awt.Color(45, 51, 241));
         generateUserIDBtn1.setFont(new java.awt.Font("Montserrat Medium", 0, 12)); // NOI18N
         generateUserIDBtn1.setForeground(new java.awt.Color(255, 255, 255));
-        generateUserIDBtn1.setText("Generate User ID");
+        generateUserIDBtn1.setText("Search User ID");
         generateUserIDBtn1.setMaximumSize(new java.awt.Dimension(164, 22));
         generateUserIDBtn1.setMinimumSize(new java.awt.Dimension(164, 22));
         generateUserIDBtn1.setName(""); // NOI18N
@@ -853,7 +867,6 @@ public class UI_AuthorizedUserDashboard extends javax.swing.JFrame {
         userMgmtPanel.add(deleteUserPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 70, 720, 220));
 
         updateUserPanel.setBackground(new java.awt.Color(255, 255, 153));
-        updateUserPanel.setOpaque(false);
 
         userIDTxtField2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -886,7 +899,7 @@ public class UI_AuthorizedUserDashboard extends javax.swing.JFrame {
         generateUserIDBtn2.setBackground(new java.awt.Color(45, 51, 241));
         generateUserIDBtn2.setFont(new java.awt.Font("Montserrat Medium", 0, 12)); // NOI18N
         generateUserIDBtn2.setForeground(new java.awt.Color(255, 255, 255));
-        generateUserIDBtn2.setText("Generate User ID");
+        generateUserIDBtn2.setText("Search User ID");
         generateUserIDBtn2.setMaximumSize(new java.awt.Dimension(164, 22));
         generateUserIDBtn2.setMinimumSize(new java.awt.Dimension(164, 22));
         generateUserIDBtn2.setName(""); // NOI18N

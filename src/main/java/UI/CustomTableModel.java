@@ -1,32 +1,36 @@
 package UI;
 
 import DatabaseConnection.DatabaseConnector;
-import javax.swing.table.AbstractTableModel;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
+
+import javax.swing.table.AbstractTableModel;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CustomTableModel extends AbstractTableModel {
     private String[] columnNames;
     private List<Object[]> data = new ArrayList<>();
+    private List<Object[]> pageData = new ArrayList<>();
+    private int pageSize = 10;
+    private int currentPage = 0;
 
     public CustomTableModel(String tableName) {
         fetchColumnNamesAndDataFromDatabase(tableName);
+        updatePageData();
     }
 
     private void fetchColumnNamesAndDataFromDatabase(String tableName) {
-        try (Connection connection = DatabaseConnector.getConnection();
-             Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery("SELECT * FROM " + tableName)) {
+        try (java.sql.Connection connection = DatabaseConnector.getConnection();
+             java.sql.Statement statement = connection.createStatement();
+             java.sql.ResultSet resultSet = statement.executeQuery("SELECT * FROM " + tableName)) {
 
-            ResultSetMetaData metaData = resultSet.getMetaData();
+            java.sql.ResultSetMetaData metaData = resultSet.getMetaData();
             int columnCount = metaData.getColumnCount();
 
             columnNames = new String[columnCount];
@@ -42,24 +46,27 @@ public class CustomTableModel extends AbstractTableModel {
                 data.add(row);
             }
 
-        } catch (SQLException e) {
+        } catch (java.sql.SQLException e) {
             e.printStackTrace();
         }
+        updatePageData();
     }
 
     public void clearData() {
         data.clear();
-        fireTableDataChanged(); // Notify the table model that the data has changed
+        updatePageData();
+        fireTableDataChanged();
     }
 
     public void addRow(Object[] row) {
         data.add(row);
-        fireTableRowsInserted(data.size() - 1, data.size() - 1); // Notify the table model about the new row
+        updatePageData();
+        fireTableDataChanged();
     }
 
     @Override
     public int getRowCount() {
-        return data.size();
+        return pageSize; // Always return the page size
     }
 
     @Override
@@ -69,10 +76,14 @@ public class CustomTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int row, int column) {
-        if (columnNames[column].equals("UserPassword")) {
-            return "********";
+        if (row < pageData.size()) {
+            if (columnNames[column].equals("UserPassword")) {
+                return "********";
+            } else {
+                return pageData.get(row)[column];
+            }
         } else {
-            return data.get(row)[column];
+            return ""; // Return empty string for empty rows
         }
     }
 
@@ -81,57 +92,95 @@ public class CustomTableModel extends AbstractTableModel {
         return columnNames[column];
     }
 
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+        updatePageData();
+    }
+
+    public void setCurrentPage(int currentPage) {
+        this.currentPage = currentPage;
+        updatePageData();
+    }
+
+    public int getCurrentPage() {
+        return currentPage;
+    }
+
+    public int getTotalPages() {
+        return (int) Math.ceil((double) data.size() / pageSize);
+    }
+
+    private void updatePageData() {
+        int start = currentPage * pageSize;
+        int end = Math.min(start + pageSize, data.size());
+        pageData = data.subList(start, end);
+    }
+
     // Method to create and style the JTable
-    public JTable createStyledTable() {
-        JTable table = new JTable(this);
 
-        // Set header color and height
-        table.getTableHeader().setBackground(new Color(183, 203, 255));
-        table.getTableHeader().setPreferredSize(new Dimension(table.getTableHeader().getWidth(), 30));
-
-        // Set background color, font, and row height
-        table.setBackground(Color.WHITE);
-        table.setFont(new Font("Poppins", Font.PLAIN, 12));
-        table.setRowHeight(30);
-
-        // Remove borders and gridlines
-        table.setShowGrid(false);
-        table.setIntercellSpacing(new Dimension(0, 0));
-
-        // Set row selection to full row
-        table.setRowSelectionAllowed(true);
-        table.setColumnSelectionAllowed(false);
-        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
-        // Center align text in columns
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-        for (int i = 0; i < table.getColumnCount(); i++) {
-            table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+// Method to create and style the JTable
+public JTable createStyledTable() {
+    JTable table = new JTable(this) {
+        @Override
+        public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+            Component c = super.prepareRenderer(renderer, row, column);
+            if (!isRowSelected(row)) {
+                c.setBackground(row % 2 == 0 ? Color.WHITE : new Color(240, 240, 240)); // Alternating row colors
+            } else {
+                c.setBackground(new Color(180, 180, 180)); // Selected row color
+            }
+            return c;
         }
 
-        // Set row colors
-        table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value,
-                                                           boolean isSelected, boolean hasFocus,
-                                                           int row, int column) {
-                Component c = super.getTableCellRendererComponent(table, value,
-                                                                  isSelected, hasFocus,
-                                                                  row, column);
-                // Set alternating row colors based on row index
-                if (isSelected) {
-                    c.setBackground(new Color(180, 180, 180)); // Selected row color
-                } else if (hasFocus) {
-                    c.setBackground(new Color(100, 100, 100)); // Hovered row color
-                } else {
-                    c.setBackground(row % 2 == 0 ? new Color(240, 240, 240) : Color.WHITE); // Alternating row colors
-                }
+        @Override
+        public void setShowGrid(boolean showGrid) {
+            // Override to prevent the selection grid
+        }
+    };
 
-                return c;
-            }
-        });
+    // Set header color and height
+    table.getTableHeader().setBackground(new Color(107, 151, 177));
+    table.getTableHeader().setPreferredSize(new Dimension(table.getTableHeader().getWidth(), 30));
 
-        return table;
+    // Set background color, font, and row height
+    table.setBackground(Color.WHITE);
+    table.setFont(new Font("Poppins", Font.PLAIN, 12));
+    table.setRowHeight(30);
+
+    // Show only horizontal grid lines and set grid color
+    table.setShowHorizontalLines(true);
+    table.setGridColor(Color.GRAY);
+    table.setIntercellSpacing(new Dimension(0, 1)); // To emphasize horizontal lines
+
+    // Set row selection to full row
+    table.setRowSelectionAllowed(true);
+    table.setColumnSelectionAllowed(false);
+    table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+    // Set selection background to transparent
+    table.setSelectionBackground(new Color(0, 0, 0, 0));
+
+    // Center align text in columns
+    DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+    centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+    for (int i = 0; i < table.getColumnCount(); i++) {
+        table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
     }
+
+    // Set font color and alignment of table header
+    JTableHeader header = table.getTableHeader();
+    header.setDefaultRenderer(new DefaultTableCellRenderer() {
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            label.setForeground(Color.WHITE); // Set font color of header
+            label.setBackground(new Color(107, 151, 177)); // Set background color of header
+            label.setFont(new Font("Montserrat", Font.BOLD, 12)); // Set font to Poppins
+            label.setHorizontalAlignment(JLabel.CENTER); // Set alignment to center
+            return label;
+        }
+    });
+
+    return table;
+}
 }
