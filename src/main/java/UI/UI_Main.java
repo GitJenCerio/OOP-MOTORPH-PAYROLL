@@ -2,14 +2,20 @@
 package UI;
 
 import AccessControl.RoleAccess;
+import AccessControl.Roles;
+import UI.AuthorizedFrame;
+import UI.UI_EmployeeDashboard;
+import javax.swing.JOptionPane;
 
 public class UI_Main extends javax.swing.JFrame {
-    private int userId;
+    private final int userId;
+    private String userRole;
 
     public UI_Main(int userId) {
         this.userId = userId;
         initComponents();
-        setLocationRelativeTo(null);
+        fetchUserRole();
+        
     }
 
 
@@ -61,6 +67,11 @@ public class UI_Main extends javax.swing.JFrame {
                 authorizedUserButtonMousePressed(evt);
             }
         });
+        authorizedUserButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                authorizedUserButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -107,21 +118,59 @@ public class UI_Main extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+    private void fetchUserRole() {
+        // Assuming you have a method to fetch userRole based on userId
+        int roleId = RoleAccess.getRoleId(userId);
+        if (Roles.isAdmin(roleId) || Roles.isPayroll(roleId) || Roles.isHR(roleId)) {
+            // Assigning userRole based on fetched roleId
+            if (Roles.isAdmin(roleId)) {
+                userRole = "Admin";
+            } else if (Roles.isPayroll(roleId)) {
+                userRole = "Payroll";
+            } else if (Roles.isHR(roleId)) {
+                userRole = "HR";
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Unauthorized access!", "Access Denied", JOptionPane.ERROR_MESSAGE);
+            // Handle unauthorized access scenario
+        }
+    }
     private void empButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_empButtonMouseClicked
-        UI_EmployeeDashboard empUI = new UI_EmployeeDashboard();
-        empUI.openEmployeeDashboard();
-        dispose();
+        int roleId = RoleAccess.getRoleId(userId);
+        openEmpSelfServiceFrame(userId, roleId);
+        
     }//GEN-LAST:event_empButtonMouseClicked
 
     private void authorizedUserButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_authorizedUserButtonMousePressed
       
-    RoleAccess.authorizedUserLogin(authorizedUserButton, userId);
-    dispose();
+       int roleId = RoleAccess.getRoleId(userId);
 
-
+    if (Roles.isAdmin(roleId) || Roles.isPayroll(roleId) || Roles.isHR(roleId)) {
+        
+        openAuthorizedFrame(userId, roleId); // Pass userId and roleId to openAuthorizedFrame
+    } else {
+        JOptionPane.showMessageDialog(this, "Unauthorized access!", "Access Denied", JOptionPane.ERROR_MESSAGE);
+    }
+    }
+    public void openAuthorizedFrame(int userId, int roleId) {
+        AuthorizedFrame authorizedFrame = new AuthorizedFrame(userId,roleId);
+        authorizedFrame.setVisible(true);
+        this.dispose();
+    }
+        
+     public void openEmpSelfServiceFrame(int userId, int roleId) {
+       EmpSelfServiceFrame empUI = new EmpSelfServiceFrame(userId,roleId);
+        empUI.setVisible(true);
+        this.dispose();
+    
+ 
     }//GEN-LAST:event_authorizedUserButtonMousePressed
+
+    private void authorizedUserButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_authorizedUserButtonActionPerformed
+
+    }//GEN-LAST:event_authorizedUserButtonActionPerformed
 
   
 

@@ -3,6 +3,7 @@ package UI;
 
 import DatabaseConnection.DatabaseEmployeeDAO;
 import DatabaseConnection.EmployeeDAO;
+import UI.UI_Main;
 import authentication.AuthenticateUser;
 import authentication.AuthenticationService;
 import authentication.LoginController;
@@ -25,7 +26,6 @@ public class UI_Login extends javax.swing.JFrame {
   
     public UI_Login() {
         initComponents();
-        setLocationRelativeTo(null);
         setDefaultText();
         initializeLoginController();
     }
@@ -245,54 +245,45 @@ public class UI_Login extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void loginBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginBtnActionPerformed
-  String username = usernameField.getText().trim();
-String password = new String(jPasswordField1.getPassword()).trim();
+                                                           
+    String username = usernameField.getText().trim();
+    String password = new String(jPasswordField1.getPassword()).trim();
 
-// Placeholder texts
-String usernamePlaceholder = "Username";
-String passwordPlaceholder = "";  // Assuming password field is initially empty with dots
+    if (username.isEmpty() || password.isEmpty()) {
+        // If username or password is empty, show a message dialog prompting the user to enter both
+        JOptionPane.showMessageDialog(this, "Please enter both username and password.");
+    } else {
+        try {
+            Employee employee = loginController.loginAndGetUserInfo(username, password);
 
-// Treat placeholder texts as empty
-if (username.equals(usernamePlaceholder)) {
-    username = "";
-}
+            if (employee != null) {
+                // If authentication successful, display a welcome message with the full name of the logged-in user
+                String fullName = employee.getFirstName() + " " + employee.getLastName();
+                String welcomeMessage = "Welcome, " + fullName + "!";
+                JOptionPane.showMessageDialog(this, welcomeMessage);
 
-if (password.equals(passwordPlaceholder)) {
-    password = "";
-}
+                // Proceed to the main frame with the user ID
+                UI_Main mainFrame = new UI_Main(employee.getEmployeeId());
+                mainFrame.setVisible(true);
+                this.setVisible(false); // Hide the login frame
+            } else {
+                // If authentication failed, show a specific message for invalid username or password
+                JOptionPane.showMessageDialog(this, "Invalid username or password. Please try again.");
 
-if (username.isEmpty() || password.isEmpty()) {
-    // If username or password is empty, show a message dialog prompting the user to enter both
-    JOptionPane.showMessageDialog(this, "Please enter both username and password.");
-} else {
-    // Authenticate user and retrieve user info
-    try {
-        
-        Employee employee = loginController.loginAndGetUserInfo(username, password);
-        
-        if (employee != null) {
-            // If authentication successful, display a welcome message with the full name of the logged-in user
-            String fullName = employee.getFirstName() + " " + employee.getLastName();
-            String welcomeMessage = "Welcome, " + fullName + "!";
-            JOptionPane.showMessageDialog(this, welcomeMessage);
-            
-            // Proceed to the main frame with the user ID
-            UI_Main mainFrame = new UI_Main(employee.getEmployeeId());
-            mainFrame.setVisible(true);
-            this.setVisible(false); // Hide the login frame
-        } else {
-            // If authentication failed, show a message dialog indicating invalid username or password
-            JOptionPane.showMessageDialog(this, "Invalid username or password.");
+                // Log the invalid login attempt without specific error details
+                Logger.getLogger(UI_Login.class.getName()).log(Level.INFO, "Invalid login attempt: Username = {0}", username);
+            }
+        } catch (SQLException | AuthenticationException ex) {
+            // If an error occurs during authentication, log the error without showing a specific message
+            Logger.getLogger(UI_Login.class.getName()).log(Level.SEVERE, "Error during login attempt", ex);
+            JOptionPane.showMessageDialog(this, "Invalid username or password. Please try again."); // Generic message
         }
-    } catch (SQLException | AuthenticationException ex) {
-        // If an error occurs during authentication, log the error and show a generic error message
-        Logger.getLogger(UI_Login.class.getName()).log(Level.SEVERE, null, ex);
-        JOptionPane.showMessageDialog(this, "An error occurred during login. Please try again later.");
     }
-    }
+  
     }//GEN-LAST:event_loginBtnActionPerformed
 
     public void goToLoginUI() {

@@ -10,7 +10,7 @@ public class Main {
     public static void main(String[] args) {
          UI_Login loginUI = new UI_Login();
             loginUI.setVisible(true);
-            loginUI.setLocationRelativeTo(null);
+           
             
     }
 }

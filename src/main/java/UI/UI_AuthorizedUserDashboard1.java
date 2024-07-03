@@ -1,5 +1,5 @@
 
-/*package UI;
+package UI;
 
 
 import java.awt.Color;
@@ -8,21 +8,20 @@ import authentication.AuthenticateUser;
 import authentication.AuthenticationService;
 import authentication.LoginController;
 import DatabaseConnection.*;
+import DatabaseConnection.DatabaseUserDAO.DatabaseException;
+import static DatabaseConnection.DatabaseUtility.fetchDataAndCreateTableModel;
 import PayrollSystem.UserActionLogger;
 import PayrollSystem.Utils;
-import authentication.PasswordHash;
 import entities.*;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 
-public class UI_AuthorizedUserDashboard extends javax.swing.JFrame {
+public class UI_AuthorizedUserDashboard1 extends javax.swing.JFrame {
     private int loggedInUserId;
     private LoginController loginController;
     private EmployeeDAO employeeDAO;
@@ -35,15 +34,13 @@ public class UI_AuthorizedUserDashboard extends javax.swing.JFrame {
     
  
  
-   public UI_AuthorizedUserDashboard(int loggedInUserId) {
+   public UI_AuthorizedUserDashboard1(int loggedInUserId) {
        this.loggedInUserId = loggedInUserId;
         initComponents();
         setLocationRelativeTo(null);
         initializeDependencies();
         displayUserInfo(loggedInUserId);
         addUserPanel.setVisible(true); // Set the panel visible
-        deleteUserPanel.setVisible(false); // Set other panels invisible
-        updateUserPanel.setVisible(false);
         addUserBtn.doClick(); // Programmatically trigger the action of the "Add User" button
         addUserBtn.setBackground(new Color(45, 51, 241));
         ComboBoxUtils.populateComboBox(positionFilter, "Position", "Employees");
@@ -102,53 +99,20 @@ public class UI_AuthorizedUserDashboard extends javax.swing.JFrame {
         jLabel22 = new javax.swing.JLabel();
         jLabel23 = new javax.swing.JLabel();
         userMgmtPanel = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        userTable =  createStyledTable("Users", new String[]{"UserID", "EmployeeID", "Username", "UserPassword", "RoleID"});
         addUserBtn = new javax.swing.JButton();
-        updateUserBtn = new javax.swing.JButton();
-        deleteUserBtn = new javax.swing.JButton();
         addUserPanel = new javax.swing.JPanel();
-        userIDTxtField = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         empIDTxtField = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         userNameTxtField = new javax.swing.JTextField();
-        generateUserIDBtn = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         passwordTxtField = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         roleIDTxtField = new javax.swing.JTextField();
         confirmAddUserBtn = new javax.swing.JButton();
-        deleteUserPanel = new javax.swing.JPanel();
-        userIDTxtField1 = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        empIDTxtField1 = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        userNameTxtField1 = new javax.swing.JTextField();
-        searchUserIDDeleteBtn = new javax.swing.JButton();
-        jLabel10 = new javax.swing.JLabel();
-        passwordTxtField1 = new javax.swing.JTextField();
-        jLabel11 = new javax.swing.JLabel();
-        roleIDTxtField1 = new javax.swing.JTextField();
-        confirmDeleteUserBtn = new javax.swing.JButton();
-        updateUserPanel = new javax.swing.JPanel();
-        userIDTxtField2 = new javax.swing.JTextField();
-        jLabel12 = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
-        empIDTxtField2 = new javax.swing.JTextField();
-        jLabel14 = new javax.swing.JLabel();
-        userNameTxtField2 = new javax.swing.JTextField();
-        searchUserIDupdateBtn = new javax.swing.JButton();
-        jLabel15 = new javax.swing.JLabel();
-        passwordTxtField2 = new javax.swing.JTextField();
-        jLabel16 = new javax.swing.JLabel();
-        roleIDTxtField2 = new javax.swing.JTextField();
-        confirmUpdateUserBtn = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        userTable1 = new javax.swing.JTable();
         empMgmtPanel = new javax.swing.JPanel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        employeeTable =  createStyledTable("Employees", new String[]{"EmployeeID", "LastName", "FirstName", "Position", "ImmediateSupervisor"});
         positionFilter = new javax.swing.JComboBox<>();
         supervisorFilter = new javax.swing.JComboBox<>();
         jLabel17 = new javax.swing.JLabel();
@@ -159,6 +123,8 @@ public class UI_AuthorizedUserDashboard extends javax.swing.JFrame {
         jLabel20 = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        employeeTable1 = new JTable();
         payrollMgmtPanel = new javax.swing.JPanel();
         attendancePanel = new javax.swing.JPanel();
         requestsPanel = new javax.swing.JPanel();
@@ -166,7 +132,6 @@ public class UI_AuthorizedUserDashboard extends javax.swing.JFrame {
         taxReportsPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(1200, 800));
         setResizable(false);
 
         adminPanel.setBackground(new java.awt.Color(231, 231, 231));
@@ -553,20 +518,6 @@ public class UI_AuthorizedUserDashboard extends javax.swing.JFrame {
         userMgmtPanel.setVerifyInputWhenFocusTarget(false);
         userMgmtPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jScrollPane1.setBackground(Color.WHITE);
-        jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
-        jScrollPane1.setBorder(null);
-        jScrollPane1.setForeground(new java.awt.Color(255, 255, 255));
-
-        userTable.setFocusable(false);
-        userTable.setGridColor(new java.awt.Color(255, 255, 255));
-        userTable.setRequestFocusEnabled(false);
-        userTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        userTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane1.setViewportView(userTable);
-
-        userMgmtPanel.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 313, 720, 340));
-
         addUserBtn.setBackground(new java.awt.Color(107, 151, 177));
         addUserBtn.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
         addUserBtn.setForeground(new java.awt.Color(255, 255, 255));
@@ -588,47 +539,7 @@ public class UI_AuthorizedUserDashboard extends javax.swing.JFrame {
         });
         userMgmtPanel.add(addUserBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 30, -1, 44));
 
-        updateUserBtn.setBackground(new java.awt.Color(107, 151, 177));
-        updateUserBtn.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
-        updateUserBtn.setForeground(new java.awt.Color(255, 255, 255));
-        updateUserBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons8-edit-user-24.png"))); // NOI18N
-        updateUserBtn.setText("Update User");
-        updateUserBtn.setMaximumSize(new java.awt.Dimension(164, 31));
-        updateUserBtn.setMinimumSize(new java.awt.Dimension(164, 31));
-        updateUserBtn.setPreferredSize(new java.awt.Dimension(164, 31));
-        updateUserBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                updateUserBtnActionPerformed(evt);
-            }
-        });
-        userMgmtPanel.add(updateUserBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 30, -1, 44));
-
-        deleteUserBtn.setBackground(new java.awt.Color(107, 151, 177));
-        deleteUserBtn.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
-        deleteUserBtn.setForeground(new java.awt.Color(255, 255, 255));
-        deleteUserBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons8-delete-user-24 (1).png"))); // NOI18N
-        deleteUserBtn.setText("Delete User");
-        deleteUserBtn.setMaximumSize(new java.awt.Dimension(164, 31));
-        deleteUserBtn.setMinimumSize(new java.awt.Dimension(164, 31));
-        deleteUserBtn.setPreferredSize(new java.awt.Dimension(164, 31));
-        deleteUserBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deleteUserBtnActionPerformed(evt);
-            }
-        });
-        userMgmtPanel.add(deleteUserBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 30, -1, 44));
-
         addUserPanel.setBackground(new java.awt.Color(255, 255, 255));
-
-        userIDTxtField.setEditable(false);
-        userIDTxtField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                userIDTxtFieldActionPerformed(evt);
-            }
-        });
-
-        jLabel4.setFont(new java.awt.Font("Poppins Medium", 0, 12)); // NOI18N
-        jLabel4.setText("User ID");
 
         jLabel5.setFont(new java.awt.Font("Poppins Medium", 0, 12)); // NOI18N
         jLabel5.setText("Employee ID");
@@ -646,21 +557,6 @@ public class UI_AuthorizedUserDashboard extends javax.swing.JFrame {
         userNameTxtField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 userNameTxtFieldActionPerformed(evt);
-            }
-        });
-
-        generateUserIDBtn.setBackground(new java.awt.Color(45, 51, 241));
-        generateUserIDBtn.setFont(new java.awt.Font("Montserrat Medium", 0, 12)); // NOI18N
-        generateUserIDBtn.setForeground(new java.awt.Color(255, 255, 255));
-        generateUserIDBtn.setText("Generate User ID");
-        generateUserIDBtn.setMaximumSize(new java.awt.Dimension(164, 22));
-        generateUserIDBtn.setMinimumSize(new java.awt.Dimension(164, 22));
-        generateUserIDBtn.setName(""); // NOI18N
-        generateUserIDBtn.setPreferredSize(new java.awt.Dimension(164, 22));
-        generateUserIDBtn.setRolloverEnabled(false);
-        generateUserIDBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                generateUserIDBtnActionPerformed(evt);
             }
         });
 
@@ -708,15 +604,11 @@ public class UI_AuthorizedUserDashboard extends javax.swing.JFrame {
                     .addComponent(empIDTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(confirmAddUserBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(addUserPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addGap(99, 99, 99)
                         .addGroup(addUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(userIDTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel4))
-                        .addGap(26, 26, 26)
-                        .addGroup(addUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(generateUserIDBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2)
-                            .addComponent(userNameTxtField))))
+                            .addComponent(userNameTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(26, 26, 26)
                 .addGroup(addUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(passwordTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -730,13 +622,7 @@ public class UI_AuthorizedUserDashboard extends javax.swing.JFrame {
         addUserPanelLayout.setVerticalGroup(
             addUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(addUserPanelLayout.createSequentialGroup()
-                .addGap(11, 11, 11)
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(addUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(userIDTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(generateUserIDBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(15, 15, 15)
                 .addGroup(addUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
                     .addGroup(addUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -751,310 +637,47 @@ public class UI_AuthorizedUserDashboard extends javax.swing.JFrame {
                     .addComponent(roleIDTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(confirmAddUserBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
-        userMgmtPanel.add(addUserPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 70, 720, 230));
+        userMgmtPanel.add(addUserPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 70, 720, 160));
 
-        deleteUserPanel.setBackground(new java.awt.Color(255, 255, 255));
+        jScrollPane2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        userIDTxtField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                userIDTxtField1ActionPerformed(evt);
+        userTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "User ID", "Employee ID", "Username", "Password", "Role"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
+        jScrollPane2.setViewportView(userTable1);
 
-        jLabel7.setFont(new java.awt.Font("Poppins Medium", 0, 12)); // NOI18N
-        jLabel7.setText("User ID");
-
-        jLabel9.setFont(new java.awt.Font("Poppins Medium", 0, 12)); // NOI18N
-        jLabel9.setText("Employee ID");
-
-        empIDTxtField1.setEditable(false);
-        empIDTxtField1.setMargin(new java.awt.Insets(6, 6, 6, 6));
-        empIDTxtField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                empIDTxtField1ActionPerformed(evt);
-            }
-        });
-
-        jLabel3.setFont(new java.awt.Font("Poppins Medium", 0, 12)); // NOI18N
-        jLabel3.setText("Username");
-
-        userNameTxtField1.setEditable(false);
-        userNameTxtField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                userNameTxtField1ActionPerformed(evt);
-            }
-        });
-
-        searchUserIDDeleteBtn.setBackground(new java.awt.Color(45, 51, 241));
-        searchUserIDDeleteBtn.setFont(new java.awt.Font("Montserrat Medium", 0, 12)); // NOI18N
-        searchUserIDDeleteBtn.setForeground(new java.awt.Color(255, 255, 255));
-        searchUserIDDeleteBtn.setText("Search User ID");
-        searchUserIDDeleteBtn.setMaximumSize(new java.awt.Dimension(164, 22));
-        searchUserIDDeleteBtn.setMinimumSize(new java.awt.Dimension(164, 22));
-        searchUserIDDeleteBtn.setName(""); // NOI18N
-        searchUserIDDeleteBtn.setPreferredSize(new java.awt.Dimension(164, 22));
-        searchUserIDDeleteBtn.setRolloverEnabled(false);
-        searchUserIDDeleteBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchUserIDDeleteBtnActionPerformed(evt);
-            }
-        });
-
-        jLabel10.setFont(new java.awt.Font("Poppins Medium", 0, 12)); // NOI18N
-        jLabel10.setText("Password");
-
-        passwordTxtField1.setEditable(false);
-        passwordTxtField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                passwordTxtField1ActionPerformed(evt);
-            }
-        });
-
-        jLabel11.setFont(new java.awt.Font("Poppins Medium", 0, 12)); // NOI18N
-        jLabel11.setText("Role ID");
-
-        roleIDTxtField1.setEditable(false);
-        roleIDTxtField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                roleIDTxtField1ActionPerformed(evt);
-            }
-        });
-
-        confirmDeleteUserBtn.setBackground(new java.awt.Color(45, 51, 241));
-        confirmDeleteUserBtn.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
-        confirmDeleteUserBtn.setForeground(new java.awt.Color(255, 255, 255));
-        confirmDeleteUserBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons8-add-user-24.png"))); // NOI18N
-        confirmDeleteUserBtn.setText("Confirm");
-        confirmDeleteUserBtn.setMaximumSize(new java.awt.Dimension(164, 31));
-        confirmDeleteUserBtn.setMinimumSize(new java.awt.Dimension(164, 31));
-        confirmDeleteUserBtn.setName(""); // NOI18N
-        confirmDeleteUserBtn.setPreferredSize(new java.awt.Dimension(164, 31));
-        confirmDeleteUserBtn.setRolloverEnabled(false);
-        confirmDeleteUserBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                confirmDeleteUserBtnActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout deleteUserPanelLayout = new javax.swing.GroupLayout(deleteUserPanel);
-        deleteUserPanel.setLayout(deleteUserPanelLayout);
-        deleteUserPanelLayout.setHorizontalGroup(
-            deleteUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(deleteUserPanelLayout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addGroup(deleteUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(empIDTxtField1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(confirmDeleteUserBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(deleteUserPanelLayout.createSequentialGroup()
-                        .addGroup(deleteUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(userIDTxtField1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel9)
-                            .addComponent(jLabel7))
-                        .addGap(26, 26, 26)
-                        .addGroup(deleteUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(searchUserIDDeleteBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3)
-                            .addComponent(userNameTxtField1))))
-                .addGap(26, 26, 26)
-                .addGroup(deleteUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(passwordTxtField1, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel10))
-                .addGap(26, 26, 26)
-                .addGroup(deleteUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(roleIDTxtField1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel11))
-                .addGap(77, 77, 77))
-        );
-        deleteUserPanelLayout.setVerticalGroup(
-            deleteUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(deleteUserPanelLayout.createSequentialGroup()
-                .addGap(11, 11, 11)
-                .addComponent(jLabel7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(deleteUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(userIDTxtField1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(searchUserIDDeleteBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(deleteUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel9)
-                    .addGroup(deleteUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel3)
-                        .addComponent(jLabel10))
-                    .addComponent(jLabel11))
-                .addGap(3, 3, 3)
-                .addGroup(deleteUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(empIDTxtField1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(userNameTxtField1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(passwordTxtField1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(roleIDTxtField1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(confirmDeleteUserBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(10, Short.MAX_VALUE))
-        );
-
-        userMgmtPanel.add(deleteUserPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 70, 720, 220));
-
-        updateUserPanel.setBackground(new java.awt.Color(255, 255, 255));
-
-        userIDTxtField2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                userIDTxtField2ActionPerformed(evt);
-            }
-        });
-
-        jLabel12.setFont(new java.awt.Font("Poppins Medium", 0, 12)); // NOI18N
-        jLabel12.setText("User ID");
-
-        jLabel13.setFont(new java.awt.Font("Poppins Medium", 0, 12)); // NOI18N
-        jLabel13.setText("Employee ID");
-
-        empIDTxtField2.setMargin(new java.awt.Insets(6, 6, 6, 6));
-        empIDTxtField2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                empIDTxtField2ActionPerformed(evt);
-            }
-        });
-
-        jLabel14.setFont(new java.awt.Font("Poppins Medium", 0, 12)); // NOI18N
-        jLabel14.setText("Username");
-
-        userNameTxtField2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                userNameTxtField2ActionPerformed(evt);
-            }
-        });
-
-        searchUserIDupdateBtn.setBackground(new java.awt.Color(45, 51, 241));
-        searchUserIDupdateBtn.setFont(new java.awt.Font("Montserrat Medium", 0, 12)); // NOI18N
-        searchUserIDupdateBtn.setForeground(new java.awt.Color(255, 255, 255));
-        searchUserIDupdateBtn.setText("Search User ID");
-        searchUserIDupdateBtn.setMaximumSize(new java.awt.Dimension(164, 22));
-        searchUserIDupdateBtn.setMinimumSize(new java.awt.Dimension(164, 22));
-        searchUserIDupdateBtn.setName(""); // NOI18N
-        searchUserIDupdateBtn.setPreferredSize(new java.awt.Dimension(164, 22));
-        searchUserIDupdateBtn.setRolloverEnabled(false);
-        searchUserIDupdateBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchUserIDupdateBtnActionPerformed(evt);
-            }
-        });
-
-        jLabel15.setFont(new java.awt.Font("Poppins Medium", 0, 12)); // NOI18N
-        jLabel15.setText("Password");
-
-        passwordTxtField2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                passwordTxtField2ActionPerformed(evt);
-            }
-        });
-
-        jLabel16.setFont(new java.awt.Font("Poppins Medium", 0, 12)); // NOI18N
-        jLabel16.setText("Role ID");
-
-        roleIDTxtField2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                roleIDTxtField2ActionPerformed(evt);
-            }
-        });
-
-        confirmUpdateUserBtn.setBackground(new java.awt.Color(45, 51, 241));
-        confirmUpdateUserBtn.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
-        confirmUpdateUserBtn.setForeground(new java.awt.Color(255, 255, 255));
-        confirmUpdateUserBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons8-add-user-24.png"))); // NOI18N
-        confirmUpdateUserBtn.setText("Confirm");
-        confirmUpdateUserBtn.setMaximumSize(new java.awt.Dimension(164, 31));
-        confirmUpdateUserBtn.setMinimumSize(new java.awt.Dimension(164, 31));
-        confirmUpdateUserBtn.setName(""); // NOI18N
-        confirmUpdateUserBtn.setPreferredSize(new java.awt.Dimension(164, 31));
-        confirmUpdateUserBtn.setRolloverEnabled(false);
-        confirmUpdateUserBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                confirmUpdateUserBtnActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout updateUserPanelLayout = new javax.swing.GroupLayout(updateUserPanel);
-        updateUserPanel.setLayout(updateUserPanelLayout);
-        updateUserPanelLayout.setHorizontalGroup(
-            updateUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(updateUserPanelLayout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addGroup(updateUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(empIDTxtField2, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(confirmUpdateUserBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(updateUserPanelLayout.createSequentialGroup()
-                        .addGroup(updateUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(userIDTxtField2, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel13)
-                            .addComponent(jLabel12))
-                        .addGap(26, 26, 26)
-                        .addGroup(updateUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(searchUserIDupdateBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel14)
-                            .addComponent(userNameTxtField2))))
-                .addGap(26, 26, 26)
-                .addGroup(updateUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(passwordTxtField2, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel15))
-                .addGap(26, 26, 26)
-                .addGroup(updateUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(roleIDTxtField2, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel16))
-                .addGap(77, 77, 77))
-        );
-        updateUserPanelLayout.setVerticalGroup(
-            updateUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(updateUserPanelLayout.createSequentialGroup()
-                .addGap(11, 11, 11)
-                .addComponent(jLabel12)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(updateUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(userIDTxtField2, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(searchUserIDupdateBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(updateUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel13)
-                    .addGroup(updateUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel14)
-                        .addComponent(jLabel15))
-                    .addComponent(jLabel16))
-                .addGap(3, 3, 3)
-                .addGroup(updateUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(empIDTxtField2, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(userNameTxtField2, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(passwordTxtField2, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(roleIDTxtField2, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(confirmUpdateUserBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(10, Short.MAX_VALUE))
-        );
-
-        userMgmtPanel.add(updateUserPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 70, 720, 220));
+        userMgmtPanel.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 250, 720, 400));
 
         empMgmtPanel.setBackground(new java.awt.Color(240, 243, 252));
         empMgmtPanel.setMaximumSize(new java.awt.Dimension(860, 655));
         empMgmtPanel.setPreferredSize(new java.awt.Dimension(860, 655));
         empMgmtPanel.setVerifyInputWhenFocusTarget(false);
-
-        jScrollPane1.setBackground(Color.WHITE);
-        jScrollPane3.setBackground(new java.awt.Color(255, 255, 255));
-        jScrollPane3.setBorder(null);
-        jScrollPane3.setForeground(new java.awt.Color(255, 255, 255));
-
-        employeeTable.setFocusable(false);
-        employeeTable.setGridColor(new java.awt.Color(255, 255, 255));
-        employeeTable.setRequestFocusEnabled(false);
-        employeeTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        employeeTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        employeeTable.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                employeeTableMouseClicked(evt);
-            }
-        });
-        jScrollPane3.setViewportView(employeeTable);
 
         positionFilter.setMaximumRowCount(100);
         positionFilter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -1108,39 +731,70 @@ public class UI_AuthorizedUserDashboard extends javax.swing.JFrame {
             }
         });
 
+        jScrollPane3.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        employeeTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "User ID", "Employee ID", "Username", "Password", "Role"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        employeeTable1.getTableHeader().setResizingAllowed(false);
+        employeeTable1.getTableHeader().setReorderingAllowed(false);
+        jScrollPane3.setViewportView(employeeTable1);
+
         javax.swing.GroupLayout empMgmtPanelLayout = new javax.swing.GroupLayout(empMgmtPanel);
         empMgmtPanel.setLayout(empMgmtPanelLayout);
         empMgmtPanelLayout.setHorizontalGroup(
             empMgmtPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(empMgmtPanelLayout.createSequentialGroup()
                 .addGap(36, 36, 36)
-                .addGroup(empMgmtPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(empMgmtPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane3)
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(empMgmtPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 801, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(empMgmtPanelLayout.createSequentialGroup()
-                            .addComponent(jLabel18)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(empMgmtPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, empMgmtPanelLayout.createSequentialGroup()
-                                    .addGap(0, 0, Short.MAX_VALUE)
-                                    .addComponent(jLabel20))
-                                .addGroup(empMgmtPanelLayout.createSequentialGroup()
-                                    .addGroup(empMgmtPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel21)
-                                        .addGroup(empMgmtPanelLayout.createSequentialGroup()
-                                            .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGap(0, 104, Short.MAX_VALUE)))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(empMgmtPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel17)
-                                .addComponent(positionFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGap(18, 18, 18)
-                            .addGroup(empMgmtPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel19)
-                                .addComponent(supervisorFilter, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                    .addGroup(empMgmtPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(empMgmtPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, empMgmtPanelLayout.createSequentialGroup()
+                                .addGap(315, 315, 315)
+                                .addComponent(jLabel20))
+                            .addGroup(empMgmtPanelLayout.createSequentialGroup()
+                                .addGroup(empMgmtPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel21)
+                                    .addGroup(empMgmtPanelLayout.createSequentialGroup()
+                                        .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(104, 104, 104)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(empMgmtPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel17)
+                            .addComponent(positionFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(empMgmtPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel19)
+                            .addComponent(supervisorFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(23, Short.MAX_VALUE))
         );
         empMgmtPanelLayout.setVerticalGroup(
@@ -1168,8 +822,8 @@ public class UI_AuthorizedUserDashboard extends javax.swing.JFrame {
                             .addComponent(positionFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 502, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(25, 25, 25))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 521, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         payrollMgmtPanel.setBackground(new java.awt.Color(204, 255, 204));
@@ -1330,186 +984,20 @@ public class UI_AuthorizedUserDashboard extends javax.swing.JFrame {
        loginUI.goToLoginUI();
        dispose();
     }//GEN-LAST:event_logoutBtnMouseClicked
-
+    
     private void userMgmtBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_userMgmtBtnMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_userMgmtBtnMouseClicked
 
-    private void updateUserBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateUserBtnActionPerformed
-        updateUserBtn.addMouseListener(new ButtonMouseAdapter());
-        updateUserPanel.setVisible(true);
-        addUserPanel.setVisible(false);
-        deleteUserPanel.setVisible(false);
-    }//GEN-LAST:event_updateUserBtnActionPerformed
-
-    private void userIDTxtFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userIDTxtFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_userIDTxtFieldActionPerformed
-
-    private void passwordTxtFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordTxtFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_passwordTxtFieldActionPerformed
-
-    private void empIDTxtFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_empIDTxtFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_empIDTxtFieldActionPerformed
-
-    private void userNameTxtFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userNameTxtFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_userNameTxtFieldActionPerformed
-
-    private void roleIDTxtFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roleIDTxtFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_roleIDTxtFieldActionPerformed
-
-    private void generateUserIDBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateUserIDBtnActionPerformed
-         /*String generatedUserID = DatabaseEmployeeDAO.generateUserID();
-        // Set the generated user ID in the userIDTxtField
-        userIDTxtField.setText("  " + generatedUserID);
-    
-    }//GEN-LAST:event_generateUserIDBtnActionPerformed
-
-    private void confirmAddUserBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmAddUserBtnActionPerformed
-                   
-    try {
-        int employeeId = Integer.parseInt(empIDTxtField.getText()); // Get the employee ID
-        String username = userNameTxtField.getText(); // Get the username
-        int roleId = Integer.parseInt(roleIDTxtField.getText()); // Get the role ID
-
-        // Check if the password field is empty
-        String password = passwordTxtField.getText().trim();
-        if (password.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Password field cannot be empty", "Error", JOptionPane.ERROR_MESSAGE);
-            return; // Exit method if password is empty
-        }
-
-        // Add the new user to the database
-        DatabaseUserDAO dao = new DatabaseUserDAO();
-        dao.addUserToDatabase(employeeId, username, password, roleId);
-
-        // Update the table
-        refreshTable();
-
-        // Log the user addition action
-        UserActionLogger.logUserAddition(employeeId, username);
-
-        // Clear text fields using the utility method
-        Utils.clearTextFields(userIDTxtField, empIDTxtField, userNameTxtField, roleIDTxtField, passwordTxtField);
-
-        // Show a message indicating successful addition
-        JOptionPane.showMessageDialog(this, "User added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-    } catch (NumberFormatException ex) {
-        JOptionPane.showMessageDialog(this, "Invalid input", "Error", JOptionPane.ERROR_MESSAGE);
-    } catch (DatabaseUserDAO.DatabaseException ex) {
-        JOptionPane.showMessageDialog(this, "Error adding user: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-    }
-
-    }//GEN-LAST:event_confirmAddUserBtnActionPerformed
-
     private void addUserBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addUserBtnActionPerformed
         addUserBtn.addMouseListener(new ButtonMouseAdapter());
         addUserPanel.setVisible(true);
-        deleteUserPanel.setVisible(false);
-        updateUserPanel.setVisible(false);
+       
     }//GEN-LAST:event_addUserBtnActionPerformed
-
-    private void deleteUserBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteUserBtnActionPerformed
-        deleteUserBtn.addMouseListener(new ButtonMouseAdapter());
-        deleteUserPanel.setVisible(true);
-        addUserPanel.setVisible(false);
-        updateUserPanel.setVisible(false);
-    }//GEN-LAST:event_deleteUserBtnActionPerformed
-
-    private void userIDTxtField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userIDTxtField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_userIDTxtField1ActionPerformed
-
-    private void empIDTxtField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_empIDTxtField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_empIDTxtField1ActionPerformed
-
-    private void userNameTxtField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userNameTxtField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_userNameTxtField1ActionPerformed
-
-    private void searchUserIDDeleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchUserIDDeleteBtnActionPerformed
-        try {
-        int userId = Integer.parseInt(userIDTxtField1.getText()); 
-        DatabaseUserDAO dao = new DatabaseUserDAO();
-
-        User user = dao.getUserByUserId(userId);
-
-        if (user != null) {
-            // Populate the text fields with user data
-            userIDTxtField1.setText(String.valueOf(user.getUserId())); 
-            empIDTxtField1.setText(String.valueOf(user.getEmployeeId())); 
-            userNameTxtField1.setText(user.getUsername()); 
-            roleIDTxtField1.setText(String.valueOf(user.getRoleId()));
-            
-            // Check if the password is being updated by the user
-            String password = passwordTxtField1.getText().trim();
-            if (!password.isEmpty()) {
-                passwordTxtField1.setText(password); // If updated, show the new password
-            } else {
-                passwordTxtField1.setText("********"); // If not updated, display asterisks
-            }
-         
-        } else {
-            JOptionPane.showMessageDialog(this, "User not found", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    } catch (NumberFormatException ex) {
-        JOptionPane.showMessageDialog(this, "Invalid user ID", "Error", JOptionPane.ERROR_MESSAGE);
-    } catch (DatabaseUserDAO.DatabaseException ex) {
-        JOptionPane.showMessageDialog(this, "Error retrieving user: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-    }
-    }//GEN-LAST:event_searchUserIDDeleteBtnActionPerformed
-
-    private void passwordTxtField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordTxtField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_passwordTxtField1ActionPerformed
-
-    private void roleIDTxtField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roleIDTxtField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_roleIDTxtField1ActionPerformed
-
-    private void confirmDeleteUserBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmDeleteUserBtnActionPerformed
-       try {
-        int userId = Integer.parseInt(userIDTxtField1.getText());
-
-        // Show confirmation dialog with user ID
-        int response = JOptionPane.showConfirmDialog(this, 
-                "Are you sure you want to delete user ID " + userId + "?", 
-                "Confirm Delete", 
-                JOptionPane.YES_NO_OPTION, 
-                JOptionPane.WARNING_MESSAGE);
-
-        if (response == JOptionPane.YES_OPTION) {
-            DatabaseUserDAO dao = new DatabaseUserDAO();
-            dao.deleteUserFromDatabase(userId);
-
-            // Log the user deletion action
-            UserActionLogger.logUserDeletion(userId, userNameTxtField1.getText());
-
-            // Refresh the table data after deletion
-            refreshTable();
-
-            // Clear text fields
-            Utils.clearTextFields(userIDTxtField1, empIDTxtField1, userNameTxtField1, roleIDTxtField1, passwordTxtField1);
-
-            // Show success message
-            JOptionPane.showMessageDialog(this, "User deleted successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-        }
-    } catch (NumberFormatException ex) {
-        JOptionPane.showMessageDialog(this, "Invalid user ID", "Error", JOptionPane.ERROR_MESSAGE);
-    } catch (DatabaseUserDAO.DatabaseException ex) {
-        JOptionPane.showMessageDialog(this, "Error deleting user: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-    }             
-
-    }//GEN-LAST:event_confirmDeleteUserBtnActionPerformed
     private void refreshTable() {
     try {
-        if (userTable.getModel() instanceof CustomTableModel) {
-            CustomTableModel model = (CustomTableModel) userTable.getModel();
+        if (userTable1.getModel() instanceof CustomTableModel) {
+            CustomTableModel model = (CustomTableModel) userTable1.getModel();
             model.fetchDataFromDatabase("users"); // Fetch updated data from database
         } else {
             throw new IllegalStateException("Table model is not an instance of CustomTableModel");
@@ -1517,138 +1005,28 @@ public class UI_AuthorizedUserDashboard extends javax.swing.JFrame {
     } catch (IllegalStateException ex) {
         JOptionPane.showMessageDialog(this, "Error updating table: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
-}
-    private void userIDTxtField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userIDTxtField2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_userIDTxtField2ActionPerformed
-
-    private void empIDTxtField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_empIDTxtField2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_empIDTxtField2ActionPerformed
-
-    private void userNameTxtField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userNameTxtField2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_userNameTxtField2ActionPerformed
-
-    private void searchUserIDupdateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchUserIDupdateBtnActionPerformed
-      try {
-        int userId = Integer.parseInt(userIDTxtField2.getText()); // Assuming userIDTxtField is where user enters the ID
-        DatabaseUserDAO dao = new DatabaseUserDAO();
-
-        User user = dao.getUserByUserId(userId);
-
-        if (user != null) {
-            // Populate the text fields with user data
-            userIDTxtField2.setText(String.valueOf(user.getUserId())); // Assuming userIDTxtField is where user ID is displayed
-            empIDTxtField2.setText(String.valueOf(user.getEmployeeId())); // Assuming empIDTxtField is where employee ID is displayed
-            userNameTxtField2.setText(user.getUsername()); // Assuming userNameTxtField is where username is displayed
-            roleIDTxtField2.setText(String.valueOf(user.getRoleId())); // Assuming roleIDTxtField is where role ID is displayed
-            
-            // Check if the password is being updated by the user
-            String password = passwordTxtField2.getText().trim();
-            if (!password.isEmpty()) {
-                passwordTxtField2.setText(password); // If updated, show the new password
-            } else {
-                passwordTxtField2.setText("********"); // If not updated, display asterisks
-            }
-            
-            userIDTxtField2.setEditable(false);
-            empIDTxtField2.setEditable(false);
-        } else {
-            JOptionPane.showMessageDialog(this, "User not found", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    } catch (NumberFormatException ex) {
-        JOptionPane.showMessageDialog(this, "Invalid user ID", "Error", JOptionPane.ERROR_MESSAGE);
-    } catch (DatabaseUserDAO.DatabaseException ex) {
-        JOptionPane.showMessageDialog(this, "Error retrieving user: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-    }
-    }//GEN-LAST:event_searchUserIDupdateBtnActionPerformed
-
-    private void passwordTxtField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordTxtField2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_passwordTxtField2ActionPerformed
-
-    private void roleIDTxtField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roleIDTxtField2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_roleIDTxtField2ActionPerformed
-
-    private void confirmUpdateUserBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmUpdateUserBtnActionPerformed
-                                                
-    try {
-        int userId = Integer.parseInt(userIDTxtField2.getText()); // Get the user ID
-        int employeeId = Integer.parseInt(empIDTxtField2.getText()); // Get the employee ID
-        String username = userNameTxtField2.getText(); // Get the username
-        int roleId = Integer.parseInt(roleIDTxtField2.getText()); // Get the role ID
-        
-        // Check if the password is updated by the user
-        String password = passwordTxtField2.getText().trim();
-        if (password.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Password field cannot be empty", "Error", JOptionPane.ERROR_MESSAGE);
-            return; // Exit method if password is empty
-        } else {
-            // If password is updated, hash the new password
-            password = PasswordHash.hashPassword(password);
-        }
-
-        // Update the user
-        DatabaseUserDAO dao = new DatabaseUserDAO();
-        dao.updateUserInDatabase(new User(userId, employeeId, username, roleId, password));
-
-        // Update the table
-        try {
-            if (userTable.getModel() instanceof CustomTableModel) {
-                CustomTableModel model = (CustomTableModel) userTable.getModel();
-                // Update the user table in the UI
-                TableUpdater.updateTable(userTable, model, "users");
-            } else {
-                throw new IllegalStateException("Table model is not an instance of CustomTableModel");
-            }
-        } catch (IllegalStateException ex) {
-            JOptionPane.showMessageDialog(this, "Error updating table: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
-
-        // Clear text fields using the utility method
-        Utils.clearTextFields(userIDTxtField2, empIDTxtField2, userNameTxtField2, roleIDTxtField2, passwordTxtField2);
-
-        // Show a message indicating successful update
-        JOptionPane.showMessageDialog(this, "User updated successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-    } catch (NumberFormatException ex) {
-        JOptionPane.showMessageDialog(this, "Invalid input", "Error", JOptionPane.ERROR_MESSAGE);
-    } catch (DatabaseUserDAO.DatabaseException ex) {
-        JOptionPane.showMessageDialog(this, "Error updating user: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-    } catch (PasswordHash.HashingException ex) {
-        JOptionPane.showMessageDialog(this, "Error hashing password: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-    }
-
-
-    }//GEN-LAST:event_confirmUpdateUserBtnActionPerformed
+}   
     
-    private void employeeTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employeeTableMouseClicked
-      int selectedRow = employeeTable.getSelectedRow();
-     if (selectedRow != -1) { // If a row is selected
-    int employeeID = (int) employeeTable.getValueAt(selectedRow, 0); // Assuming EmployeeID is the first column
-    DatabaseEmployeeDAO databaseEmployeeDAO = new DatabaseEmployeeDAO(); // Initialize the DAO object
-    Employee employee = databaseEmployeeDAO.getEmployeeById(employeeID); // Retrieve employee data from the database
-    if (employee != null) {
-        EmployeeDetails employeeDetails = new EmployeeDetails(employeeID);
-        employeeDetails.populateFields(employee); // Populate fields with the retrieved employee data
-        employeeDetails.setVisible(true); // Make the EmployeeDetails frame visible
-    } else {
-        // Handle case where employee is not found
-        System.out.println("Employee not found.");
+     private void populateUserTable() throws DatabaseException {
+        // Example column names
+        String[] columnNames = {"UserID", "EmployeeID", "Username", "UserPassword", "Role"};
+
+        // Initialize the JTable
+        employeeTable1 = new JTable();
+
+        // Fetch data and create table model
+        DefaultTableModel model = fetchDataAndCreateTableModel("users", columnNames, true);
+        // Set the model to your JTable
+        employeeTable1.setModel(model);
     }
-}
-
-    }//GEN-LAST:event_employeeTableMouseClicked
-
     private void positionFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_positionFilterActionPerformed
      String position = (String) positionFilter.getSelectedItem();
-    ((CustomTableModel) employeeTable.getModel()).filterByColumn("Position", position);
+    ((CustomTableModel) employeeTable1.getModel()).filterByColumn("Position", position);
     }//GEN-LAST:event_positionFilterActionPerformed
 
     private void supervisorFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_supervisorFilterActionPerformed
     String supervisor = (String) supervisorFilter.getSelectedItem();
-    ((CustomTableModel) employeeTable.getModel()).filterByColumn("ImmediateSupervisor", supervisor);
+    ((CustomTableModel) employeeTable1.getModel()).filterByColumn("ImmediateSupervisor", supervisor);
     }//GEN-LAST:event_supervisorFilterActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -1657,13 +1035,65 @@ public class UI_AuthorizedUserDashboard extends javax.swing.JFrame {
       String query = searchField.getText().trim();
 
       // Perform the search directly on the table model of your employeeTable
-      ((CustomTableModel) employeeTable.getModel()).searchData(columnName, query);
+      ((CustomTableModel) employeeTable1.getModel()).searchData(columnName, query);
       searchField.setText("");
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void confirmAddUserBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmAddUserBtnActionPerformed
+
+        try {
+            int employeeId = Integer.parseInt(empIDTxtField.getText()); // Get the employee ID
+            String username = userNameTxtField.getText(); // Get the username
+            int roleId = Integer.parseInt(roleIDTxtField.getText()); // Get the role ID
+
+            // Check if the password field is empty
+            String password = passwordTxtField.getText().trim();
+            if (password.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Password field cannot be empty", "Error", JOptionPane.ERROR_MESSAGE);
+                return; // Exit method if password is empty
+            }
+
+            // Add the new user to the database
+            DatabaseUserDAO dao = new DatabaseUserDAO();
+            dao.addUserToDatabase(employeeId, username, password, roleId);
+
+            // Update the table
+            refreshTable();
+
+            // Log the user addition action
+            UserActionLogger.logUserAddition(employeeId, username);
+
+            // Clear text fields using the utility method
+            Utils.clearTextFields(empIDTxtField, userNameTxtField, roleIDTxtField, passwordTxtField);
+
+            // Show a message indicating successful addition
+            JOptionPane.showMessageDialog(this, "User added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Invalid input", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (DatabaseUserDAO.DatabaseException ex) {
+            JOptionPane.showMessageDialog(this, "Error adding user: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_confirmAddUserBtnActionPerformed
+
+    private void roleIDTxtFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roleIDTxtFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_roleIDTxtFieldActionPerformed
+
+    private void passwordTxtFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordTxtFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_passwordTxtFieldActionPerformed
+
+    private void userNameTxtFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userNameTxtFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_userNameTxtFieldActionPerformed
+
+    private void empIDTxtFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_empIDTxtFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_empIDTxtFieldActionPerformed
 
 private void initializeDependencies() {
         AuthenticationService authenticationService = new AuthenticateUser();
@@ -1681,13 +1111,13 @@ private void initializeDependencies() {
             } else {
                 JOptionPane.showMessageDialog(this, "User not found", "Error", JOptionPane.ERROR_MESSAGE);
             }   } catch (SQLException ex) {
-            Logger.getLogger(UI_AuthorizedUserDashboard.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UI_AuthorizedUserDashboard1.class.getName()).log(Level.SEVERE, null, ex);
         }
 }
     
      public void openAuthorizedUserDashboard() {
         // Create an instance of UI_Admin
-        UI_AuthorizedUserDashboard adminDashboard = new UI_AuthorizedUserDashboard(loggedInUserId);
+        UI_AuthorizedUserDashboard1 adminDashboard = new UI_AuthorizedUserDashboard1(loggedInUserId);
 
         // Make the UI_Admin visible
         adminDashboard.setVisible(true);
@@ -1713,32 +1143,18 @@ private void initializeDependencies() {
     private javax.swing.JPanel attendanceBtn;
     private javax.swing.JPanel attendancePanel;
     private javax.swing.JButton confirmAddUserBtn;
-    private javax.swing.JButton confirmDeleteUserBtn;
-    private javax.swing.JButton confirmUpdateUserBtn;
     private javax.swing.JPanel dashboardBtn;
     private javax.swing.JPanel dashboardPanel;
-    private javax.swing.JButton deleteUserBtn;
-    private javax.swing.JPanel deleteUserPanel;
     private javax.swing.JPanel disputesBtn;
     private javax.swing.JPanel disputesPanel;
     private javax.swing.JTextField empIDTxtField;
-    private javax.swing.JTextField empIDTxtField1;
-    private javax.swing.JTextField empIDTxtField2;
     private javax.swing.JPanel empMgmtPanel;
     private javax.swing.JPanel employeeMgmtBtn;
-    private javax.swing.JTable employeeTable;
-    private javax.swing.JButton generateUserIDBtn;
+    private javax.swing.JTable employeeTable1;
     private javax.swing.JPanel headerPanel;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
@@ -1747,14 +1163,10 @@ private void initializeDependencies() {
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel loggedInUserName;
@@ -1763,43 +1175,25 @@ private void initializeDependencies() {
     private javax.swing.JLabel logoutLabel;
     private javax.swing.JLabel motorPHLogo;
     private javax.swing.JTextField passwordTxtField;
-    private javax.swing.JTextField passwordTxtField1;
-    private javax.swing.JTextField passwordTxtField2;
     private javax.swing.JPanel payrollMgmtBtn;
     private javax.swing.JPanel payrollMgmtPanel;
     private javax.swing.JComboBox<String> positionFilter;
     private javax.swing.JPanel requestsBtn;
     private javax.swing.JPanel requestsPanel;
     private javax.swing.JTextField roleIDTxtField;
-    private javax.swing.JTextField roleIDTxtField1;
-    private javax.swing.JTextField roleIDTxtField2;
     private javax.swing.JTextField searchField;
-    private javax.swing.JButton searchUserIDDeleteBtn;
-    private javax.swing.JButton searchUserIDupdateBtn;
     private javax.swing.JComboBox<String> supervisorFilter;
     private javax.swing.JPanel taxReportsBtn;
     private javax.swing.JPanel taxReportsPanel;
-    private javax.swing.JButton updateUserBtn;
-    private javax.swing.JPanel updateUserPanel;
-    private javax.swing.JTextField userIDTxtField;
-    private javax.swing.JTextField userIDTxtField1;
-    private javax.swing.JTextField userIDTxtField2;
     private javax.swing.JPanel userMgmtBtn;
     private javax.swing.JPanel userMgmtPanel;
     private javax.swing.JTextField userNameTxtField;
-    private javax.swing.JTextField userNameTxtField1;
-    private javax.swing.JTextField userNameTxtField2;
-    private javax.swing.JTable userTable;
+    private javax.swing.JTable userTable1;
     // End of variables declaration//GEN-END:variables
 
     public void showPanel(JPanel panelToShow, String headerText) {
         PanelSwitcher.showPanel(panelToShow, headerText, HeaderLabel, 
             dashboardPanel, empMgmtPanel, userMgmtPanel, attendancePanel, disputesPanel, payrollMgmtPanel, requestsPanel, taxReportsPanel);
     }
-public static JTable createStyledTable(String tableName, String[] columnNames) {
-    CustomTableModel model = new CustomTableModel(columnNames);
-    model.fetchDataFromDatabase(tableName); // Fetch data from the database
-    return model.createStyledTable();
-}
 
-}*/
+}

@@ -1,16 +1,14 @@
-
 package DatabaseConnection;
 
 import entities.Employee;
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 
-
 public class DatabaseEmployeeDAO implements EmployeeDAO {
+
     @Override
     public Employee getEmployeeById(int userId) {
         try (Connection conn = DatabaseConnector.getConnection();
@@ -23,28 +21,19 @@ public class DatabaseEmployeeDAO implements EmployeeDAO {
                 }
             }
         } catch (SQLException e) {
+            e.printStackTrace(); // Handle or log the exception properly
         }
         return null; // Return null if employee not found or error occurred
     }
 
-    public static String generateUserID() {
-        String userID = null;
-        try (Connection conn = DatabaseConnector.getConnection();
-             PreparedStatement stmt = conn.prepareStatement("SELECT MAX(UserID) FROM users")) {
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                int lastUserID = rs.getInt(1);
-                // Increment the last user ID to generate a new one
-                int newUserID = lastUserID + 1;
-                userID = String.valueOf(newUserID);
-            } else {
-                // If no user IDs exist in the database yet, start with 1
-                userID = "1";
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace(); // Handle the exception properly
+    public Employee searchEmployeeByID(String employeeID) {
+        try {
+            int userId = Integer.parseInt(employeeID);
+            return getEmployeeById(userId);
+        } catch (NumberFormatException e) {
+            System.err.println("Invalid employee ID format.");
+            return null;
         }
-        return userID;
     }
 
     private Employee extractEmployeeFromResultSet(ResultSet rs) throws SQLException {
@@ -61,12 +50,14 @@ public class DatabaseEmployeeDAO implements EmployeeDAO {
         String empStatus = rs.getString("EmpStatus");
         String position = rs.getString("Position");
         String immediateSupervisor = rs.getString("ImmediateSupervisor");
-        BigDecimal basicSalary = rs.getBigDecimal("BasicSalary");
-        BigDecimal riceSubsidy = rs.getBigDecimal("RiceSubsidy");
-        BigDecimal phoneAllowance = rs.getBigDecimal("PhoneAllowance");
-        BigDecimal clothingAllowance = rs.getBigDecimal("ClothingAllowance");
-        BigDecimal grossSemiMonthlyRate = rs.getBigDecimal("GrossSemiMonthlyRate");
-        BigDecimal hourlyRate = rs.getBigDecimal("HourlyRate");
+        
+        double basicSalary = rs.getDouble("BasicSalary");
+        double riceSubsidy = rs.getDouble("RiceSubsidy");
+        double phoneAllowance = rs.getDouble("PhoneAllowance");
+        double clothingAllowance = rs.getDouble("ClothingAllowance");
+        double grossSemiMonthlyRate = rs.getDouble("GrossSemiMonthlyRate");
+        double hourlyRate = rs.getDouble("HourlyRate");
+        
         int supervisorId = rs.getInt("SupervisorID");
 
         // Create and return Employee object
@@ -75,10 +66,4 @@ public class DatabaseEmployeeDAO implements EmployeeDAO {
                 immediateSupervisor, basicSalary, riceSubsidy, phoneAllowance, clothingAllowance,
                 grossSemiMonthlyRate, hourlyRate, supervisorId);
     }
-    
 }
-
-
-
-    
-

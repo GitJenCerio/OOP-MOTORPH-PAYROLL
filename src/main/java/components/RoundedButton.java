@@ -1,4 +1,13 @@
-package UI;
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package components;
+
+/**
+ *
+ * @author admin
+ */
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -9,8 +18,6 @@ import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 
 public class RoundedButton extends JButton {
-
-    private static RoundedButton currentlyClickedButton;
 
     public boolean isOver() {
         return over;
@@ -63,44 +70,37 @@ public class RoundedButton extends JButton {
 
     public RoundedButton() {
         //  Init Color
+
         setColor(Color.WHITE);
         colorOver = new Color(179, 250, 160);
         colorClick = new Color(152, 184, 144);
         borderColor = new Color(30, 136, 56);
         setContentAreaFilled(false);
-
         //  Add event mouse
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent me) {
-                if (currentlyClickedButton != RoundedButton.this) {
-                    setBackground(colorOver);
-                }
+                setBackground(colorOver);
                 over = true;
             }
 
             @Override
             public void mouseExited(MouseEvent me) {
-                if (currentlyClickedButton != RoundedButton.this) {
-                    setBackground(color);
-                }
+                setBackground(color);
                 over = false;
+
             }
 
             @Override
             public void mousePressed(MouseEvent me) {
-                if (currentlyClickedButton != null) {
-                    currentlyClickedButton.setBackground(currentlyClickedButton.color);
-                }
                 setBackground(colorClick);
-                currentlyClickedButton = RoundedButton.this;
             }
 
             @Override
             public void mouseReleased(MouseEvent me) {
-                if (over && currentlyClickedButton != RoundedButton.this) {
+                if (over) {
                     setBackground(colorOver);
-                } else if (currentlyClickedButton != RoundedButton.this) {
+                } else {
                     setBackground(color);
                 }
             }

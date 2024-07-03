@@ -2,6 +2,7 @@
 package authentication;
 
 import DatabaseConnection.DatabaseConnector;
+import PayrollSystem.UserActionLogger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
@@ -27,9 +28,16 @@ public class AuthenticateUser implements AuthenticationService {
                     
                     // Compare hashed passwords
                     if (hashedPassword.equals(hashedProvidedPassword)) {
-                        // Authentication successful, return user ID and role ID
-                        return new int[]{rs.getInt("UserID"), rs.getInt("RoleID")};
+                        // Authentication successful, log the event
+                        int userId = rs.getInt("UserID");
+                        UserActionLogger.logUserAction(userId, "Login", "User logged in successfully.");
+                        return new int[]{userId, rs.getInt("RoleID")};
+                    } else {
+                        int userId = rs.getInt("UserID");
+                        UserActionLogger.logInvalidLoginAttempt(userId, username);
                     }
+                } else {
+                    UserActionLogger.logInvalidLoginAttempt(-1, username);
                 }
             }
         }

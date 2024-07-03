@@ -11,19 +11,17 @@ public class UI_EmployeeDashboard extends javax.swing.JFrame {
    public UI_EmployeeDashboard() {
        initComponents();
         setLocationRelativeTo(null);
-       ((RoundedPanel) dashboardBtn).setTargetPanel(DashboardPanel, "Dashboard");
-        ((RoundedPanel) profileBtn).setTargetPanel(profilePanel, "Profile");
-        ((RoundedPanel) attendanceBtn).setTargetPanel(attendancePanel, "Attendance");
-        ((RoundedPanel) disputesBtn).setTargetPanel(disputesPanel, "Disputes");
-        ((RoundedPanel) payslipBtn).setTargetPanel(payslipPanel, "Payslip");
-        ((RoundedPanel) requestsBtn).setTargetPanel(requestsPanel, "Requests");
-        ((RoundedPanel) taxReportsBtn).setTargetPanel(taxReportsPanel, "Tax Reports");
+       ((RoundedPanelMenu) dashboardBtn).setTargetPanel(DashboardPanel, "Dashboard");
+        ((RoundedPanelMenu) profileBtn).setTargetPanel(profilePanel, "Profile");
+        ((RoundedPanelMenu) attendanceBtn).setTargetPanel(attendancePanel, "Attendance");
+        ((RoundedPanelMenu) taxReportsBtn).setTargetPanel(taxReportsPanel, "Disputes");
+        ((RoundedPanelMenu) payslipBtn).setTargetPanel(payslipPanel, "Payslip");
+        ((RoundedPanelMenu) selfServiceHubBtn).setTargetPanel(selfServieHubPanel, "Requests");
+        ((RoundedPanelMenu) announcementsBtn).setTargetPanel(announcementsPanel, "Tax Reports");
 
         // Simulate click to show the initial panel
-        ((RoundedPanel) dashboardBtn).simulateClick();
-        
-        
-        
+        ((RoundedPanelMenu) dashboardBtn).simulateClick();
+ 
         
     }
    
@@ -38,29 +36,29 @@ public class UI_EmployeeDashboard extends javax.swing.JFrame {
         HeaderLabel = new javax.swing.JLabel();
         employeeMenuPanel = new javax.swing.JPanel();
         logoutLabel = new javax.swing.JLabel();
-        dashboardBtn = new RoundedPanel(new Color(4,14,163));
+        dashboardBtn = new UI.RoundedPanelMenu(new Color(4,14,163));
         empMenuLbl1 = new javax.swing.JLabel();
-        profileBtn = new RoundedPanel(new Color(4,14,163));
+        profileBtn = new UI.RoundedPanelMenu(new Color(4,14,163));
         empMenuLbl2 = new javax.swing.JLabel();
-        payslipBtn = new RoundedPanel(new Color(4,14,163));
+        payslipBtn = new UI.RoundedPanelMenu(new Color(4,14,163));
         empMenuLbl3 = new javax.swing.JLabel();
-        attendanceBtn = new RoundedPanel(new Color(4,14,163));
+        attendanceBtn = new UI.RoundedPanelMenu(new Color(4,14,163));
         empMenuLbl4 = new javax.swing.JLabel();
-        requestsBtn = new RoundedPanel(new Color(4,14,163));
+        selfServiceHubBtn = new UI.RoundedPanelMenu(new Color(4,14,163));
         empMenuLbl5 = new javax.swing.JLabel();
-        disputesBtn = new RoundedPanel(new Color(4,14,163));
+        taxReportsBtn = new UI.RoundedPanelMenu(new Color(4,14,163));
         empMenuLbl6 = new javax.swing.JLabel();
-        taxReportsBtn = new RoundedPanel(new Color(4,14,163));
+        announcementsBtn = new UI.RoundedPanelMenu(new Color(4,14,163));
         empMenuLbl7 = new javax.swing.JLabel();
-        logoutBtn = new RoundedPanel(new Color(4,14,163));
+        logoutBtn = new UI.RoundedPanelMenu(new Color(4,14,163));
         empLogoutLbl = new javax.swing.JLabel();
         DashboardPanel = new javax.swing.JPanel();
         profilePanel = new javax.swing.JPanel();
         payslipPanel = new javax.swing.JPanel();
         attendancePanel = new javax.swing.JPanel();
-        requestsPanel = new javax.swing.JPanel();
-        disputesPanel = new javax.swing.JPanel();
+        selfServieHubPanel = new javax.swing.JPanel();
         taxReportsPanel = new javax.swing.JPanel();
+        announcementsPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(1200, 800));
@@ -76,7 +74,7 @@ public class UI_EmployeeDashboard extends javax.swing.JFrame {
         headerPanel.setMinimumSize(new java.awt.Dimension(1200, 145));
         headerPanel.setPreferredSize(new java.awt.Dimension(1200, 145));
 
-        motorPHLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/MotorPH (4).png"))); // NOI18N
+        motorPHLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/MotorPH-Small.png"))); // NOI18N
 
         HeaderLabel.setFont(new java.awt.Font("Poppins SemiBold", 0, 36)); // NOI18N
         HeaderLabel.setForeground(new java.awt.Color(0, 0, 163));
@@ -211,57 +209,34 @@ public class UI_EmployeeDashboard extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        requestsBtn.setBackground(new java.awt.Color(153, 153, 153));
+        selfServiceHubBtn.setBackground(new java.awt.Color(153, 153, 153));
 
         empMenuLbl5.setFont(new java.awt.Font("Poppins SemiBold", 0, 18)); // NOI18N
         empMenuLbl5.setForeground(new java.awt.Color(255, 255, 255));
         empMenuLbl5.setText("Self Service Hub");
 
-        javax.swing.GroupLayout requestsBtnLayout = new javax.swing.GroupLayout(requestsBtn);
-        requestsBtn.setLayout(requestsBtnLayout);
-        requestsBtnLayout.setHorizontalGroup(
-            requestsBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(requestsBtnLayout.createSequentialGroup()
+        javax.swing.GroupLayout selfServiceHubBtnLayout = new javax.swing.GroupLayout(selfServiceHubBtn);
+        selfServiceHubBtn.setLayout(selfServiceHubBtnLayout);
+        selfServiceHubBtnLayout.setHorizontalGroup(
+            selfServiceHubBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(selfServiceHubBtnLayout.createSequentialGroup()
                 .addGap(28, 28, 28)
                 .addComponent(empMenuLbl5)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        requestsBtnLayout.setVerticalGroup(
-            requestsBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(requestsBtnLayout.createSequentialGroup()
+        selfServiceHubBtnLayout.setVerticalGroup(
+            selfServiceHubBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(selfServiceHubBtnLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(empMenuLbl5)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        disputesBtn.setBackground(new java.awt.Color(153, 153, 153));
+        taxReportsBtn.setBackground(new java.awt.Color(153, 153, 153));
 
         empMenuLbl6.setFont(new java.awt.Font("Poppins SemiBold", 0, 18)); // NOI18N
         empMenuLbl6.setForeground(new java.awt.Color(255, 255, 255));
         empMenuLbl6.setText("Tax reports");
-
-        javax.swing.GroupLayout disputesBtnLayout = new javax.swing.GroupLayout(disputesBtn);
-        disputesBtn.setLayout(disputesBtnLayout);
-        disputesBtnLayout.setHorizontalGroup(
-            disputesBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(disputesBtnLayout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addComponent(empMenuLbl6)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        disputesBtnLayout.setVerticalGroup(
-            disputesBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, disputesBtnLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(empMenuLbl6)
-                .addContainerGap())
-        );
-
-        taxReportsBtn.setBackground(new java.awt.Color(153, 153, 153));
-
-        empMenuLbl7.setFont(new java.awt.Font("Poppins SemiBold", 0, 18)); // NOI18N
-        empMenuLbl7.setForeground(new java.awt.Color(255, 255, 255));
-        empMenuLbl7.setText("Announcements");
 
         javax.swing.GroupLayout taxReportsBtnLayout = new javax.swing.GroupLayout(taxReportsBtn);
         taxReportsBtn.setLayout(taxReportsBtnLayout);
@@ -269,12 +244,35 @@ public class UI_EmployeeDashboard extends javax.swing.JFrame {
             taxReportsBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(taxReportsBtnLayout.createSequentialGroup()
                 .addGap(28, 28, 28)
-                .addComponent(empMenuLbl7)
+                .addComponent(empMenuLbl6)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         taxReportsBtnLayout.setVerticalGroup(
             taxReportsBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(taxReportsBtnLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, taxReportsBtnLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(empMenuLbl6)
+                .addContainerGap())
+        );
+
+        announcementsBtn.setBackground(new java.awt.Color(153, 153, 153));
+
+        empMenuLbl7.setFont(new java.awt.Font("Poppins SemiBold", 0, 18)); // NOI18N
+        empMenuLbl7.setForeground(new java.awt.Color(255, 255, 255));
+        empMenuLbl7.setText("Announcements");
+
+        javax.swing.GroupLayout announcementsBtnLayout = new javax.swing.GroupLayout(announcementsBtn);
+        announcementsBtn.setLayout(announcementsBtnLayout);
+        announcementsBtnLayout.setHorizontalGroup(
+            announcementsBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(announcementsBtnLayout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addComponent(empMenuLbl7)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        announcementsBtnLayout.setVerticalGroup(
+            announcementsBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(announcementsBtnLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(empMenuLbl7)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -321,9 +319,9 @@ public class UI_EmployeeDashboard extends javax.swing.JFrame {
                     .addComponent(profileBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(payslipBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(attendanceBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(requestsBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(disputesBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(taxReportsBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(selfServiceHubBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(taxReportsBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(announcementsBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         employeeMenuPanelLayout.setVerticalGroup(
@@ -338,11 +336,11 @@ public class UI_EmployeeDashboard extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(attendanceBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(requestsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(disputesBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(selfServiceHubBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(taxReportsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(announcementsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(60, 60, 60)
                 .addComponent(logoutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(543, 543, 543)
@@ -411,37 +409,22 @@ public class UI_EmployeeDashboard extends javax.swing.JFrame {
             .addGap(0, 655, Short.MAX_VALUE)
         );
 
-        requestsPanel.setBackground(new java.awt.Color(153, 153, 255));
-        requestsPanel.setMaximumSize(new java.awt.Dimension(860, 655));
-        requestsPanel.setMinimumSize(new java.awt.Dimension(860, 655));
+        selfServieHubPanel.setBackground(new java.awt.Color(153, 153, 255));
+        selfServieHubPanel.setMaximumSize(new java.awt.Dimension(860, 655));
+        selfServieHubPanel.setMinimumSize(new java.awt.Dimension(860, 655));
 
-        javax.swing.GroupLayout requestsPanelLayout = new javax.swing.GroupLayout(requestsPanel);
-        requestsPanel.setLayout(requestsPanelLayout);
-        requestsPanelLayout.setHorizontalGroup(
-            requestsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout selfServieHubPanelLayout = new javax.swing.GroupLayout(selfServieHubPanel);
+        selfServieHubPanel.setLayout(selfServieHubPanelLayout);
+        selfServieHubPanelLayout.setHorizontalGroup(
+            selfServieHubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 860, Short.MAX_VALUE)
         );
-        requestsPanelLayout.setVerticalGroup(
-            requestsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        selfServieHubPanelLayout.setVerticalGroup(
+            selfServieHubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 655, Short.MAX_VALUE)
         );
 
-        disputesPanel.setBackground(new java.awt.Color(102, 153, 255));
-        disputesPanel.setMaximumSize(new java.awt.Dimension(860, 655));
-        disputesPanel.setMinimumSize(new java.awt.Dimension(860, 655));
-
-        javax.swing.GroupLayout disputesPanelLayout = new javax.swing.GroupLayout(disputesPanel);
-        disputesPanel.setLayout(disputesPanelLayout);
-        disputesPanelLayout.setHorizontalGroup(
-            disputesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 860, Short.MAX_VALUE)
-        );
-        disputesPanelLayout.setVerticalGroup(
-            disputesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 655, Short.MAX_VALUE)
-        );
-
-        taxReportsPanel.setBackground(new java.awt.Color(255, 0, 204));
+        taxReportsPanel.setBackground(new java.awt.Color(102, 153, 255));
         taxReportsPanel.setMaximumSize(new java.awt.Dimension(860, 655));
         taxReportsPanel.setMinimumSize(new java.awt.Dimension(860, 655));
 
@@ -453,6 +436,21 @@ public class UI_EmployeeDashboard extends javax.swing.JFrame {
         );
         taxReportsPanelLayout.setVerticalGroup(
             taxReportsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 655, Short.MAX_VALUE)
+        );
+
+        announcementsPanel.setBackground(new java.awt.Color(255, 0, 204));
+        announcementsPanel.setMaximumSize(new java.awt.Dimension(860, 655));
+        announcementsPanel.setMinimumSize(new java.awt.Dimension(860, 655));
+
+        javax.swing.GroupLayout announcementsPanelLayout = new javax.swing.GroupLayout(announcementsPanel);
+        announcementsPanel.setLayout(announcementsPanelLayout);
+        announcementsPanelLayout.setHorizontalGroup(
+            announcementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 860, Short.MAX_VALUE)
+        );
+        announcementsPanelLayout.setVerticalGroup(
+            announcementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 655, Short.MAX_VALUE)
         );
 
@@ -473,9 +471,9 @@ public class UI_EmployeeDashboard extends javax.swing.JFrame {
                             .addComponent(profilePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(payslipPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(attendancePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(requestsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(disputesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(taxReportsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(selfServieHubPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(taxReportsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(announcementsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         adminPanelLayout.setVerticalGroup(
@@ -487,11 +485,11 @@ public class UI_EmployeeDashboard extends javax.swing.JFrame {
                     .addGroup(adminPanelLayout.createSequentialGroup()
                         .addComponent(DashboardPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(announcementsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(taxReportsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(disputesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(requestsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(selfServieHubPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(attendancePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -525,43 +523,10 @@ public class UI_EmployeeDashboard extends javax.swing.JFrame {
        dispose();
     }//GEN-LAST:event_logoutBtnMouseClicked
 
-    
-    public static void main(String args[]) {
-        
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(UI_EmployeeDashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(UI_EmployeeDashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(UI_EmployeeDashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(UI_EmployeeDashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new UI_EmployeeDashboard().setVisible(true);
-            }
-        });
-    }
-    
+   
      public void openEmployeeDashboard() {
-        // Create an instance of UI_Admin
-        UI_EmployeeDashboard employeeDashboard = new UI_EmployeeDashboard();
-
-        // Make the UI_Admin visible
-        employeeDashboard.setVisible(true);
-    }
+         this.setVisible(true);
+     }
      
      
 
@@ -569,11 +534,11 @@ public class UI_EmployeeDashboard extends javax.swing.JFrame {
     private javax.swing.JPanel DashboardPanel;
     private javax.swing.JLabel HeaderLabel;
     private javax.swing.JPanel adminPanel;
+    private javax.swing.JPanel announcementsBtn;
+    private javax.swing.JPanel announcementsPanel;
     private javax.swing.JPanel attendanceBtn;
     private javax.swing.JPanel attendancePanel;
     private javax.swing.JPanel dashboardBtn;
-    private javax.swing.JPanel disputesBtn;
-    private javax.swing.JPanel disputesPanel;
     private javax.swing.JLabel empLogoutLbl;
     private javax.swing.JLabel empMenuLbl1;
     private javax.swing.JLabel empMenuLbl2;
@@ -591,18 +556,16 @@ public class UI_EmployeeDashboard extends javax.swing.JFrame {
     private javax.swing.JPanel payslipPanel;
     private javax.swing.JPanel profileBtn;
     private javax.swing.JPanel profilePanel;
-    private javax.swing.JPanel requestsBtn;
-    private javax.swing.JPanel requestsPanel;
+    private javax.swing.JPanel selfServiceHubBtn;
+    private javax.swing.JPanel selfServieHubPanel;
     private javax.swing.JPanel taxReportsBtn;
     private javax.swing.JPanel taxReportsPanel;
     // End of variables declaration//GEN-END:variables
 
     public void showPanel(JPanel panelToShow, String headerText) {
         PanelSwitcher.showPanel(panelToShow, headerText, HeaderLabel, 
-            DashboardPanel, payslipPanel, attendancePanel, disputesPanel, profilePanel, requestsPanel, taxReportsPanel);
+            DashboardPanel, payslipPanel, attendancePanel, taxReportsPanel, profilePanel, selfServieHubPanel, announcementsPanel);
     }
 
-    
-    
 }
 

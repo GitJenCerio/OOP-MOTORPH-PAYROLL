@@ -1,9 +1,6 @@
 
 package entities;
 
-
-
-import java.math.BigDecimal;
 import java.util.Date;
 
 public class Employee {
@@ -20,19 +17,19 @@ public class Employee {
     private String empStatus;
     private String position;
     private String immediateSupervisor;
-    private BigDecimal basicSalary;
-    private BigDecimal riceSubsidy;
-    private BigDecimal phoneAllowance;
-    private BigDecimal clothingAllowance;
-    private BigDecimal grossSemiMonthlyRate;
-    private BigDecimal hourlyRate;
+    private double basicSalary;
+    private double riceSubsidy;
+    private double phoneAllowance;
+    private double clothingAllowance;
+    private double grossSemiMonthlyRate;
+    private double hourlyRate;
     private int supervisorId;
 
     // Constructors
     public Employee() {
     }
 
-    public Employee(int employeeId, String lastName, String firstName, Date birthday, String address, String phoneNumber, String sssNumber, String philHealthNumber, String tinNumber, String pagIbigNumber, String empStatus, String position, String immediateSupervisor, BigDecimal basicSalary, BigDecimal riceSubsidy, BigDecimal phoneAllowance, BigDecimal clothingAllowance, BigDecimal grossSemiMonthlyRate, BigDecimal hourlyRate, int supervisorId) {
+    public Employee(int employeeId, String lastName, String firstName, Date birthday, String address, String phoneNumber, String sssNumber, String philHealthNumber, String tinNumber, String pagIbigNumber, String empStatus, String position, String immediateSupervisor, double basicSalary, double riceSubsidy, double phoneAllowance, double clothingAllowance, double grossSemiMonthlyRate, double hourlyRate, int supervisorId) {
         this.employeeId = employeeId;
         this.lastName = lastName;
         this.firstName = firstName;
@@ -160,51 +157,51 @@ public class Employee {
         this.immediateSupervisor = immediateSupervisor;
     }
 
-    public BigDecimal getBasicSalary() {
+    public double getBasicSalary() {
         return basicSalary;
     }
 
-    public void setBasicSalary(BigDecimal basicSalary) {
+    public void setBasicSalary(double basicSalary) {
         this.basicSalary = basicSalary;
     }
 
-    public BigDecimal getRiceSubsidy() {
+    public double getRiceSubsidy() {
         return riceSubsidy;
     }
 
-    public void setRiceSubsidy(BigDecimal riceSubsidy) {
+    public void setRiceSubsidy(double riceSubsidy) {
         this.riceSubsidy = riceSubsidy;
     }
 
-    public BigDecimal getPhoneAllowance() {
+    public double getPhoneAllowance() {
         return phoneAllowance;
     }
 
-    public void setPhoneAllowance(BigDecimal phoneAllowance) {
+    public void setPhoneAllowance(double phoneAllowance) {
         this.phoneAllowance = phoneAllowance;
     }
 
-    public BigDecimal getClothingAllowance() {
+    public double getClothingAllowance() {
         return clothingAllowance;
     }
 
-    public void setClothingAllowance(BigDecimal clothingAllowance) {
+    public void setClothingAllowance(double clothingAllowance) {
         this.clothingAllowance = clothingAllowance;
     }
 
-    public BigDecimal getGrossSemiMonthlyRate() {
+    public double getGrossSemiMonthlyRate() {
         return grossSemiMonthlyRate;
     }
 
-    public void setGrossSemiMonthlyRate(BigDecimal grossSemiMonthlyRate) {
+    public void setGrossSemiMonthlyRate(double grossSemiMonthlyRate) {
         this.grossSemiMonthlyRate = grossSemiMonthlyRate;
     }
 
-    public BigDecimal getHourlyRate() {
+    public double getHourlyRate() {
         return hourlyRate;
     }
 
-    public void setHourlyRate(BigDecimal hourlyRate) {
+    public void setHourlyRate(double hourlyRate) {
         this.hourlyRate = hourlyRate;
     }
 
