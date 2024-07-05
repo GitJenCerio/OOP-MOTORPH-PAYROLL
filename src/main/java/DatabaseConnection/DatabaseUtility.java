@@ -4,7 +4,6 @@
  */
 package DatabaseConnection;
 
-import DatabaseConnection.DatabaseUserDAO.DatabaseException;
 import javax.swing.table.DefaultTableModel;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,27 +13,26 @@ import java.sql.SQLException;
 public class DatabaseUtility {
 
     // Method to fetch data from a specified table and columns, with optional password masking
-    public static DefaultTableModel fetchDataAndCreateTableModel(String tableName, String[] columnNames, boolean maskPassword) throws DatabaseException {
+    public static DefaultTableModel fetchDataAndCreateTableModel(String tableName, String[] columnNames, boolean maskPassword) {
         DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
 
         try (Connection conn = DatabaseConnector.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(buildQuery(tableName, columnNames))) {
+             PreparedStatement stmt = conn.prepareStatement(buildQuery(tableName, columnNames));
+             ResultSet rs = stmt.executeQuery()) {
 
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    Object[] rowData = new Object[columnNames.length];
-                    for (int i = 0; i < columnNames.length; i++) {
-                        if (maskPassword && columnNames[i].equalsIgnoreCase("UserPassword")) {
-                            rowData[i] = "********"; // Mask the password
-                        } else {
-                            rowData[i] = rs.getObject(columnNames[i]);
-                        }
+            while (rs.next()) {
+                Object[] rowData = new Object[columnNames.length];
+                for (int i = 0; i < columnNames.length; i++) {
+                    if (maskPassword && columnNames[i].equalsIgnoreCase("UserPassword")) {
+                        rowData[i] = "********"; // Mask the password
+                    } else {
+                        rowData[i] = rs.getObject(columnNames[i]);
                     }
-                    tableModel.addRow(rowData);
                 }
+                tableModel.addRow(rowData);
             }
         } catch (SQLException ex) {
-            throw new DatabaseException("Error occurred while fetching data from database", ex);
+            throw new RuntimeException("Error occurred while fetching data from database", ex);
         }
 
         return tableModel;

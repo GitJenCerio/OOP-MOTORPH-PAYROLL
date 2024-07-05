@@ -30,7 +30,17 @@ public class AuthorizedFrame extends javax.swing.JFrame {
         initComponents();
         displayUserInfo(userId);
         initializeDependencies();
-        simulateHomeButtonClick(); 
+        simulateHomeButtonClick();
+        RoundedTextField roundedTextField = new RoundedTextField(); // Adjust columns and radius as needed
+        usersPanel.add(roundedTextField);
+        
+        String tableName = "users"; // Use your actual table name
+        String[] columnNames = {"UserID", "EmployeeID","Username", "UserPassword", "RoleID"}; // Example column names
+        boolean maskPassword = true; // Example flag for masking passwords
+
+        // Instantiate CustomTable and add it to the JScrollPane on your form
+        CustomTable customTable = new CustomTable(tableName, columnNames, maskPassword);
+        jScrollPane1.setViewportView(customTable);
         
     }
     /**
@@ -59,6 +69,12 @@ public class AuthorizedFrame extends javax.swing.JFrame {
         loggedInUserPosition = new javax.swing.JLabel();
         contentPanel = new javax.swing.JPanel();
         usersPanel = new javax.swing.JPanel();
+        addUserBtn = new UI.RoundedButton();
+        updateBtn = new UI.RoundedButton();
+        deleteBtn = new UI.RoundedButton();
+        roundedTextField1 = new UI.RoundedTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        usersTable = new UI.CustomTable();
         homePanel = new javax.swing.JPanel();
         jLabel22 = new javax.swing.JLabel();
         jLabel23 = new javax.swing.JLabel();
@@ -349,15 +365,196 @@ public class AuthorizedFrame extends javax.swing.JFrame {
 
         usersPanel.setBackground(new java.awt.Color(240, 243, 252));
 
+        addUserBtn.setBackground(new java.awt.Color(4, 14, 163));
+        addUserBtn.setBorder(null);
+        addUserBtn.setForeground(new java.awt.Color(255, 255, 255));
+        addUserBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons8-add-user-24.png"))); // NOI18N
+        addUserBtn.setText("Add New");
+        addUserBtn.setAlignmentY(0.0F);
+        addUserBtn.setBorderColor(new java.awt.Color(4, 14, 163));
+        addUserBtn.setBorderPainted(false);
+        addUserBtn.setColor(new java.awt.Color(4, 14, 163));
+        addUserBtn.setColorClick(new java.awt.Color(153, 153, 153));
+        addUserBtn.setColorOver(new java.awt.Color(0, 102, 204));
+        addUserBtn.setFocusPainted(false);
+        addUserBtn.setFont(new java.awt.Font("Poppins SemiBold", 0, 14)); // NOI18N
+        addUserBtn.setIconTextGap(3);
+        addUserBtn.setMargin(new java.awt.Insets(2, 14, 2, 14));
+        addUserBtn.setPreferredSize(new java.awt.Dimension(150, 32));
+        addUserBtn.setRadius(35);
+        addUserBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addUserBtnActionPerformed(evt);
+            }
+        });
+
+        updateBtn.setBackground(new java.awt.Color(4, 14, 163));
+        updateBtn.setBorder(null);
+        updateBtn.setForeground(new java.awt.Color(255, 255, 255));
+        updateBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons8-edit-user-24.png"))); // NOI18N
+        updateBtn.setText("Update");
+        updateBtn.setAlignmentY(0.0F);
+        updateBtn.setBorderColor(new java.awt.Color(4, 14, 163));
+        updateBtn.setBorderPainted(false);
+        updateBtn.setColor(new java.awt.Color(4, 14, 163));
+        updateBtn.setColorClick(new java.awt.Color(153, 153, 153));
+        updateBtn.setColorOver(new java.awt.Color(0, 102, 204));
+        updateBtn.setFocusPainted(false);
+        updateBtn.setFont(new java.awt.Font("Poppins SemiBold", 0, 14)); // NOI18N
+        updateBtn.setIconTextGap(3);
+        updateBtn.setMargin(new java.awt.Insets(2, 14, 2, 14));
+        updateBtn.setPreferredSize(new java.awt.Dimension(150, 32));
+        updateBtn.setRadius(35);
+        updateBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateBtnActionPerformed(evt);
+            }
+        });
+
+        deleteBtn.setBackground(new java.awt.Color(4, 14, 163));
+        deleteBtn.setBorder(null);
+        deleteBtn.setForeground(new java.awt.Color(255, 255, 255));
+        deleteBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons8-delete-user-24 (1).png"))); // NOI18N
+        deleteBtn.setText("Delete");
+        deleteBtn.setAlignmentY(0.0F);
+        deleteBtn.setBorderColor(new java.awt.Color(4, 14, 163));
+        deleteBtn.setBorderPainted(false);
+        deleteBtn.setColor(new java.awt.Color(4, 14, 163));
+        deleteBtn.setColorClick(new java.awt.Color(153, 153, 153));
+        deleteBtn.setColorOver(new java.awt.Color(0, 102, 204));
+        deleteBtn.setFocusPainted(false);
+        deleteBtn.setFont(new java.awt.Font("Poppins SemiBold", 0, 14)); // NOI18N
+        deleteBtn.setIconTextGap(3);
+        deleteBtn.setMargin(new java.awt.Insets(2, 14, 2, 14));
+        deleteBtn.setPreferredSize(new java.awt.Dimension(150, 32));
+        deleteBtn.setRadius(35);
+        deleteBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteBtnActionPerformed(evt);
+            }
+        });
+
+        roundedTextField1.setForeground(new java.awt.Color(102, 102, 102));
+        roundedTextField1.setText("Search");
+        roundedTextField1.setFont(new java.awt.Font("Montserrat Medium", 0, 12)); // NOI18N
+        roundedTextField1.setPreferredSize(new java.awt.Dimension(150, 38));
+
+        jScrollPane1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jScrollPane1.setForeground(new java.awt.Color(255, 255, 255));
+        jScrollPane1.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jScrollPane1.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+
+        usersTable.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        usersTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "User ID", "Employee ID", "Username", "Password", "Role ID"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        usersTable.setFillsViewportHeight(true);
+        usersTable.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        usersTable.setGridColor(new java.awt.Color(255, 255, 255));
+        usersTable.setRowHeight(40);
+        usersTable.setRowMargin(5);
+        usersTable.setSelectionBackground(new java.awt.Color(0, 153, 255));
+        usersTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        usersTable.getTableHeader().setResizingAllowed(false);
+        usersTable.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(usersTable);
+        if (usersTable.getColumnModel().getColumnCount() > 0) {
+            usersTable.getColumnModel().getColumn(0).setResizable(false);
+            usersTable.getColumnModel().getColumn(1).setResizable(false);
+            usersTable.getColumnModel().getColumn(2).setResizable(false);
+            usersTable.getColumnModel().getColumn(3).setResizable(false);
+            usersTable.getColumnModel().getColumn(4).setResizable(false);
+        }
+
         javax.swing.GroupLayout usersPanelLayout = new javax.swing.GroupLayout(usersPanel);
         usersPanel.setLayout(usersPanelLayout);
         usersPanelLayout.setHorizontalGroup(
             usersPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 980, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, usersPanelLayout.createSequentialGroup()
+                .addGap(56, 56, 56)
+                .addGroup(usersPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1)
+                    .addGroup(usersPanelLayout.createSequentialGroup()
+                        .addComponent(roundedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 126, Short.MAX_VALUE)
+                        .addComponent(addUserBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(updateBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(deleteBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(64, 64, 64))
         );
         usersPanelLayout.setVerticalGroup(
             usersPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 603, Short.MAX_VALUE)
+            .addGroup(usersPanelLayout.createSequentialGroup()
+                .addGap(41, 41, 41)
+                .addGroup(usersPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(addUserBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(updateBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(deleteBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(roundedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(27, 27, 27)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 468, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(32, Short.MAX_VALUE))
         );
 
         contentPanel.add(usersPanel, "card2");
@@ -382,7 +579,7 @@ public class AuthorizedFrame extends javax.swing.JFrame {
                         .addGap(39, 39, 39)
                         .addComponent(jLabel23))
                     .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(238, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         homePanelLayout.setVerticalGroup(
             homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -556,6 +753,18 @@ public class AuthorizedFrame extends javax.swing.JFrame {
        uiLogin.goToLoginUI();
     }//GEN-LAST:event_logoutBtnActionPerformed
 
+    private void addUserBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addUserBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_addUserBtnActionPerformed
+
+    private void updateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_updateBtnActionPerformed
+
+    private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_deleteBtnActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -593,7 +802,9 @@ public class AuthorizedFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private UI.RoundedButton addUserBtn;
     private javax.swing.JPanel contentPanel;
+    private UI.RoundedButton deleteBtn;
     private UI.RoundedButton disputesBtn;
     private javax.swing.JPanel disputesPanel;
     private UI.RoundedButton employeesBtn;
@@ -607,6 +818,7 @@ public class AuthorizedFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel23;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel loggedInUserName;
     private javax.swing.JLabel loggedInUserPosition;
     private UI.RoundedButton logoutBtn;
@@ -614,10 +826,13 @@ public class AuthorizedFrame extends javax.swing.JFrame {
     private javax.swing.JPanel payrollPanel;
     private UI.RoundedButton requestsBtn;
     private javax.swing.JPanel requestsPanel;
+    private UI.RoundedTextField roundedTextField1;
     private UI.RoundedButton taxReportsBtn;
     private javax.swing.JPanel taxReportsPanel;
+    private UI.RoundedButton updateBtn;
     private UI.RoundedButton usersBtn;
     private javax.swing.JPanel usersPanel;
+    private UI.CustomTable usersTable;
     // End of variables declaration//GEN-END:variables
     
     private void initializeDependencies() {
