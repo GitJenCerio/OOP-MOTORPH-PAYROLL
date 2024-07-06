@@ -7,6 +7,7 @@ import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 
 import DatabaseConnection.DatabaseUtility;
+import javax.swing.table.DefaultTableModel;
 
 public class CustomTable extends JTable {
 
@@ -25,7 +26,7 @@ public class CustomTable extends JTable {
         setOpaque(false);
         setIntercellSpacing(new Dimension(0, 0)); // Remove cell spacing
         setShowGrid(false); // Hide grid lines
-        setRowHeight(30); // Set row height to 30 pixels
+        setRowHeight(25); // Set row height to 30 pixels
 
         // Center align text in all columns
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
@@ -46,7 +47,7 @@ public class CustomTable extends JTable {
 
         // Set table header height
         JTableHeader tableHeader = getTableHeader();
-        tableHeader.setPreferredSize(new Dimension(tableHeader.getPreferredSize().width, 30));
+        tableHeader.setPreferredSize(new Dimension(tableHeader.getPreferredSize().width, 25));
     }
 
     // Override isCellEditable to make cells non-editable
@@ -54,6 +55,15 @@ public class CustomTable extends JTable {
     public boolean isCellEditable(int row, int column) {
         return false;
     }
+     public void updateTableData(String tableName, String[] columnNames, boolean maskPassword) {
+        DefaultTableModel model = (DefaultTableModel) getModel();
+        model.setRowCount(0); // Clear existing rows
+
+        // Fetch updated data and populate the table
+        model = DatabaseUtility.fetchDataAndCreateTableModel(tableName, columnNames, maskPassword);
+        setModel(model);
+    }
+    
 
     // Override prepareRenderer to set alternating row colors
     @Override
@@ -64,7 +74,7 @@ public class CustomTable extends JTable {
         if (row % 2 == 0) {
             component.setBackground(Color.WHITE);
         } else {
-            component.setBackground(Color.LIGHT_GRAY);
+            component.setBackground(new Color(233, 237, 245));
         }
 
         // Highlight entire row on selection

@@ -4,7 +4,7 @@ package UI;
 import AccessControl.RoleAccess;
 import AccessControl.Roles;
 import UI.AuthorizedFrame;
-import UI.UI_EmployeeDashboard;
+
 import javax.swing.JOptionPane;
 
 public class UI_Main extends javax.swing.JFrame {

@@ -7,8 +7,11 @@ import DatabaseConnection.*;
 import authentication.AuthenticateUser;
 import authentication.AuthenticationService;
 import authentication.LoginController;
+import entities.User;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
 
 public class AuthorizedFrame extends javax.swing.JFrame {
 
@@ -371,10 +374,10 @@ public class AuthorizedFrame extends javax.swing.JFrame {
         addUserBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons8-add-user-24.png"))); // NOI18N
         addUserBtn.setText("Add New");
         addUserBtn.setAlignmentY(0.0F);
-        addUserBtn.setBorderColor(new java.awt.Color(4, 14, 163));
+        addUserBtn.setBorderColor(new java.awt.Color(0, 102, 204));
         addUserBtn.setBorderPainted(false);
         addUserBtn.setColor(new java.awt.Color(4, 14, 163));
-        addUserBtn.setColorClick(new java.awt.Color(153, 153, 153));
+        addUserBtn.setColorClick(new java.awt.Color(0, 102, 204));
         addUserBtn.setColorOver(new java.awt.Color(0, 102, 204));
         addUserBtn.setFocusPainted(false);
         addUserBtn.setFont(new java.awt.Font("Poppins SemiBold", 0, 14)); // NOI18N
@@ -394,10 +397,10 @@ public class AuthorizedFrame extends javax.swing.JFrame {
         updateBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons8-edit-user-24.png"))); // NOI18N
         updateBtn.setText("Update");
         updateBtn.setAlignmentY(0.0F);
-        updateBtn.setBorderColor(new java.awt.Color(4, 14, 163));
+        updateBtn.setBorderColor(new java.awt.Color(0, 102, 204));
         updateBtn.setBorderPainted(false);
         updateBtn.setColor(new java.awt.Color(4, 14, 163));
-        updateBtn.setColorClick(new java.awt.Color(153, 153, 153));
+        updateBtn.setColorClick(new java.awt.Color(0, 102, 204));
         updateBtn.setColorOver(new java.awt.Color(0, 102, 204));
         updateBtn.setFocusPainted(false);
         updateBtn.setFont(new java.awt.Font("Poppins SemiBold", 0, 14)); // NOI18N
@@ -417,10 +420,10 @@ public class AuthorizedFrame extends javax.swing.JFrame {
         deleteBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons8-delete-user-24 (1).png"))); // NOI18N
         deleteBtn.setText("Delete");
         deleteBtn.setAlignmentY(0.0F);
-        deleteBtn.setBorderColor(new java.awt.Color(4, 14, 163));
+        deleteBtn.setBorderColor(new java.awt.Color(0, 102, 204));
         deleteBtn.setBorderPainted(false);
         deleteBtn.setColor(new java.awt.Color(4, 14, 163));
-        deleteBtn.setColorClick(new java.awt.Color(153, 153, 153));
+        deleteBtn.setColorClick(new java.awt.Color(0, 102, 204));
         deleteBtn.setColorOver(new java.awt.Color(0, 102, 204));
         deleteBtn.setFocusPainted(false);
         deleteBtn.setFont(new java.awt.Font("Poppins SemiBold", 0, 14)); // NOI18N
@@ -754,7 +757,8 @@ public class AuthorizedFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_logoutBtnActionPerformed
 
     private void addUserBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addUserBtnActionPerformed
-        // TODO add your handling code here:
+        AddUserFrame addUserFrame = new AddUserFrame();
+        addUserFrame.setVisible(true);
     }//GEN-LAST:event_addUserBtnActionPerformed
 
     private void updateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBtnActionPerformed
@@ -871,7 +875,7 @@ public class AuthorizedFrame extends javax.swing.JFrame {
         requestsPanel.setVisible(false);
         taxReportsPanel.setVisible(false);
         disputesPanel.setVisible(false);
-    }
+    } 
     
 }
 
