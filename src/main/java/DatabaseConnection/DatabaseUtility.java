@@ -11,7 +11,6 @@ import java.util.List;
 
 public class DatabaseUtility {
 
-    // Method to fetch data from a specified table and columns, with optional password masking
     public static DefaultTableModel fetchDataAndCreateTableModel(String tableName, String[] columnNames, boolean maskPassword) {
         DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
 
@@ -36,6 +35,7 @@ public class DatabaseUtility {
 
         return tableModel;
     }
+
 
     // Method to fetch dropdown items from a specified table and column
     public static String[] fetchDropdownItems(String tableName, String columnName) {
@@ -93,6 +93,8 @@ public class DatabaseUtility {
             throw new DatabaseException("Error occurred while fetching RoleID: " + ex.getMessage(), ex);
         }
     }
+    
+    
 
 
     // Helper method to build the SQL query dynamically

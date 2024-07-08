@@ -1,12 +1,12 @@
 package authentication;
 
 import java.security.MessageDigest;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.security.SecureRandom;
 import java.util.Base64;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
 
 public final class PasswordHash {
 
@@ -52,7 +52,7 @@ public final class PasswordHash {
         }
     }
 
-    private static byte[] pbkdf2(char[] password, byte[] salt, int iterations, int keyLength) 
+    private static byte[] pbkdf2(char[] password, byte[] salt, int iterations, int keyLength)
             throws NoSuchAlgorithmException, InvalidKeySpecException {
         PBEKeySpec spec = new PBEKeySpec(password, salt, iterations, keyLength);
         SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
@@ -65,5 +65,3 @@ public final class PasswordHash {
         }
     }
 }
-
-

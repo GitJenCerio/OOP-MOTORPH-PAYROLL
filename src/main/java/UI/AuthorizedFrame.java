@@ -4,6 +4,7 @@ package UI;
 import AccessControl.Roles;
 import entities.Employee;
 import DatabaseConnection.*;
+import UI.AddUserFrame;
 import authentication.AuthenticateUser;
 import authentication.AuthenticationService;
 import authentication.LoginController;
@@ -16,16 +17,15 @@ import javax.swing.table.DefaultTableModel;
 public class AuthorizedFrame extends javax.swing.JFrame {
 
     private final DatabaseEmployeeDAO employeeDAO;
-    private DatabaseUserDAO userDAO = new DatabaseUserDAO();
+    private final DatabaseUserDAO userDAO = new DatabaseUserDAO();
     private LoginController loginController;
-    
     
     // User details
     private int userId;
     private int userRole;
+   
     
     public AuthorizedFrame(int userId, int userRole) {
-       
         this.userId = userId;
         this.userRole = userRole;
         this.employeeDAO = new DatabaseEmployeeDAO();
@@ -34,17 +34,13 @@ public class AuthorizedFrame extends javax.swing.JFrame {
         displayUserInfo(userId);
         initializeDependencies();
         simulateHomeButtonClick();
-        RoundedTextField roundedTextField = new RoundedTextField(); // Adjust columns and radius as needed
-        usersPanel.add(roundedTextField);
         
+        // Initialize usersTable with initial data
         String tableName = "users"; // Use your actual table name
-        String[] columnNames = {"UserID", "EmployeeID","Username", "UserPassword", "RoleID"}; // Example column names
+        String[] columnNames = {"UserID", "EmployeeID", "Username", "UserPassword", "RoleID"}; // Example column names
         boolean maskPassword = true; // Example flag for masking passwords
-
-        // Instantiate CustomTable and add it to the JScrollPane on your form
-        CustomTable customTable = new CustomTable(tableName, columnNames, maskPassword);
-        jScrollPane1.setViewportView(customTable);
-        
+        usersTable = new CustomTable(tableName, columnNames, maskPassword);
+        jScrollPane1.setViewportView(usersTable);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -71,6 +67,9 @@ public class AuthorizedFrame extends javax.swing.JFrame {
         loggedInUserName = new javax.swing.JLabel();
         loggedInUserPosition = new javax.swing.JLabel();
         contentPanel = new javax.swing.JPanel();
+        homePanel = new javax.swing.JPanel();
+        jLabel22 = new javax.swing.JLabel();
+        jLabel23 = new javax.swing.JLabel();
         usersPanel = new javax.swing.JPanel();
         addUserBtn = new UI.RoundedButton();
         updateBtn = new UI.RoundedButton();
@@ -78,9 +77,6 @@ public class AuthorizedFrame extends javax.swing.JFrame {
         roundedTextField1 = new UI.RoundedTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         usersTable = new UI.CustomTable();
-        homePanel = new javax.swing.JPanel();
-        jLabel22 = new javax.swing.JLabel();
-        jLabel23 = new javax.swing.JLabel();
         employeesPanel = new javax.swing.JPanel();
         payrollPanel = new javax.swing.JPanel();
         requestsPanel = new javax.swing.JPanel();
@@ -366,6 +362,40 @@ public class AuthorizedFrame extends javax.swing.JFrame {
         contentPanel.setBackground(new java.awt.Color(255, 204, 255));
         contentPanel.setLayout(new java.awt.CardLayout());
 
+        homePanel.setBackground(new java.awt.Color(240, 243, 252));
+
+        jLabel22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/MotorPH-Big.png"))); // NOI18N
+        jLabel22.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+
+        jLabel23.setFont(new java.awt.Font("Poppins Medium", 1, 60)); // NOI18N
+        jLabel23.setForeground(new java.awt.Color(0, 0, 153));
+        jLabel23.setText("Payroll System");
+
+        javax.swing.GroupLayout homePanelLayout = new javax.swing.GroupLayout(homePanel);
+        homePanel.setLayout(homePanelLayout);
+        homePanelLayout.setHorizontalGroup(
+            homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(homePanelLayout.createSequentialGroup()
+                .addGap(234, 234, 234)
+                .addGroup(homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(homePanelLayout.createSequentialGroup()
+                        .addGap(39, 39, 39)
+                        .addComponent(jLabel23))
+                    .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        homePanelLayout.setVerticalGroup(
+            homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(homePanelLayout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel23)
+                .addContainerGap(174, Short.MAX_VALUE))
+        );
+
+        contentPanel.add(homePanel, "card3");
+
         usersPanel.setBackground(new java.awt.Color(240, 243, 252));
 
         addUserBtn.setBackground(new java.awt.Color(4, 14, 163));
@@ -532,9 +562,9 @@ public class AuthorizedFrame extends javax.swing.JFrame {
         usersPanel.setLayout(usersPanelLayout);
         usersPanelLayout.setHorizontalGroup(
             usersPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, usersPanelLayout.createSequentialGroup()
+            .addGroup(usersPanelLayout.createSequentialGroup()
                 .addGap(56, 56, 56)
-                .addGroup(usersPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(usersPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
                     .addGroup(usersPanelLayout.createSequentialGroup()
                         .addComponent(roundedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -555,46 +585,12 @@ public class AuthorizedFrame extends javax.swing.JFrame {
                     .addComponent(updateBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(deleteBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(roundedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(27, 27, 27)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 468, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(32, Short.MAX_VALUE))
+                .addGap(66, 66, 66)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 407, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(54, Short.MAX_VALUE))
         );
 
         contentPanel.add(usersPanel, "card2");
-
-        homePanel.setBackground(new java.awt.Color(240, 243, 252));
-
-        jLabel22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/MotorPH-Big.png"))); // NOI18N
-        jLabel22.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-
-        jLabel23.setFont(new java.awt.Font("Poppins Medium", 1, 60)); // NOI18N
-        jLabel23.setForeground(new java.awt.Color(0, 0, 153));
-        jLabel23.setText("Payroll System");
-
-        javax.swing.GroupLayout homePanelLayout = new javax.swing.GroupLayout(homePanel);
-        homePanel.setLayout(homePanelLayout);
-        homePanelLayout.setHorizontalGroup(
-            homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(homePanelLayout.createSequentialGroup()
-                .addGap(234, 234, 234)
-                .addGroup(homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(homePanelLayout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addComponent(jLabel23))
-                    .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        homePanelLayout.setVerticalGroup(
-            homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(homePanelLayout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel23)
-                .addContainerGap(174, Short.MAX_VALUE))
-        );
-
-        contentPanel.add(homePanel, "card3");
 
         employeesPanel.setBackground(new java.awt.Color(240, 243, 252));
 
@@ -757,12 +753,26 @@ public class AuthorizedFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_logoutBtnActionPerformed
 
     private void addUserBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addUserBtnActionPerformed
-        AddUserFrame addUserFrame = new AddUserFrame();
+        AddUserFrame addUserFrame = new AddUserFrame(usersTable);
         addUserFrame.setVisible(true);
     }//GEN-LAST:event_addUserBtnActionPerformed
 
     private void updateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBtnActionPerformed
-        // TODO add your handling code here:
+
+        int selectedRow = usersTable.getSelectedRow();
+        if (selectedRow != -1) {
+            String userId = usersTable.getValueAt(selectedRow, 0).toString();
+            String employeeId = usersTable.getValueAt(selectedRow, 1).toString();
+            String username = usersTable.getValueAt(selectedRow, 2).toString();
+            String password = usersTable.getValueAt(selectedRow, 3).toString();
+            String role = usersTable.getValueAt(selectedRow, 4).toString();
+
+            AddUserFrame addUserFrame = new AddUserFrame(usersTable);
+            addUserFrame.populateFields(userId, employeeId, username, password, role);
+            addUserFrame.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(null, "Please select a row to update.", "No Row Selected", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_updateBtnActionPerformed
 
     private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
@@ -876,6 +886,13 @@ public class AuthorizedFrame extends javax.swing.JFrame {
         taxReportsPanel.setVisible(false);
         disputesPanel.setVisible(false);
     } 
+    
+    public void updateUsersTable() {
+    String tableName = "users"; // Use your actual table name
+    String[] columnNames = {"UserID", "EmployeeID", "Username", "UserPassword", "RoleID"}; // Example column names
+    boolean maskPassword = true; // Example flag for masking passwords
+    usersTable.updateTableData(tableName, columnNames, maskPassword);
+}
     
 }
 

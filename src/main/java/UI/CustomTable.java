@@ -5,7 +5,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
-
 import DatabaseConnection.DatabaseUtility;
 import javax.swing.table.DefaultTableModel;
 
@@ -55,15 +54,23 @@ public class CustomTable extends JTable {
     public boolean isCellEditable(int row, int column) {
         return false;
     }
-     public void updateTableData(String tableName, String[] columnNames, boolean maskPassword) {
+
+    public void updateTableData(String tableName, String[] columnNames, boolean maskPassword) {
         DefaultTableModel model = (DefaultTableModel) getModel();
         model.setRowCount(0); // Clear existing rows
 
         // Fetch updated data and populate the table
         model = DatabaseUtility.fetchDataAndCreateTableModel(tableName, columnNames, maskPassword);
         setModel(model);
+
+        // Reapply center alignment to all columns after updating data
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+
+        for (int columnIndex = 0; columnIndex < getColumnCount(); columnIndex++) {
+            getColumnModel().getColumn(columnIndex).setCellRenderer(centerRenderer);
+        }
     }
-    
 
     // Override prepareRenderer to set alternating row colors
     @Override

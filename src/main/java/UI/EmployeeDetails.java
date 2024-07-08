@@ -1,5 +1,5 @@
 
-package UI;
+/*package UI;
 
 import DatabaseConnection.DatabaseEmployeeDAO;
 import entities.Employee;
@@ -555,7 +555,7 @@ public class EmployeeDetails extends javax.swing.JFrame {
     private javax.swing.JButton updatePersonalInfoBtn;
     private javax.swing.JButton updateSalaryInfoBtn;
     // End of variables declaration//GEN-END:variables
-}
+}*/
 
 
 

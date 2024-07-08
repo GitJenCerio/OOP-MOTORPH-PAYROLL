@@ -1,25 +1,23 @@
-
 package UI;
 
 import DatabaseConnection.DatabaseUserDAO;
 import DatabaseConnection.DatabaseUserDAO.DatabaseException;
 import DatabaseConnection.DatabaseUtility;
-import static DatabaseConnection.DatabaseUtility.fetchRoleId;
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 
-
 public class AddUserFrame extends javax.swing.JFrame {
 
-   
-    public AddUserFrame() {
+    private CustomTable usersTable; // Reference to usersTable in AuthorizedFrame
+    
+    public AddUserFrame(CustomTable usersTable) {
         initComponents();
         loadDropdownItems();
         generateUserId();
         setupConfirmButtonAction();
-  
+        
+        this.usersTable = usersTable; // Initialize usersTable reference
     }
     
     private void loadDropdownItems() {
@@ -185,42 +183,7 @@ public class AddUserFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_confirmAddUserBtnActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AddUserFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AddUserFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AddUserFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AddUserFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new AddUserFrame().setVisible(true);
-            }
-        });
-    }
-
+   
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private UI.RoundedButton confirmAddUserBtn;
     private UI.CustomDropdown customDropdown;
@@ -247,31 +210,42 @@ public class AddUserFrame extends javax.swing.JFrame {
         confirmAddUserBtn.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            addUser(); // Call your existing addUser method
+            addUser();
+            dispose();// Call your existing addUser method
         }
     });
-}
-    
-private void addUser() {
-    try {
-        int employeeId = Integer.parseInt(employeeIdField.getText());
-        String username = usernameField.getText();
-        String password = passwordField.getText();
-        String selectedRoleType = customDropdown.getSelectedRoleType();
-
-        // Call addUserToDatabase with the fetched roleId
-        DatabaseUserDAO userDao = new DatabaseUserDAO();
-        userDao.addUserToDatabase(employeeId, username, password, selectedRoleType);
-
-        // Access and update usersTable in AuthorizedFrame
-        CustomTable customTable = new CustomTable();
-        customTable.updateTableData("users", new String[]{"UserID", "EmployeeID", "Username", "UserPassword", "RoleID"}, true);
-
-        JOptionPane.showMessageDialog(this, "User added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-    } catch (NumberFormatException ex) {
-        JOptionPane.showMessageDialog(this, "Invalid input. Please check your entries.", "Input Error", JOptionPane.ERROR_MESSAGE);
-    } catch (DatabaseException ex) {
-        JOptionPane.showMessageDialog(this, "Error adding user: " + ex.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
     }
-}
+    
+    public void populateFields(String userId, String employeeId, String username, String password, String role) {
+        userIdField.setText(userId);
+        employeeIdField.setText(employeeId);
+        usernameField.setText(username);
+        passwordField.setText("*******"); // Display masked password
+        customDropdown.getSelectedRoleType(role);
+    }
+
+    
+ private void addUser() {
+        try {
+            int employeeId = Integer.parseInt(employeeIdField.getText());
+            String username = usernameField.getText();
+            String password = passwordField.getText();
+            String selectedRoleType = customDropdown.getSelectedRoleType();
+
+            // Call addUserToDatabase with the fetched roleId
+            DatabaseUserDAO userDao = new DatabaseUserDAO();
+            userDao.addUserToDatabase(employeeId, username, password, selectedRoleType);
+
+            // Update usersTable in AuthorizedFrame
+            if (usersTable != null) {
+                usersTable.updateTableData("users", new String[]{"UserID", "EmployeeID", "Username", "UserPassword", "RoleID"}, true);
+            }
+
+            JOptionPane.showMessageDialog(this, "User added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Invalid input. Please check your entries.", "Input Error", JOptionPane.ERROR_MESSAGE);
+        } catch (DatabaseException ex) {
+            JOptionPane.showMessageDialog(this, "Error adding user: " + ex.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 }

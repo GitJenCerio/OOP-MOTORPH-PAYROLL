@@ -1,9 +1,8 @@
-
 package authentication;
 
 import DatabaseConnection.DatabaseConnector;
 import PayrollSystem.UserActionLogger;
-import java.security.MessageDigest;
+
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -22,45 +21,28 @@ public class AuthenticateUser implements AuthenticationService {
                 if (rs.next()) {
                     // Retrieve hashed password from the result set
                     String hashedPassword = rs.getString("UserPassword");
-                    
-                    // Hash the provided password
-                    String hashedProvidedPassword = hashPassword(password);
-                    
-                    // Compare hashed passwords
-                    if (hashedPassword.equals(hashedProvidedPassword)) {
+
+                    // Validate the provided password
+                    if (PasswordHash.validatePassword(password, hashedPassword)) {
                         // Authentication successful, log the event
                         int userId = rs.getInt("UserID");
                         UserActionLogger.logUserAction(userId, "Login", "User logged in successfully.");
                         return new int[]{userId, rs.getInt("RoleID")};
                     } else {
+                        // Incorrect password, log invalid login attempt
                         int userId = rs.getInt("UserID");
                         UserActionLogger.logInvalidLoginAttempt(userId, username);
+                        throw new AuthenticationException("Invalid password");
                     }
                 } else {
+                    // User not found, log invalid login attempt
                     UserActionLogger.logInvalidLoginAttempt(-1, username);
+                    throw new AuthenticationException("User not found");
                 }
             }
-        }
-        // Authentication failed or error occurred, throw custom exception
-        throw new AuthenticationException("Authentication failed");
-    }
-    
-    // Method to hash the password using SHA-256
-    private String hashPassword(String password) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest(password.getBytes());
-            StringBuilder hexString = new StringBuilder();
-            for (byte b : hash) {
-                String hex = Integer.toHexString(0xff & b);
-                if (hex.length() == 1) hexString.append('0');
-                hexString.append(hex);
-            }
-            return hexString.toString();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            // Handle the exception properly
-            return null;
+        } catch (SQLException | PasswordHash.HashingException e) {
+            // Log any SQL, hashing related exceptions or authentication exceptions
+            throw new SQLException("Error occurred during authentication", e);
         }
     }
 }

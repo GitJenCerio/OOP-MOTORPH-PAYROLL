@@ -41,54 +41,56 @@ public class DatabaseUserDAO {
         }
     }
 
-    // Method to add a new user to the database
-        public void addUserToDatabase(int employeeId, String username, String password, String roleType) throws DatabaseException {
-    try {
-        // Fetch RoleID based on RoleType
-        int roleId = DatabaseUtility.fetchRoleId(roleType);
+    public void addUserToDatabase(int employeeId, String username, String password, String roleType) throws DatabaseException {
+        try {
+            // Fetch RoleID based on RoleType
+            int roleId = DatabaseUtility.fetchRoleId(roleType);
 
-        // Prepare SQL statement to insert user
-        String sql = "INSERT INTO users (EmployeeID, Username, UserPassword, RoleID) VALUES (?, ?, ?, ?)";
-        try (Connection conn = DatabaseConnector.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            // Hash the password using the PasswordHasher utility class
+            // Hash the password using the PasswordHash utility class
             String hashedPassword = PasswordHash.hashPassword(password);
 
-            // Set parameters for the prepared statement
-            stmt.setInt(1, employeeId);
-            stmt.setString(2, username);
-            stmt.setString(3, hashedPassword); // Store the hashed password in the database
-            stmt.setInt(4, roleId);
+            // Prepare SQL statement to insert user
+            String sql = "INSERT INTO users (EmployeeID, Username, UserPassword, RoleID) VALUES (?, ?, ?, ?)";
+            try (Connection conn = DatabaseConnector.getConnection();
+                 PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            // Execute the update
-            stmt.executeUpdate();
+                // Set parameters for the prepared statement
+                stmt.setInt(1, employeeId);
+                stmt.setString(2, username);
+                stmt.setString(3, hashedPassword); // Store the hashed password in the database
+                stmt.setInt(4, roleId);
+
+                // Execute the update
+                stmt.executeUpdate();
+            }
+        } catch (SQLException | HashingException ex) {
+            throw new DatabaseException("Error occurred while adding a user to the database", ex);
         }
-    } catch (SQLException | HashingException ex) {
-        throw new DatabaseException("Error occurred while adding a user to the database", ex);
+    }
+
+ // Method to update an existing user in the database
+    
+    public void updateUserInDatabase(int userId, int employeeId, String username, String password, String roleType) throws DatabaseException, HashingException {
+    // Fetch RoleID based on RoleType
+    int roleId = DatabaseUtility.fetchRoleId(roleType);
+    // Hash the password using the PasswordHash utility class
+    String hashedPassword = PasswordHash.hashPassword(password);
+    String sql = "UPDATE users SET EmployeeID=?, Username=?, RoleID=?, UserPassword=? WHERE UserID=?";
+    try (Connection conn = DatabaseConnector.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+        
+        stmt.setInt(1, employeeId);
+        stmt.setString(2, username);
+        stmt.setInt(3, roleId); // Use fetched roleId instead of updatedUser.getRoleId()
+        stmt.setString(4, hashedPassword);
+        stmt.setInt(5, userId); // Update based on userId
+        
+        stmt.executeUpdate();
+    } catch (SQLException ex) {
+        throw new DatabaseException("Error occurred while updating the user in the database", ex);
     }
 }
 
-
-    // Method to update an existing user in the database
-    public void updateUserInDatabase(User updatedUser) throws DatabaseException {
-        String sql = "UPDATE users SET EmployeeID=?, Username=?, RoleID=?, UserPassword=? WHERE UserID=?";
-        try (Connection conn = DatabaseConnector.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            // Hash the password using the PasswordHasher utility class
-            String hashedPassword = PasswordHash.hashPassword(updatedUser.getHiddenPassword());
-
-            stmt.setInt(1, updatedUser.getEmployeeId());
-            stmt.setString(2, updatedUser.getUsername());
-            stmt.setInt(3, updatedUser.getRoleId());
-            stmt.setString(4, hashedPassword);
-            stmt.setInt(5, updatedUser.getUserId());
-
-            stmt.executeUpdate();
-        } catch (SQLException | HashingException ex) {
-            throw new DatabaseException("Error occurred while updating the user in the database", ex);
-        }
-    }
 
     // Method to delete a user from the database
     public void deleteUserFromDatabase(int userId) throws DatabaseException {
