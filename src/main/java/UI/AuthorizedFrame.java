@@ -4,12 +4,16 @@ package UI;
 import AccessControl.Roles;
 import entities.Employee;
 import DatabaseConnection.*;
+import DatabaseConnection.DatabaseUserDAO.DatabaseException;
 import UI.AddUserFrame;
+import UI.UpdateUserFrame;
 import authentication.AuthenticateUser;
 import authentication.AuthenticationService;
 import authentication.LoginController;
 import entities.User;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
@@ -67,9 +71,6 @@ public class AuthorizedFrame extends javax.swing.JFrame {
         loggedInUserName = new javax.swing.JLabel();
         loggedInUserPosition = new javax.swing.JLabel();
         contentPanel = new javax.swing.JPanel();
-        homePanel = new javax.swing.JPanel();
-        jLabel22 = new javax.swing.JLabel();
-        jLabel23 = new javax.swing.JLabel();
         usersPanel = new javax.swing.JPanel();
         addUserBtn = new UI.RoundedButton();
         updateBtn = new UI.RoundedButton();
@@ -77,6 +78,9 @@ public class AuthorizedFrame extends javax.swing.JFrame {
         roundedTextField1 = new UI.RoundedTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         usersTable = new UI.CustomTable();
+        homePanel = new javax.swing.JPanel();
+        jLabel22 = new javax.swing.JLabel();
+        jLabel23 = new javax.swing.JLabel();
         employeesPanel = new javax.swing.JPanel();
         payrollPanel = new javax.swing.JPanel();
         requestsPanel = new javax.swing.JPanel();
@@ -362,40 +366,6 @@ public class AuthorizedFrame extends javax.swing.JFrame {
         contentPanel.setBackground(new java.awt.Color(255, 204, 255));
         contentPanel.setLayout(new java.awt.CardLayout());
 
-        homePanel.setBackground(new java.awt.Color(240, 243, 252));
-
-        jLabel22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/MotorPH-Big.png"))); // NOI18N
-        jLabel22.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-
-        jLabel23.setFont(new java.awt.Font("Poppins Medium", 1, 60)); // NOI18N
-        jLabel23.setForeground(new java.awt.Color(0, 0, 153));
-        jLabel23.setText("Payroll System");
-
-        javax.swing.GroupLayout homePanelLayout = new javax.swing.GroupLayout(homePanel);
-        homePanel.setLayout(homePanelLayout);
-        homePanelLayout.setHorizontalGroup(
-            homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(homePanelLayout.createSequentialGroup()
-                .addGap(234, 234, 234)
-                .addGroup(homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(homePanelLayout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addComponent(jLabel23))
-                    .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        homePanelLayout.setVerticalGroup(
-            homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(homePanelLayout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel23)
-                .addContainerGap(174, Short.MAX_VALUE))
-        );
-
-        contentPanel.add(homePanel, "card3");
-
         usersPanel.setBackground(new java.awt.Color(240, 243, 252));
 
         addUserBtn.setBackground(new java.awt.Color(4, 14, 163));
@@ -562,9 +532,9 @@ public class AuthorizedFrame extends javax.swing.JFrame {
         usersPanel.setLayout(usersPanelLayout);
         usersPanelLayout.setHorizontalGroup(
             usersPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(usersPanelLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, usersPanelLayout.createSequentialGroup()
                 .addGap(56, 56, 56)
-                .addGroup(usersPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(usersPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane1)
                     .addGroup(usersPanelLayout.createSequentialGroup()
                         .addComponent(roundedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -585,12 +555,46 @@ public class AuthorizedFrame extends javax.swing.JFrame {
                     .addComponent(updateBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(deleteBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(roundedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(66, 66, 66)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 407, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(54, Short.MAX_VALUE))
+                .addGap(27, 27, 27)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 468, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(32, Short.MAX_VALUE))
         );
 
         contentPanel.add(usersPanel, "card2");
+
+        homePanel.setBackground(new java.awt.Color(240, 243, 252));
+
+        jLabel22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/MotorPH-Big.png"))); // NOI18N
+        jLabel22.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+
+        jLabel23.setFont(new java.awt.Font("Poppins Medium", 1, 60)); // NOI18N
+        jLabel23.setForeground(new java.awt.Color(0, 0, 153));
+        jLabel23.setText("Payroll System");
+
+        javax.swing.GroupLayout homePanelLayout = new javax.swing.GroupLayout(homePanel);
+        homePanel.setLayout(homePanelLayout);
+        homePanelLayout.setHorizontalGroup(
+            homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(homePanelLayout.createSequentialGroup()
+                .addGap(234, 234, 234)
+                .addGroup(homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(homePanelLayout.createSequentialGroup()
+                        .addGap(39, 39, 39)
+                        .addComponent(jLabel23))
+                    .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        homePanelLayout.setVerticalGroup(
+            homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(homePanelLayout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel23)
+                .addContainerGap(174, Short.MAX_VALUE))
+        );
+
+        contentPanel.add(homePanel, "card3");
 
         employeesPanel.setBackground(new java.awt.Color(240, 243, 252));
 
@@ -758,62 +762,63 @@ public class AuthorizedFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_addUserBtnActionPerformed
 
     private void updateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBtnActionPerformed
+                                       
+    int selectedRow = usersTable.getSelectedRow();
+    if (selectedRow != -1) {
+        String selectedUserId = usersTable.getValueAt(selectedRow, 0).toString();
+        String employeeId = usersTable.getValueAt(selectedRow, 1).toString();
+        String username = usersTable.getValueAt(selectedRow, 2).toString();
+        String password = usersTable.getValueAt(selectedRow, 3).toString();
+        String role = usersTable.getValueAt(selectedRow, 4).toString();
 
-        int selectedRow = usersTable.getSelectedRow();
-        if (selectedRow != -1) {
-            String userId = usersTable.getValueAt(selectedRow, 0).toString();
-            String employeeId = usersTable.getValueAt(selectedRow, 1).toString();
-            String username = usersTable.getValueAt(selectedRow, 2).toString();
-            String password = usersTable.getValueAt(selectedRow, 3).toString();
-            String role = usersTable.getValueAt(selectedRow, 4).toString();
-
-            AddUserFrame addUserFrame = new AddUserFrame(usersTable);
-            addUserFrame.populateFields(userId, employeeId, username, password, role);
-            addUserFrame.setVisible(true);
-        } else {
-            JOptionPane.showMessageDialog(null, "Please select a row to update.", "No Row Selected", JOptionPane.WARNING_MESSAGE);
+        UpdateUserFrame updateUserFrame = null;
+        try {
+            int userId = Integer.parseInt(selectedUserId); // Parse selectedUserId to int
+            updateUserFrame = new UpdateUserFrame(usersTable, userId);
+            updateUserFrame.loadUserDetails(userId); // Load user details using userId
+            updateUserFrame.setVisible(true);
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "Invalid user ID format.", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (DatabaseException ex) {
+            Logger.getLogger(AuthorizedFrame.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
         }
+    } else {
+        JOptionPane.showMessageDialog(null, "Please select a row to update.", "No Row Selected", JOptionPane.WARNING_MESSAGE);
+    }
+
+
     }//GEN-LAST:event_updateBtnActionPerformed
 
     private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_deleteBtnActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AuthorizedFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AuthorizedFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AuthorizedFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AuthorizedFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
+        int selectedRow = usersTable.getSelectedRow();
+        if (selectedRow != -1) {
+        int selectedUserId = Integer.parseInt(usersTable.getValueAt(selectedRow, 0).toString());
+        String username = usersTable.getValueAt(selectedRow, 2).toString(); // For confirmation message
+        
+        int confirmDelete = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete user '" + username + "'?", "Confirm Deletion", JOptionPane.YES_NO_OPTION);
+        
+        if (confirmDelete == JOptionPane.YES_OPTION) {
+            try {
+                // Delete user from database
+                DatabaseUserDAO.deleteUserFromDatabase(selectedUserId);
                 
+                // Remove row from table
+                if (usersTable != null) {
+                // Update table data with new content from the database
+                     usersTable.updateTableData("users", new String[]{"UserID", "EmployeeID", "Username", "UserPassword", "RoleID"}, true);
+}
+                JOptionPane.showMessageDialog(null, "User '" + username + "' deleted successfully.", "Deletion Success", JOptionPane.INFORMATION_MESSAGE);
+                
+            } catch (DatabaseException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage(), "Deletion Error", JOptionPane.ERROR_MESSAGE);
             }
-        });
+        }
+    } else {
+        JOptionPane.showMessageDialog(null, "Please select a row to delete.", "No Row Selected", JOptionPane.WARNING_MESSAGE);
     }
+
+    }//GEN-LAST:event_deleteBtnActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private UI.RoundedButton addUserBtn;

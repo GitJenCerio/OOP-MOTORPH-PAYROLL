@@ -1,11 +1,13 @@
 package DatabaseConnection;
 
+import static DatabaseConnection.DatabaseConnector.getConnection;
 import DatabaseConnection.DatabaseUserDAO.DatabaseException;
 import javax.swing.table.DefaultTableModel;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,21 +60,21 @@ public class DatabaseUtility {
     }
 
     // Method to fetch the last UserID from the users table
-    public static int fetchLastUserId() {
-        String query = "SELECT MAX(userId) AS lastUserID FROM users"; // Adjust your table name if necessary
-        try (Connection conn = DatabaseConnector.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query);
-             ResultSet rs = stmt.executeQuery()) {
+     public static int fetchNextUserId() {
+        int nextUserId = -1;
+        String sql = "SHOW TABLE STATUS LIKE 'users'"; 
+        try (Connection conn = getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
 
             if (rs.next()) {
-                return rs.getInt("lastUserID");
-            } else {
-                return 0; // Return 0 if there are no users in the table
+                nextUserId = rs.getInt("Auto_increment"); // For MySQL
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-            return 0;
         }
+
+        return nextUserId;
     }
 
 
@@ -93,6 +95,24 @@ public class DatabaseUtility {
             throw new DatabaseException("Error occurred while fetching RoleID: " + ex.getMessage(), ex);
         }
     }
+     public static String fetchRoleType(int roleId) throws DatabaseException {
+        String query = "SELECT RoleType FROM roles WHERE RoleID = ?";
+        try (Connection conn = DatabaseConnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, roleId); // Set the parameter as int
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("RoleType");
+                } else {
+                    throw new DatabaseException("Role ID not found: " + roleId);
+                }
+            }
+        } catch (SQLException ex) {
+            throw new DatabaseException("Error occurred while fetching RoleType: " + ex.getMessage(), ex);
+        }
+    }
+
+    
     
     
 

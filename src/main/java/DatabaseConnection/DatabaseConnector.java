@@ -9,7 +9,7 @@ public class DatabaseConnector {
 
     private static final String URL = "jdbc:mysql://127.0.0.1:3306/motorph"; 
     private static final String USER = "root";
-    private static final String PASSWORD = "Test1234";
+    private static final String PASSWORD = "AmarahLois1108@";
 
     // Private constructor to prevent instantiation
     private DatabaseConnector() {}
