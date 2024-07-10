@@ -1,6 +1,10 @@
-
 package entities;
 
+import DatabaseConnection.DatabaseConnector;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
 
 public class Employee {
@@ -16,20 +20,15 @@ public class Employee {
     private String pagIbigNumber;
     private String empStatus;
     private String position;
-    private String immediateSupervisor;
+    private int supervisorId;
     private double basicSalary;
     private double riceSubsidy;
     private double phoneAllowance;
     private double clothingAllowance;
     private double grossSemiMonthlyRate;
     private double hourlyRate;
-    private int supervisorId;
-
-    // Constructors
-    public Employee() {
-    }
-
-    public Employee(int employeeId, String lastName, String firstName, Date birthday, String address, String phoneNumber, String sssNumber, String philHealthNumber, String tinNumber, String pagIbigNumber, String empStatus, String position, String immediateSupervisor, double basicSalary, double riceSubsidy, double phoneAllowance, double clothingAllowance, double grossSemiMonthlyRate, double hourlyRate, int supervisorId) {
+    
+    public Employee(int employeeId, String lastName, String firstName, Date birthday, String address, String phoneNumber, String sssNumber, String philHealthNumber, String tinNumber, String pagIbigNumber, String empStatus, String position, int supervisorId, double basicSalary, double riceSubsidy, double phoneAllowance, double clothingAllowance, double grossSemiMonthlyRate, double hourlyRate) {
         this.employeeId = employeeId;
         this.lastName = lastName;
         this.firstName = firstName;
@@ -42,14 +41,13 @@ public class Employee {
         this.pagIbigNumber = pagIbigNumber;
         this.empStatus = empStatus;
         this.position = position;
-        this.immediateSupervisor = immediateSupervisor;
+        this.supervisorId = supervisorId;
         this.basicSalary = basicSalary;
         this.riceSubsidy = riceSubsidy;
         this.phoneAllowance = phoneAllowance;
         this.clothingAllowance = clothingAllowance;
         this.grossSemiMonthlyRate = grossSemiMonthlyRate;
         this.hourlyRate = hourlyRate;
-        this.supervisorId = supervisorId;
     }
 
     // Getters and setters
@@ -149,12 +147,12 @@ public class Employee {
         this.position = position;
     }
 
-    public String getImmediateSupervisor() {
-        return immediateSupervisor;
+    public int getSupervisorId() {
+        return supervisorId;
     }
 
-    public void setImmediateSupervisor(String immediateSupervisor) {
-        this.immediateSupervisor = immediateSupervisor;
+    public void setSupervisorId(int supervisorId) {
+        this.supervisorId = supervisorId;
     }
 
     public double getBasicSalary() {
@@ -205,12 +203,25 @@ public class Employee {
         this.hourlyRate = hourlyRate;
     }
 
-    public int getSupervisorId() {
-        return supervisorId;
+    public String getImmediateSupervisor() {
+        return getSupervisorNameById(this.supervisorId);
     }
 
-    public void setSupervisorId(int supervisorId) {
-        this.supervisorId = supervisorId;
+    private String getSupervisorNameById(int supervisorId) {
+        String supervisorName = null;
+        String query = "SELECT SupervisorName FROM supervisors WHERE SupervisorID = ?";
+        
+        try (Connection conn = DatabaseConnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, supervisorId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                supervisorName = rs.getString("SupervisorName");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return supervisorName != null ? supervisorName : "Unknown Supervisor";
     }
-
 }

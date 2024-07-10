@@ -38,13 +38,21 @@ public class AuthorizedFrame extends javax.swing.JFrame {
         displayUserInfo(userId);
         initializeDependencies();
         simulateHomeButtonClick();
+       
         
-        // Initialize usersTable with initial data
-        String tableName = "users"; // Use your actual table name
-        String[] columnNames = {"UserID", "EmployeeID", "Username", "UserPassword", "RoleID"}; // Example column names
-        boolean maskPassword = true; // Example flag for masking passwords
-        usersTable = new CustomTable(tableName, columnNames, maskPassword);
+        String usersTableName = "users"; // Use your actual table name for users
+        String[] usersColumnNames = {"UserID", "EmployeeID", "Username", "UserPassword", "RoleID"}; // Example column names for users
+        boolean usersMaskPassword = true; // Example flag for masking passwords
+        usersTable = new CustomTable(usersTableName, usersColumnNames, usersMaskPassword);
         jScrollPane1.setViewportView(usersTable);
+
+        
+       String employeesTableName = "employees"; // Use your actual table name for employees
+       String[] employeesColumnNames = {"EmployeeID", "LastName", "FirstName", "Birthday", "Address","PhoneNumber", "EmpStatus", "Position", "SupervisorID","SSSNumber", "PhilhealthNumber"};
+       boolean employeesMaskPassword = false; // Example flag (not relevant for employees, adjust as needed)
+       employeesTable = new CustomTable(employeesTableName, employeesColumnNames, employeesMaskPassword);
+       jScrollPane2.setViewportView(employeesTable);
+             
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -71,6 +79,9 @@ public class AuthorizedFrame extends javax.swing.JFrame {
         loggedInUserName = new javax.swing.JLabel();
         loggedInUserPosition = new javax.swing.JLabel();
         contentPanel = new javax.swing.JPanel();
+        homePanel = new javax.swing.JPanel();
+        jLabel22 = new javax.swing.JLabel();
+        jLabel23 = new javax.swing.JLabel();
         usersPanel = new javax.swing.JPanel();
         addUserBtn = new UI.RoundedButton();
         updateBtn = new UI.RoundedButton();
@@ -78,10 +89,9 @@ public class AuthorizedFrame extends javax.swing.JFrame {
         roundedTextField1 = new UI.RoundedTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         usersTable = new UI.CustomTable();
-        homePanel = new javax.swing.JPanel();
-        jLabel22 = new javax.swing.JLabel();
-        jLabel23 = new javax.swing.JLabel();
         employeesPanel = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        employeesTable = new UI.CustomTable();
         payrollPanel = new javax.swing.JPanel();
         requestsPanel = new javax.swing.JPanel();
         taxReportsPanel = new javax.swing.JPanel();
@@ -366,6 +376,40 @@ public class AuthorizedFrame extends javax.swing.JFrame {
         contentPanel.setBackground(new java.awt.Color(255, 204, 255));
         contentPanel.setLayout(new java.awt.CardLayout());
 
+        homePanel.setBackground(new java.awt.Color(240, 243, 252));
+
+        jLabel22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/MotorPH-Big.png"))); // NOI18N
+        jLabel22.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+
+        jLabel23.setFont(new java.awt.Font("Poppins Medium", 1, 60)); // NOI18N
+        jLabel23.setForeground(new java.awt.Color(0, 0, 153));
+        jLabel23.setText("Payroll System");
+
+        javax.swing.GroupLayout homePanelLayout = new javax.swing.GroupLayout(homePanel);
+        homePanel.setLayout(homePanelLayout);
+        homePanelLayout.setHorizontalGroup(
+            homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(homePanelLayout.createSequentialGroup()
+                .addGap(234, 234, 234)
+                .addGroup(homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(homePanelLayout.createSequentialGroup()
+                        .addGap(39, 39, 39)
+                        .addComponent(jLabel23))
+                    .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        homePanelLayout.setVerticalGroup(
+            homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(homePanelLayout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel23)
+                .addContainerGap(174, Short.MAX_VALUE))
+        );
+
+        contentPanel.add(homePanel, "card3");
+
         usersPanel.setBackground(new java.awt.Color(240, 243, 252));
 
         addUserBtn.setBackground(new java.awt.Color(4, 14, 163));
@@ -562,51 +606,113 @@ public class AuthorizedFrame extends javax.swing.JFrame {
 
         contentPanel.add(usersPanel, "card2");
 
-        homePanel.setBackground(new java.awt.Color(240, 243, 252));
-
-        jLabel22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/MotorPH-Big.png"))); // NOI18N
-        jLabel22.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-
-        jLabel23.setFont(new java.awt.Font("Poppins Medium", 1, 60)); // NOI18N
-        jLabel23.setForeground(new java.awt.Color(0, 0, 153));
-        jLabel23.setText("Payroll System");
-
-        javax.swing.GroupLayout homePanelLayout = new javax.swing.GroupLayout(homePanel);
-        homePanel.setLayout(homePanelLayout);
-        homePanelLayout.setHorizontalGroup(
-            homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(homePanelLayout.createSequentialGroup()
-                .addGap(234, 234, 234)
-                .addGroup(homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(homePanelLayout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addComponent(jLabel23))
-                    .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        homePanelLayout.setVerticalGroup(
-            homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(homePanelLayout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel23)
-                .addContainerGap(174, Short.MAX_VALUE))
-        );
-
-        contentPanel.add(homePanel, "card3");
-
         employeesPanel.setBackground(new java.awt.Color(240, 243, 252));
+
+        jScrollPane2.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jScrollPane2.setForeground(new java.awt.Color(255, 255, 255));
+        jScrollPane2.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jScrollPane2.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+
+        employeesTable.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        employeesTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "User ID", "Employee ID", "Username", "Password", "Role ID"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        employeesTable.setFillsViewportHeight(true);
+        employeesTable.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        employeesTable.setGridColor(new java.awt.Color(255, 255, 255));
+        employeesTable.setPreferredSize(new java.awt.Dimension(375, 800));
+        employeesTable.setRequestFocusEnabled(false);
+        employeesTable.setRowHeight(40);
+        employeesTable.setRowMargin(5);
+        employeesTable.setRowSelectionAllowed(true);
+        employeesTable.setSelectionBackground(new java.awt.Color(0, 153, 255));
+        employeesTable.setSelectionForeground(new java.awt.Color(255, 255, 255));
+        employeesTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        employeesTable.getTableHeader().setResizingAllowed(false);
+        employeesTable.getTableHeader().setReorderingAllowed(false);
+        jScrollPane2.setViewportView(employeesTable);
+        if (employeesTable.getColumnModel().getColumnCount() > 0) {
+            employeesTable.getColumnModel().getColumn(0).setResizable(false);
+            employeesTable.getColumnModel().getColumn(1).setResizable(false);
+            employeesTable.getColumnModel().getColumn(2).setResizable(false);
+            employeesTable.getColumnModel().getColumn(3).setResizable(false);
+            employeesTable.getColumnModel().getColumn(4).setResizable(false);
+        }
 
         javax.swing.GroupLayout employeesPanelLayout = new javax.swing.GroupLayout(employeesPanel);
         employeesPanel.setLayout(employeesPanelLayout);
         employeesPanelLayout.setHorizontalGroup(
             employeesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 980, Short.MAX_VALUE)
+            .addGroup(employeesPanelLayout.createSequentialGroup()
+                .addGap(52, 52, 52)
+                .addComponent(jScrollPane2)
+                .addGap(68, 68, 68))
         );
         employeesPanelLayout.setVerticalGroup(
             employeesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 603, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, employeesPanelLayout.createSequentialGroup()
+                .addContainerGap(119, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 447, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(37, 37, 37))
         );
 
         contentPanel.add(employeesPanel, "card4");
@@ -697,58 +803,53 @@ public class AuthorizedFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_usersBtnActionPerformed
 
     private void employeesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_employeesBtnActionPerformed
-       headerLabel.setText(employeesBtn.getText()); 
-       homePanel.setVisible(false);
-       usersPanel.setVisible(false);
-       employeesPanel.setVisible(true);
-       payrollPanel.setVisible(false);
-       requestsPanel.setVisible(false);
-       taxReportsPanel.setVisible(false);
-       disputesPanel.setVisible(false);
+       if (Roles.isAdmin(userRole)||Roles.isHR(userRole)) {
+            headerLabel.setText(employeesBtn.getText()); 
+            hideAllPanels();
+            employeesPanel.setVisible(true);
+        } else {
+            denyAccess();
+        }
     }//GEN-LAST:event_employeesBtnActionPerformed
 
     private void payrollBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payrollBtnActionPerformed
-       headerLabel.setText(payrollBtn.getText()); 
-       homePanel.setVisible(false);
-       usersPanel.setVisible(false);
-       employeesPanel.setVisible(false);
-       payrollPanel.setVisible(true);
-       requestsPanel.setVisible(false);
-       taxReportsPanel.setVisible(false);
-       disputesPanel.setVisible(false);
+       if (Roles.isAdmin(userRole)||Roles.isPayroll(userRole)) {
+            headerLabel.setText(payrollBtn.getText()); 
+            hideAllPanels();
+            payrollPanel.setVisible(true);
+        } else {
+            denyAccess();
+        }
     }//GEN-LAST:event_payrollBtnActionPerformed
 
     private void requestsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_requestsBtnActionPerformed
-       headerLabel.setText(requestsBtn.getText()); 
-       homePanel.setVisible(false);
-       usersPanel.setVisible(false);
-       employeesPanel.setVisible(false);
-       payrollPanel.setVisible(false);
-       requestsPanel.setVisible(true);
-       taxReportsPanel.setVisible(false);
-       disputesPanel.setVisible(false);
+       if (Roles.isAdmin(userRole)||Roles.isHR(userRole)) {
+            headerLabel.setText(requestsBtn.getText()); 
+            hideAllPanels();
+            requestsPanel.setVisible(true);
+        } else {
+            denyAccess();
+        }
     }//GEN-LAST:event_requestsBtnActionPerformed
 
     private void taxReportsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_taxReportsBtnActionPerformed
-       headerLabel.setText(taxReportsBtn.getText()); 
-       homePanel.setVisible(false);
-       usersPanel.setVisible(false);
-       employeesPanel.setVisible(false);
-       payrollPanel.setVisible(false);
-       requestsPanel.setVisible(false);
-       taxReportsPanel.setVisible(true);
-       disputesPanel.setVisible(false);
+      if (Roles.isAdmin(userRole)||Roles.isPayroll(userRole)) {
+            headerLabel.setText(taxReportsBtn.getText()); 
+            hideAllPanels();
+            taxReportsPanel.setVisible(true);
+        } else {
+            denyAccess();
+        }
     }//GEN-LAST:event_taxReportsBtnActionPerformed
 
     private void disputesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_disputesBtnActionPerformed
-       headerLabel.setText(disputesBtn.getText()); 
-       homePanel.setVisible(false);
-       usersPanel.setVisible(false);
-       employeesPanel.setVisible(false);
-       payrollPanel.setVisible(false);
-       requestsPanel.setVisible(false);
-       taxReportsPanel.setVisible(false);
-       disputesPanel.setVisible(true);
+       if (Roles.isAdmin(userRole)) {
+            headerLabel.setText(disputesBtn.getText()); 
+            hideAllPanels();
+            disputesPanel.setVisible(true);
+        } else {
+            denyAccess();
+        }
     }//GEN-LAST:event_disputesBtnActionPerformed
 
     private void logoutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutBtnActionPerformed
@@ -766,16 +867,12 @@ public class AuthorizedFrame extends javax.swing.JFrame {
     int selectedRow = usersTable.getSelectedRow();
     if (selectedRow != -1) {
         String selectedUserId = usersTable.getValueAt(selectedRow, 0).toString();
-        String employeeId = usersTable.getValueAt(selectedRow, 1).toString();
-        String username = usersTable.getValueAt(selectedRow, 2).toString();
-        String password = usersTable.getValueAt(selectedRow, 3).toString();
-        String role = usersTable.getValueAt(selectedRow, 4).toString();
 
         UpdateUserFrame updateUserFrame = null;
         try {
-            int userId = Integer.parseInt(selectedUserId); // Parse selectedUserId to int
-            updateUserFrame = new UpdateUserFrame(usersTable, userId);
-            updateUserFrame.loadUserDetails(userId); // Load user details using userId
+            int userId2 = Integer.parseInt(selectedUserId); // Parse selectedUserId to int
+            updateUserFrame = new UpdateUserFrame(usersTable, userId2);
+            updateUserFrame.loadUserDetails(userId2); // Load user details using userId
             updateUserFrame.setVisible(true);
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(null, "Invalid user ID format.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -828,6 +925,7 @@ public class AuthorizedFrame extends javax.swing.JFrame {
     private javax.swing.JPanel disputesPanel;
     private UI.RoundedButton employeesBtn;
     private javax.swing.JPanel employeesPanel;
+    private UI.CustomTable employeesTable;
     private javax.swing.JLabel headerLabel;
     private UI.RoundedButton homeBtn;
     private javax.swing.JPanel homePanel;
@@ -838,6 +936,7 @@ public class AuthorizedFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel loggedInUserName;
     private javax.swing.JLabel loggedInUserPosition;
     private UI.RoundedButton logoutBtn;
@@ -891,14 +990,7 @@ public class AuthorizedFrame extends javax.swing.JFrame {
         taxReportsPanel.setVisible(false);
         disputesPanel.setVisible(false);
     } 
-    
-    public void updateUsersTable() {
-    String tableName = "users"; // Use your actual table name
-    String[] columnNames = {"UserID", "EmployeeID", "Username", "UserPassword", "RoleID"}; // Example column names
-    boolean maskPassword = true; // Example flag for masking passwords
-    usersTable.updateTableData(tableName, columnNames, maskPassword);
-}
-    
+   
 }
 
 

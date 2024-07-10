@@ -49,7 +49,6 @@ public class DatabaseEmployeeDAO implements EmployeeDAO {
         String pagIbigNumber = rs.getString("PagIbigNumber");
         String empStatus = rs.getString("EmpStatus");
         String position = rs.getString("Position");
-        String immediateSupervisor = rs.getString("ImmediateSupervisor");
         
         double basicSalary = rs.getDouble("BasicSalary");
         double riceSubsidy = rs.getDouble("RiceSubsidy");
@@ -60,10 +59,10 @@ public class DatabaseEmployeeDAO implements EmployeeDAO {
         
         int supervisorId = rs.getInt("SupervisorID");
 
-        // Create and return Employee object
+        // Create and return Employee object without immediateSupervisor parameter
         return new Employee(employeeId, lastName, firstName, birthday, address, phoneNumber,
                 sssNumber, philHealthNumber, tinNumber, pagIbigNumber, empStatus, position,
-                immediateSupervisor, basicSalary, riceSubsidy, phoneAllowance, clothingAllowance,
-                grossSemiMonthlyRate, hourlyRate, supervisorId);
+                supervisorId, basicSalary, riceSubsidy, phoneAllowance, clothingAllowance,
+                grossSemiMonthlyRate, hourlyRate);
     }
 }

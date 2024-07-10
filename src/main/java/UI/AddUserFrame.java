@@ -5,6 +5,9 @@ import DatabaseConnection.DatabaseUserDAO.DatabaseException;
 import DatabaseConnection.DatabaseUtility;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 public class AddUserFrame extends javax.swing.JFrame {
@@ -191,33 +194,59 @@ public class AddUserFrame extends javax.swing.JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             addUser();
-            dispose();// Call your existing addUser method
+            
         }
     });
     }
-
 private void addUser() {
-    try {
-        int employeeId = Integer.parseInt(employeeIdField.getText());
-        String username = usernameField.getText();
-        String password = passwordField.getText();
-        String selectedRoleType = customDropdown.getSelectedRoleType();
+    boolean userAdded = false;
 
-        // Call addUserToDatabase with the fetched roleId
-        DatabaseUserDAO userDao = new DatabaseUserDAO();
-        userDao.addUserToDatabase(employeeId, username, password, selectedRoleType);
+    while (!userAdded) {
+        try {
+            int employeeId = Integer.parseInt(employeeIdField.getText());
+            String username = usernameField.getText();
+            String password = passwordField.getText();
+            String selectedRoleType = customDropdown.getSelectedRoleType();
 
-        // Update usersTable in AuthorizedFrame
-        if (usersTable != null) {
-            usersTable.updateTableData("users", new String[]{"UserID", "EmployeeID", "Username", "UserPassword", "RoleID"}, true);
+            // Validate password length
+            if (password.length() < 6) {
+                JOptionPane.showMessageDialog(this, "Password must be at least 6 characters long.", "Password Warning", JOptionPane.WARNING_MESSAGE);
+                return; // Return to allow the user to correct the input
+            }
+
+            DatabaseUserDAO userDao = new DatabaseUserDAO();
+
+            // Check if username already exists
+            if (userDao.usernameExists(username)) {
+                JOptionPane.showMessageDialog(this, "Username already exists. Please choose a different username.", "Username Exists", JOptionPane.WARNING_MESSAGE);
+                return; // Return to allow the user to correct the input
+            }
+
+            // Check if employee ID already exists
+            if (userDao.employeeIdExists(employeeId)) {
+                JOptionPane.showMessageDialog(this, "Employee ID already exists. Please use a different Employee ID.", "Employee ID Exists", JOptionPane.WARNING_MESSAGE);
+                return; // Return to allow the user to correct the input
+            }
+
+            // Call addUserToDatabase with the fetched roleId
+            userAdded = userDao.addUserToDatabase(employeeId, username, password, selectedRoleType);
+
+            if (userAdded) {
+                // Update usersTable in AuthorizedFrame (assuming updateTableData method handles this correctly)
+                if (usersTable != null) {
+                    usersTable.updateTableData("users", new String[]{"UserID", "EmployeeID", "Username", "UserPassword", "RoleID"}, true);
+                }
+
+                JOptionPane.showMessageDialog(this, "User added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                dispose(); // Close the frame after successful addition
+            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Invalid input. Please check your entries.", "Input Error", JOptionPane.ERROR_MESSAGE);
+            return; // Return to allow the user to correct the input
+        } catch (DatabaseException | SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Error adding user: " + ex.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+            return; // Return to allow the user to correct the input
         }
-
-        JOptionPane.showMessageDialog(this, "User added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-        dispose(); // Close the frame after successful addition
-    } catch (NumberFormatException ex) {
-        JOptionPane.showMessageDialog(this, "Invalid input. Please check your entries.", "Input Error", JOptionPane.ERROR_MESSAGE);
-    } catch (DatabaseException ex) {
-        JOptionPane.showMessageDialog(this, "Error adding user: " + ex.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
     }
 }
 }

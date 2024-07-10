@@ -6,6 +6,9 @@ import DatabaseConnection.DatabaseUtility;
 import entities.User;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public class UpdateUserFrame extends javax.swing.JFrame {
@@ -33,17 +36,18 @@ public class UpdateUserFrame extends javax.swing.JFrame {
     }
 
     public void loadUserDetails(int userId) throws DatabaseException {
-        DatabaseUserDAO userDAO = new DatabaseUserDAO();
-        User user = userDAO.getUserByUserId(userId);
-        userIdField.setText(String.valueOf(user.getUserId()));
-        employeeIdField.setText(String.valueOf(user.getEmployeeId()));
-        usernameField.setText(user.getUsername());
+    DatabaseUserDAO userDAO = new DatabaseUserDAO();
+    User user = userDAO.getUserByUserId(userId);
+    userIdField.setText(String.valueOf(user.getUserId()));
+    employeeIdField.setText(String.valueOf(user.getEmployeeId()));
+    usernameField.setText(user.getUsername());
 
-        // Display asterisks instead of the actual password
-        passwordField.setText("*******");
+    // Mask the password
+    passwordField.setText(userDAO.maskPassword(user.getPassword()));
 
-        // Set selected role type based on roleId from user object
-        customDropdown.setSelectedRoleType(user.getRoleId());
+    // Fetch role type based on roleId from user object and set it in the dropdown
+    String roleType = user.getRoleType();
+    customDropdown.setSelectedRoleType(roleType);
     }
 
     private void setupConfirmButtonAction() {
@@ -55,47 +59,79 @@ public class UpdateUserFrame extends javax.swing.JFrame {
         });
     }
 
-    private void updateUser() {
-        try {
-            int row = usersTable.getSelectedRow();
-            if (row == -1) {
-                JOptionPane.showMessageDialog(this, "Please select a row to update.", "No Row Selected", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-
-            // Retrieve values from the selected row
-            String userIdStr = usersTable.getValueAt(row, 0).toString();
-            int employeeId = Integer.parseInt(usersTable.getValueAt(row, 1).toString());
-            String username = usersTable.getValueAt(row, 2).toString();
-            String roleType = usersTable.getValueAt(row, 4).toString();
-            String newPassword = passwordField.getText();
-            if (newPassword.equals("*******")) {
-                newPassword = null; // No new password provided
-            }
-
-            // Update user in database
-            DatabaseUserDAO userDAO = new DatabaseUserDAO();
-            userDAO.updateUserInDatabase(Integer.parseInt(userIdStr), employeeId, username, roleType, newPassword);
-
-            // Update usersTable if needed
-            if (usersTable != null) {
-                usersTable.updateTableData("users", new String[]{"UserID", "EmployeeID", "Username", "UserPassword", "RoleID"}, true);
-            }
-
-            JOptionPane.showMessageDialog(this, "User updated successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
-            dispose(); // Close the update frame after successful update
-        } catch (NumberFormatException | DatabaseException ex) {
-            JOptionPane.showMessageDialog(this, "Error updating user: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+ private void updateUser() {
+    try {
+        int row = usersTable.getSelectedRow();
+        if (row == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a row to update.", "No Row Selected", JOptionPane.WARNING_MESSAGE);
+            return;
         }
-    }
 
-    public void populateFields(String userId, String employeeId, String username, String password, String roleType) {
-        userIdField.setText(userId);
-        employeeIdField.setText(employeeId);
-        usernameField.setText(username);
-        passwordField.setText("*******"); // Display masked password
-        customDropdown.setSelectedRoleType(roleType); // Assuming roleType is retrieved correctly
+        // Retrieve userId from the selected row
+        String userIdStr = usersTable.getValueAt(row, 0).toString();
+        
+        // Fetch user details from database based on userId
+        DatabaseUserDAO userDAO = new DatabaseUserDAO();
+        User user = userDAO.getUserByUserId(Integer.parseInt(userIdStr));
+
+        // Current details from the database
+        String currentUsername = user.getUsername();
+        int employeeId = user.getEmployeeId();
+        String roleType = user.getRoleType();
+
+        // New details from the form fields
+        String newUsername = usernameField.getText().trim(); // Get the new username from the field
+        String newPassword = passwordField.getText().trim(); // Trim to remove leading/trailing spaces
+
+        // Validate username
+        if (newUsername.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Username cannot be empty.", "Invalid Username", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Check if the new username is different from the current username
+        if (!newUsername.equals(currentUsername)) {
+            // Check if the new username already exists in the database
+            try {
+                if (userDAO.usernameExists(newUsername)) {
+                    JOptionPane.showMessageDialog(this, "Username already exists. Please choose a different username.", "Username Exists", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(UpdateUserFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        // Validate password length if newPassword is not null
+        if (newPassword.isEmpty()) {
+            newPassword = null; // No new password provided
+        } else if (newPassword.length() < 6) {
+            JOptionPane.showMessageDialog(this, "Password must be at least 6 characters long.", "Invalid Password", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Update user in database
+        userDAO.updateUserInDatabase(user.getUserId(), employeeId, newUsername, roleType, newPassword);
+
+        // Update usersTable if needed
+        if (usersTable != null) {
+            usersTable.updateTableData("users", new String[]{"UserID", "EmployeeID", "Username", "UserPassword", "RoleID"}, true);
+        }
+
+        JOptionPane.showMessageDialog(this, "User updated successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+        dispose(); // Close the update frame after successful update
+    } catch (NumberFormatException | DatabaseException ex) {
+        JOptionPane.showMessageDialog(this, "Error updating user: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
+}
+
+public void populateFields(String userId, String employeeId, String username, String password, String roleType) {
+    userIdField.setText(userId);
+    employeeIdField.setText(employeeId);
+    usernameField.setText(username);
+    passwordField.setText("********"); // Display masked password
+    customDropdown.setSelectedRoleType(roleType); // Assuming roleType is retrieved correctly
+}
 
     /**
      * This method is called from within the constructor to initialize the form.

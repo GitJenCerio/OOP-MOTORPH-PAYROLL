@@ -8,8 +8,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 public class DatabaseUserDAO {
 
@@ -41,41 +43,39 @@ public class DatabaseUserDAO {
     }
 
     // Method to mask the password with asterisks
-    private String maskPassword(String password) {
-        StringBuilder maskedPassword = new StringBuilder();
-        for (int i = 0; i < password.length(); i++) {
-            maskedPassword.append("*");
+   public String maskPassword(String password) {
+    return "********";
+}
+
+    public boolean addUserToDatabase(int employeeId, String username, String password, String roleType) throws DatabaseException {
+    try {
+        // Fetch RoleID based on RoleType
+        int roleId = DatabaseUtility.fetchRoleId(roleType);
+
+        // Hash the password using the PasswordHash utility class
+        String hashedPassword = PasswordHash.hashPassword(password);
+
+        // Prepare SQL statement to insert user
+        String sql = "INSERT INTO users (EmployeeID, Username, UserPassword, RoleID) VALUES (?, ?, ?, ?)";
+        try (Connection conn = DatabaseConnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            // Set parameters for the prepared statement
+            stmt.setInt(1, employeeId);
+            stmt.setString(2, username);
+            stmt.setString(3, hashedPassword);
+            stmt.setInt(4, roleId);
+
+            // Execute the update
+            int rowsAffected = stmt.executeUpdate();
+
+            return rowsAffected > 0; // Return true if user added successfully
         }
-        return maskedPassword.toString();
+    } catch (SQLException | HashingException ex) {
+        throw new DatabaseException("Error occurred while adding a user to the database", ex);
     }
+}
 
-
-    public void addUserToDatabase(int employeeId, String username, String password, String roleType) throws DatabaseException {
-        try {
-            // Fetch RoleID based on RoleType
-            int roleId = DatabaseUtility.fetchRoleId(roleType);
-
-            // Hash the password using the PasswordHash utility class
-            String hashedPassword = PasswordHash.hashPassword(password);
-
-            // Prepare SQL statement to insert user
-            String sql = "INSERT INTO users (EmployeeID, Username, UserPassword, RoleID) VALUES (?, ?, ?, ?)";
-            try (Connection conn = DatabaseConnector.getConnection();
-                 PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-                // Set parameters for the prepared statement
-                stmt.setInt(1, employeeId);
-                stmt.setString(2, username);
-                stmt.setString(3, hashedPassword); // Store the hashed password in the database
-                stmt.setInt(4, roleId);
-
-                // Execute the update
-                stmt.executeUpdate();
-            }
-        } catch (SQLException | HashingException ex) {
-            throw new DatabaseException("Error occurred while adding a user to the database", ex);
-        }
-    }
 
  // Method to update an existing user in the database
     
@@ -84,55 +84,26 @@ public void updateUserInDatabase(int userId, int employeeId, String username, St
         // Fetch RoleID based on RoleType
         int roleId = DatabaseUtility.fetchRoleId(roleType);
 
-        // Fetch existing user details from the database
-        DatabaseUserDAO userDAO = new DatabaseUserDAO();
-        User existingUser = userDAO.getUserByUserId(userId);
-
         // Prepare SQL statement to update user
-        StringBuilder sqlBuilder = new StringBuilder("UPDATE users SET ");
-        List<Object> params = new ArrayList<>();
-
-        // Check each field and add to SQL statement and params if changed
-        if (employeeId != existingUser.getEmployeeId()) {
-            sqlBuilder.append("EmployeeID = ?, ");
-            params.add(employeeId);
-        }
-
-        if (!username.equals(existingUser.getUsername())) {
-            sqlBuilder.append("Username = ?, ");
-            params.add(username);
-        }
-
-        if (!roleType.equals(existingUser.getRoleType())) {
-            sqlBuilder.append("RoleID = ?, ");
-            params.add(roleId);
-        }
-
-        // Check if newPassword is provided and not empty
-        if (newPassword != null && !newPassword.isEmpty()) {
-            // Hash the new password
-            String hashedPassword = PasswordHash.hashPassword(newPassword);
-            sqlBuilder.append("UserPassword = ?, ");
-            params.add(hashedPassword); // Add hashed password to parameters
-        }
-
-        // Remove trailing comma and space from SQL statement
-        sqlBuilder.delete(sqlBuilder.length() - 2, sqlBuilder.length());
-
-        // Add WHERE clause for userId
-        sqlBuilder.append(" WHERE UserID = ?");
-        params.add(userId);
-
-        String sql = sqlBuilder.toString();
+        String sql = "UPDATE users SET EmployeeID = ?, Username = ?, RoleID = ?, UserPassword = ? WHERE UserID = ?";
 
         try (Connection conn = DatabaseConnector.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             // Set parameters for the prepared statement
-            int index = 1;
-            for (Object param : params) {
-                stmt.setObject(index++, param);
+            stmt.setInt(1, employeeId);
+            stmt.setString(2, username);
+            stmt.setInt(3, roleId);
+
+            if (newPassword != null && !newPassword.isEmpty()) {
+                // Hash the new password
+                String hashedPassword = PasswordHash.hashPassword(newPassword);
+                stmt.setString(4, hashedPassword);
+            } else {
+                stmt.setNull(4, Types.VARCHAR);
             }
+
+            stmt.setInt(5, userId);
 
             // Execute the update
             stmt.executeUpdate();
@@ -141,6 +112,8 @@ public void updateUserInDatabase(int userId, int employeeId, String username, St
         throw new DatabaseException("Error occurred while updating the user in the database", ex);
     }
 }
+
+
 
     // Method to delete a user from the database
     public static void deleteUserFromDatabase(int userId) throws DatabaseException {
@@ -157,6 +130,26 @@ public void updateUserInDatabase(int userId, int employeeId, String username, St
             throw new DatabaseException("Error occurred while deleting the user from the database", ex);
         }
     }
+    public boolean usernameExists(String username) throws SQLException {
+        return checkIfExists("SELECT COUNT(*) FROM users WHERE Username = ?", username);
+    }
+
+    // Method to check if employee ID exists
+    public boolean employeeIdExists(int employeeId) throws SQLException {
+        return checkIfExists("SELECT COUNT(*) FROM users WHERE EmployeeID = ?", employeeId);
+    }
+
+    // Generic method to check existence based on SQL query
+    private boolean checkIfExists(String sql, Object parameter) throws SQLException {
+        try (Connection conn = DatabaseConnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setObject(1, parameter);
+            try (ResultSet rs = stmt.executeQuery()) {
+                return rs.next() && rs.getInt(1) > 0;
+            }
+        }
+    }
+    
 
     // Custom exception for database operations
     public static class DatabaseException extends Exception {

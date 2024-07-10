@@ -22,26 +22,34 @@ public class CustomDropdown extends JPanel {
 
     public CustomDropdown() {
         this(new String[]{});
+        setBackground(Color.WHITE);
     }
 
     public CustomDropdown(String[] items) {
         this.items = items;
         setLayout(new BorderLayout());
 
-        textField = new RoundedTextField();
+          textField = new RoundedTextField();
+        
+        // Overlay panel for arrow icon
+        JPanel overlayPanel = new JPanel(new BorderLayout());
+        overlayPanel.setOpaque(false);
 
-        // Create a panel to hold the text field and the arrow icon
-        JPanel textFieldPanel = new JPanel();
-        textFieldPanel.setLayout(new BorderLayout());
-        textFieldPanel.add(textField, BorderLayout.CENTER);
-
+        // Arrow icon setup
         Icon arrowIcon = new ImageIcon(getClass().getResource("/resources/icon-arrow.png"));
         JLabel arrowLabel = new JLabel(arrowIcon);
-        arrowLabel.setBorder(new EmptyBorder(0, 0, 0, 20));
-        textFieldPanel.add(arrowLabel, BorderLayout.EAST);
+        arrowLabel.setBorder(new EmptyBorder(0, 0, 0, 5)); // Adjust padding as needed
 
-        // Add the text field panel to the CustomDropdown
-        add(textFieldPanel, BorderLayout.CENTER);
+        overlayPanel.add(arrowLabel, BorderLayout.EAST);
+
+        // Layered pane to overlay arrow on text field
+        JLayeredPane layeredPane = new JLayeredPane();
+        layeredPane.setLayout(new OverlayLayout(layeredPane));
+
+        layeredPane.add(textField, JLayeredPane.DEFAULT_LAYER);
+        layeredPane.add(overlayPanel, JLayeredPane.PALETTE_LAYER);
+
+        add(layeredPane, BorderLayout.CENTER);
 
         popupMenu = new JPopupMenu();
         list = new JList<>(items);
