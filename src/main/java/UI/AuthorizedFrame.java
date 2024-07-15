@@ -15,6 +15,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import static javax.swing.JTable.AUTO_RESIZE_OFF;
+import static javax.swing.JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
@@ -44,14 +47,17 @@ public class AuthorizedFrame extends javax.swing.JFrame {
         String[] usersColumnNames = {"UserID", "EmployeeID", "Username", "UserPassword", "RoleID"}; // Example column names for users
         boolean usersMaskPassword = true; // Example flag for masking passwords
         usersTable = new CustomTable(usersTableName, usersColumnNames, usersMaskPassword);
+        usersTable.setAutoResizeMode(AUTO_RESIZE_SUBSEQUENT_COLUMNS);
         jScrollPane1.setViewportView(usersTable);
 
         
        String employeesTableName = "employees"; // Use your actual table name for employees
-       String[] employeesColumnNames = {"EmployeeID", "LastName", "FirstName", "Birthday", "Address","PhoneNumber", "EmpStatus", "Position", "SupervisorID","SSSNumber", "PhilhealthNumber"};
+       String[] employeesColumnNames = {"EmployeeID", "LastName", "FirstName", "Birthday", "Address","PhoneNumber", "EmpStatus", "Position", "SupervisorID","SSSNumber", "PhilhealthNumber", "PagibigNumber", "TinNumber","BasicSalart", "RiceSubsidt","PhoneAllowance", "ClothingAllowance","GrossSemiMonthlyRate","HourlyRate","DepartmentID"};
        boolean employeesMaskPassword = false; // Example flag (not relevant for employees, adjust as needed)
        employeesTable = new CustomTable(employeesTableName, employeesColumnNames, employeesMaskPassword);
+       jScrollPane2.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
        jScrollPane2.setViewportView(employeesTable);
+      
              
     }
     /**
@@ -679,6 +685,9 @@ public class AuthorizedFrame extends javax.swing.JFrame {
         employeesTable.setFillsViewportHeight(true);
         employeesTable.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         employeesTable.setGridColor(new java.awt.Color(255, 255, 255));
+        employeesTable.setMaximumSize(new java.awt.Dimension(375, 800));
+        employeesTable.setMinimumSize(new java.awt.Dimension(375, 800));
+        employeesTable.setPreferredScrollableViewportSize(new java.awt.Dimension(300, 600));
         employeesTable.setPreferredSize(new java.awt.Dimension(375, 800));
         employeesTable.setRequestFocusEnabled(false);
         employeesTable.setRowHeight(40);

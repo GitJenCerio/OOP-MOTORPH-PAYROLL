@@ -7,6 +7,7 @@ import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import DatabaseConnection.DatabaseUtility;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 public class CustomTable extends JTable {
 
@@ -20,34 +21,64 @@ public class CustomTable extends JTable {
         setupTable();
     }
 
-    private void setupTable() {
-        // Set table properties
-        setOpaque(false);
-        setIntercellSpacing(new Dimension(0, 0)); // Remove cell spacing
-        setShowGrid(false); // Hide grid lines
-        setRowHeight(25); // Set row height to 30 pixels
+private void setupTable() {
+    // Set table properties
+    setOpaque(false);
+    setIntercellSpacing(new Dimension(0, 0)); // Remove cell spacing
+    setShowGrid(false); // Hide grid lines
+    setRowHeight(25); // Set row height to 25 pixels
 
-        // Center align text in all columns
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+    // Center align text in all columns
+    DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+    centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 
-        // Apply center alignment to all columns
-        for (int columnIndex = 0; columnIndex < getColumnCount(); columnIndex++) {
-            getColumnModel().getColumn(columnIndex).setCellRenderer(centerRenderer);
+    // Apply center alignment and set dynamic widths to all columns
+    for (int columnIndex = 0; columnIndex < getColumnCount(); columnIndex++) {
+        getColumnModel().getColumn(columnIndex).setCellRenderer(centerRenderer);
+
+        // Calculate preferred width based on the widest cell content
+        int maxWidth = 0; // Initial preferred width
+        TableColumn column = getColumnModel().getColumn(columnIndex);
+        TableCellRenderer headerRenderer = column.getHeaderRenderer();
+        if (headerRenderer == null) {
+            headerRenderer = getTableHeader().getDefaultRenderer();
+        }
+        Component headerComp = headerRenderer.getTableCellRendererComponent(
+                null, column.getHeaderValue(), false, false, 0, 0);
+        int headerWidth = headerComp.getPreferredSize().width;
+        maxWidth = Math.max(maxWidth, headerWidth);
+
+        // Iterate through all rows to find the widest cell content
+        for (int row = 0; row < getRowCount(); row++) {
+            TableCellRenderer cellRenderer = getCellRenderer(row, columnIndex);
+            Component cellComp = prepareRenderer(cellRenderer, row, columnIndex);
+            int cellWidth = cellComp.getPreferredSize().width + getIntercellSpacing().width;
+            maxWidth = Math.max(maxWidth, cellWidth);
         }
 
-        // Set selection mode to single row only
-        setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        // Set the column width with padding and constraints
+        int preferredWidth = Math.min(Math.max(maxWidth + 10, 50), 150); // Adjust padding and max width as needed
+        column.setPreferredWidth(preferredWidth);
 
-        // Enable row selection and disable cell selection
-        setRowSelectionAllowed(true);
-        setColumnSelectionAllowed(false);
-        setCellSelectionEnabled(false);
-
-        // Set table header height
-        JTableHeader tableHeader = getTableHeader();
-        tableHeader.setPreferredSize(new Dimension(tableHeader.getPreferredSize().width, 25));
+        // Set a minimum width based on the preferred width
+        int minWidth = Math.min(preferredWidth, 20); // Example minimum width (adjust as needed)
+        column.setMinWidth(minWidth);
     }
+
+    setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+    // Set selection mode to single row only
+    setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+    // Enable row selection and disable cell selection
+    setRowSelectionAllowed(true);
+    setColumnSelectionAllowed(false);
+    setCellSelectionEnabled(false);
+
+    // Set table header height and width
+    JTableHeader tableHeader = getTableHeader();
+    tableHeader.setPreferredSize(new Dimension(60, 35));
+}
+
 
     // Override isCellEditable to make cells non-editable
     @Override

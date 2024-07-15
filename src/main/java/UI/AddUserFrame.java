@@ -92,7 +92,6 @@ public class AddUserFrame extends javax.swing.JFrame {
 
         jLabel6.setText("Password");
 
-        customDropdown.setBackground(new java.awt.Color(255, 255, 255));
         customDropdown.setToolTipText("");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);

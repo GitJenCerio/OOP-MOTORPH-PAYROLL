@@ -72,8 +72,14 @@ public class DatabaseUserDAO {
             return rowsAffected > 0; // Return true if user added successfully
         }
     } catch (SQLException | HashingException ex) {
+        logError("Error occurred while adding a user to the database", ex);
         throw new DatabaseException("Error occurred while adding a user to the database", ex);
     }
+}
+    
+    private void logError(String message, Exception ex) {
+    System.err.println(message);
+    ex.printStackTrace(); // Print detailed stack trace to the error stream
 }
 
 
