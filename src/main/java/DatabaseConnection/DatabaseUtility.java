@@ -111,11 +111,40 @@ public class DatabaseUtility {
             throw new DatabaseException("Error occurred while fetching RoleType: " + ex.getMessage(), ex);
         }
     }
+     public static int fetchDepartmentID(String departmentName) throws DatabaseException {
+        String query = "SELECT DepartmentID FROM department WHERE DepartmentName = ?";
+        try (Connection conn = DatabaseConnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, departmentName); // Set the parameter as String
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("DepartmentID");
+                } else {
+                    throw new DatabaseException("Department not found: " + departmentName);
+                }
+            }
+        } catch (SQLException ex) {
+            throw new DatabaseException("Error occurred while fetching DepartmentID: " + ex.getMessage(), ex);
+        }
+    }
 
-    
-    
-    
-
+    // Method to fetch SupervisorID based on supervisor name
+    public static int fetchSupervisorID(String supervisorName) throws DatabaseException {
+        String query = "SELECT SupervisorID FROM supervisors WHERE SupervisorName = ?";
+        try (Connection conn = DatabaseConnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, supervisorName); // Set the parameter as String
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("SupervisorID");
+                } else {
+                    throw new DatabaseException("Supervisor not found: " + supervisorName);
+                }
+            }
+        } catch (SQLException ex) {
+            throw new DatabaseException("Error occurred while fetching SupervisorID: " + ex.getMessage(), ex);
+        }
+    }
 
     // Helper method to build the SQL query dynamically
     private static String buildQuery(String tableName, String[] columnNames) {

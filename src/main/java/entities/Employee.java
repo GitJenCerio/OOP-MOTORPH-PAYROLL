@@ -1,6 +1,8 @@
 package entities;
 
 import DatabaseConnection.DatabaseConnector;
+import DatabaseConnection.DatabaseUtility;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,14 +23,15 @@ public class Employee {
     private String empStatus;
     private String position;
     private int supervisorId;
+    private int departmentId; // New field for department ID
     private double basicSalary;
     private double riceSubsidy;
     private double phoneAllowance;
     private double clothingAllowance;
     private double grossSemiMonthlyRate;
     private double hourlyRate;
-    
-    public Employee(int employeeId, String lastName, String firstName, Date birthday, String address, String phoneNumber, String sssNumber, String philHealthNumber, String tinNumber, String pagIbigNumber, String empStatus, String position, int supervisorId, double basicSalary, double riceSubsidy, double phoneAllowance, double clothingAllowance, double grossSemiMonthlyRate, double hourlyRate) {
+
+    public Employee(int employeeId, String lastName, String firstName, Date birthday, String address, String phoneNumber, String sssNumber, String philHealthNumber, String tinNumber, String pagIbigNumber, String empStatus, String position, int supervisorId, int departmentId, double basicSalary, double riceSubsidy, double phoneAllowance, double clothingAllowance, double grossSemiMonthlyRate, double hourlyRate) {
         this.employeeId = employeeId;
         this.lastName = lastName;
         this.firstName = firstName;
@@ -42,6 +45,7 @@ public class Employee {
         this.empStatus = empStatus;
         this.position = position;
         this.supervisorId = supervisorId;
+        this.departmentId = departmentId;
         this.basicSalary = basicSalary;
         this.riceSubsidy = riceSubsidy;
         this.phoneAllowance = phoneAllowance;
@@ -155,6 +159,14 @@ public class Employee {
         this.supervisorId = supervisorId;
     }
 
+    public int getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(int departmentId) {
+        this.departmentId = departmentId;
+    }
+
     public double getBasicSalary() {
         return basicSalary;
     }
@@ -203,9 +215,14 @@ public class Employee {
         this.hourlyRate = hourlyRate;
     }
 
-    public String getImmediateSupervisor() {
+    public String getSupervisor() {
         return getSupervisorNameById(this.supervisorId);
     }
+
+    public String getDepartment() {
+        return getDepartmentNameById(this.departmentId);
+    }
+
 
     private String getSupervisorNameById(int supervisorId) {
         String supervisorName = null;
@@ -219,9 +236,25 @@ public class Employee {
                 supervisorName = rs.getString("SupervisorName");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
         }
         
         return supervisorName != null ? supervisorName : "Unknown Supervisor";
     }
+    private String getDepartmentNameById(int departmentId) {
+        String departmentName = null;
+        String query = "SELECT DepartmentName FROM departments WHERE DepartmentID = ?";
+        
+        try (Connection conn = DatabaseConnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, departmentId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                departmentName = rs.getString("departmentName");
+            }
+        } catch (SQLException e) {
+        }
+        
+        return departmentName != null ? departmentName : "Unknown Department";
+    }
+    
 }
