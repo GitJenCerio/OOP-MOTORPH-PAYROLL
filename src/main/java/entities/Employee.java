@@ -22,8 +22,8 @@ public class Employee {
     private String pagIbigNumber;
     private String empStatus;
     private String position;
-    private int supervisorId;
-    private int departmentId; // New field for department ID
+    private String supervisorName;
+    private String departmentName;
     private double basicSalary;
     private double riceSubsidy;
     private double phoneAllowance;
@@ -31,7 +31,7 @@ public class Employee {
     private double grossSemiMonthlyRate;
     private double hourlyRate;
 
-    public Employee(int employeeId, String lastName, String firstName, Date birthday, String address, String phoneNumber, String sssNumber, String philHealthNumber, String tinNumber, String pagIbigNumber, String empStatus, String position, int supervisorId, int departmentId, double basicSalary, double riceSubsidy, double phoneAllowance, double clothingAllowance, double grossSemiMonthlyRate, double hourlyRate) {
+    public Employee(int employeeId, String lastName, String firstName, Date birthday, String address, String phoneNumber, String sssNumber, String philHealthNumber, String tinNumber, String pagIbigNumber, String empStatus, String position, String supervisorName, String departmentName, double basicSalary, double riceSubsidy, double phoneAllowance, double clothingAllowance, double grossSemiMonthlyRate, double hourlyRate) {
         this.employeeId = employeeId;
         this.lastName = lastName;
         this.firstName = firstName;
@@ -44,8 +44,8 @@ public class Employee {
         this.pagIbigNumber = pagIbigNumber;
         this.empStatus = empStatus;
         this.position = position;
-        this.supervisorId = supervisorId;
-        this.departmentId = departmentId;
+        this.supervisorName = supervisorName;
+        this.departmentName = departmentName;
         this.basicSalary = basicSalary;
         this.riceSubsidy = riceSubsidy;
         this.phoneAllowance = phoneAllowance;
@@ -151,20 +151,20 @@ public class Employee {
         this.position = position;
     }
 
-    public int getSupervisorId() {
-        return supervisorId;
+    public String getSupervisorName() {
+        return supervisorName;
     }
 
-    public void setSupervisorId(int supervisorId) {
-        this.supervisorId = supervisorId;
+    public void setSupervisorname(String supervisorName) {
+        this.supervisorName = supervisorName;
     }
 
-    public int getDepartmentId() {
-        return departmentId;
+    public String getDepartmentName() {
+        return departmentName;
     }
 
-    public void setDepartmentId(int departmentId) {
-        this.departmentId = departmentId;
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
     }
 
     public double getBasicSalary() {
@@ -215,13 +215,6 @@ public class Employee {
         this.hourlyRate = hourlyRate;
     }
 
-    public String getSupervisor() {
-        return getSupervisorNameById(this.supervisorId);
-    }
-
-    public String getDepartment() {
-        return getDepartmentNameById(this.departmentId);
-    }
 
 
     private String getSupervisorNameById(int supervisorId) {

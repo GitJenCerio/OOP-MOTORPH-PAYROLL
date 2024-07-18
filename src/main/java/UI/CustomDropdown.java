@@ -90,7 +90,7 @@ public class CustomDropdown extends JPanel {
         popupMenu.show(textField, 0, size.height);
     }
 
-    public String getSelectedRoleType() {
+    public String getSelectedItem() {
         return textField.getText();
     }
 
@@ -110,10 +110,21 @@ public class CustomDropdown extends JPanel {
         }
     }
 
-    // Method to set selected role type based on role type string
+    
     public void setSelectedRoleType(String roleType) {
-        textField.setText(roleType); // Update the text field with the roleType
+        textField.setText(roleType); 
     }
+      public void setSelectedDepatment(String departmentName) {
+        textField.setText(departmentName); 
+    }
+      public void setSelectedEmpStatus(String empStatus) {
+        textField.setText(empStatus); 
+    }
+      public void setSelectedSupervisor(String supervisorName) {
+        textField.setText(supervisorName); 
+    }
+    
+    
 
     // Method to fetch RoleType from Database based on RoleID
     private String fetchRoleType(int roleId) throws DatabaseException {

@@ -27,7 +27,7 @@ public class AddUserFrame extends javax.swing.JFrame {
         String tableName = "roles"; // Replace with your actual table name
         String columnName = "RoleType"; // Replace with your actual column name
         String[] dropdownItems = DatabaseUtility.fetchDropdownItems(tableName, columnName);
-        customDropdown.setItems(dropdownItems);
+        roleType.setItems(dropdownItems);
     }
 
     /**
@@ -49,7 +49,7 @@ public class AddUserFrame extends javax.swing.JFrame {
         usernameField = new UI.RoundedTextField();
         jLabel6 = new javax.swing.JLabel();
         passwordField = new UI.RoundedTextField();
-        customDropdown = new UI.CustomDropdown();
+        roleType = new UI.CustomDropdown();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(471, 349));
@@ -92,7 +92,7 @@ public class AddUserFrame extends javax.swing.JFrame {
 
         jLabel6.setText("Password");
 
-        customDropdown.setToolTipText("");
+        roleType.setToolTipText("");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -118,7 +118,7 @@ public class AddUserFrame extends javax.swing.JFrame {
                             .addComponent(usernameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel5)
                             .addComponent(jLabel3)
-                            .addComponent(customDropdown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(roleType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(63, 63, 63))))
         );
         jPanel1Layout.setVerticalGroup(
@@ -144,7 +144,7 @@ public class AddUserFrame extends javax.swing.JFrame {
                             .addComponent(jLabel3))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(customDropdown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(roleType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
                 .addComponent(confirmAddUserBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27))
@@ -176,7 +176,6 @@ public class AddUserFrame extends javax.swing.JFrame {
    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private UI.RoundedButton confirmAddUserBtn;
-    private UI.CustomDropdown customDropdown;
     private UI.RoundedTextField employeeIdField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
@@ -185,6 +184,7 @@ public class AddUserFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private UI.RoundedTextField passwordField;
+    private UI.CustomDropdown roleType;
     private UI.RoundedTextField usernameField;
     // End of variables declaration//GEN-END:variables
 
@@ -205,7 +205,7 @@ private void addUser() {
             int employeeId = Integer.parseInt(employeeIdField.getText());
             String username = usernameField.getText();
             String password = passwordField.getText();
-            String selectedRoleType = customDropdown.getSelectedRoleType();
+            String selectedRoleType = roleType.getSelectedItem();
 
             // Validate password length
             if (password.length() < 6) {
@@ -231,7 +231,7 @@ private void addUser() {
             userAdded = userDao.addUserToDatabase(employeeId, username, password, selectedRoleType);
 
             if (userAdded) {
-                // Update usersTable in AuthorizedFrame (assuming updateTableData method handles this correctly)
+                // Update usersTable in AuthorizedFrame
                 if (usersTable != null) {
                     usersTable.updateTableData("users", new String[]{"UserID", "EmployeeID", "Username", "UserPassword", "RoleID"}, true);
                 }

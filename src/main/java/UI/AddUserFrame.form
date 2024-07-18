@@ -72,7 +72,7 @@
                               <Component id="usernameField" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                              <Component id="customDropdown" min="-2" max="-2" attributes="0"/>
+                              <Component id="roleType" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="63" max="-2" attributes="0"/>
                       </Group>
@@ -108,7 +108,7 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="passwordField" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Component id="customDropdown" min="-2" max="-2" attributes="0"/>
+                      <Component id="roleType" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="77" max="32767" attributes="0"/>
                   <Component id="confirmAddUserBtn" min="-2" pref="34" max="-2" attributes="0"/>
@@ -192,7 +192,7 @@
         </Component>
         <Component class="UI.RoundedTextField" name="passwordField">
         </Component>
-        <Component class="UI.CustomDropdown" name="customDropdown">
+        <Component class="UI.CustomDropdown" name="roleType">
           <Properties>
             <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>

@@ -7,6 +7,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -50,7 +51,7 @@ public class CalendarPicker extends JPanel {
         dialog.setUndecorated(true);
         dialog.add(calendar);
         dialog.pack();
-        dialog.setSize(new Dimension(300, 300));
+        dialog.setSize(new Dimension(180, 180));
 
         // Listener to show the calendar dialog when text field or calendar icon is clicked
         textField.addMouseListener(new MouseAdapter() {
@@ -98,9 +99,16 @@ public class CalendarPicker extends JPanel {
     }
 
     // Getter for selected date
-    public String getSelectedDate() {
-        return textField.getText();
+   public Date getSelectedDate() {
+    String dateString = textField.getText();
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); // Adjust the date format as needed
+    try {
+        return dateFormat.parse(dateString);
+    } catch (ParseException e) {
+        e.printStackTrace();
+        return null;
     }
+}
 
     // Setter for selected date
     public void setSelectedDate(String date) {

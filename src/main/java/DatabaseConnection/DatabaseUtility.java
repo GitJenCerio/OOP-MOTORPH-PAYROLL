@@ -14,29 +14,34 @@ import java.util.List;
 public class DatabaseUtility {
 
     public static DefaultTableModel fetchDataAndCreateTableModel(String tableName, String[] columnNames, boolean maskPassword) {
-        DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
+    DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
+    String query = buildQuery(tableName, columnNames);
 
-        try (Connection conn = DatabaseConnector.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(buildQuery(tableName, columnNames));
-             ResultSet rs = stmt.executeQuery()) {
+    try (Connection conn = DatabaseConnector.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(query);
+         ResultSet rs = stmt.executeQuery()) {
 
-            while (rs.next()) {
-                Object[] rowData = new Object[columnNames.length];
-                for (int i = 0; i < columnNames.length; i++) {
-                    if (maskPassword && columnNames[i].equalsIgnoreCase("UserPassword")) {
-                        rowData[i] = "********"; // Mask the password
-                    } else {
-                        rowData[i] = rs.getObject(columnNames[i]);
-                    }
+        System.out.println("Executing query: " + query);
+
+        while (rs.next()) {
+            Object[] rowData = new Object[columnNames.length];
+            for (int i = 0; i < columnNames.length; i++) {
+                if (maskPassword && columnNames[i].equalsIgnoreCase("UserPassword")) {
+                    rowData[i] = "********"; // Mask the password
+                } else {
+                    rowData[i] = rs.getObject(columnNames[i]);
                 }
-                tableModel.addRow(rowData);
             }
-        } catch (SQLException ex) {
-            throw new RuntimeException("Error occurred while fetching data from database", ex);
+            tableModel.addRow(rowData);
         }
-
-        return tableModel;
+        System.out.println("Fetched " + tableModel.getRowCount() + " rows from the database.");
+    } catch (SQLException ex) {
+        System.err.println("Error occurred while fetching data from database: " + ex.getMessage());
+        throw new RuntimeException("Error occurred while fetching data from database", ex);
     }
+
+    return tableModel;
+}
 
 
     // Method to fetch dropdown items from a specified table and column
@@ -147,10 +152,15 @@ public class DatabaseUtility {
     }
 
     // Helper method to build the SQL query dynamically
-    private static String buildQuery(String tableName, String[] columnNames) {
-        StringBuilder queryBuilder = new StringBuilder("SELECT ");
-        queryBuilder.append(String.join(", ", columnNames));
-        queryBuilder.append(" FROM ").append(tableName);
-        return queryBuilder.toString();
+   private static String buildQuery(String tableName, String[] columnNames) {
+    StringBuilder query = new StringBuilder("SELECT ");
+    for (int i = 0; i < columnNames.length; i++) {
+        query.append(columnNames[i]);
+        if (i < columnNames.length - 1) {
+            query.append(", ");
+        }
     }
+    query.append(" FROM ").append(tableName);
+    return query.toString();
+}
 }

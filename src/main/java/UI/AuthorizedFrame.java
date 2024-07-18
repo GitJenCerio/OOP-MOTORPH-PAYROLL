@@ -52,7 +52,7 @@ public class AuthorizedFrame extends javax.swing.JFrame {
 
         
        String employeesTableName = "employees"; // Use your actual table name for employees
-       String[] employeesColumnNames = {"EmployeeID", "LastName", "FirstName", "Birthday", "Address","PhoneNumber", "EmpStatus", "Position", "SupervisorID","SSSNumber", "PhilhealthNumber", "PagibigNumber", "TinNumber","BasicSalart", "RiceSubsidt","PhoneAllowance", "ClothingAllowance","GrossSemiMonthlyRate","HourlyRate","DepartmentID"};
+       String[] employeesColumnNames = {"EmployeeID", "LastName", "FirstName", "Birthday", "Address","PhoneNumber", "EmpStatus", "Position", "SupervisorID","SSSNumber", "PhilhealthNumber", "PagibigNumber", "TinNumber","BasicSalary", "RiceSubsidy","PhoneAllowance", "ClothingAllowance","GrossSemiMonthlyRate","HourlyRate","DepartmentID"};
        boolean employeesMaskPassword = false; // Example flag (not relevant for employees, adjust as needed)
        employeesTable = new CustomTable(employeesTableName, employeesColumnNames, employeesMaskPassword);
        jScrollPane2.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
@@ -98,6 +98,9 @@ public class AuthorizedFrame extends javax.swing.JFrame {
         employeesPanel = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         employeesTable = new UI.CustomTable();
+        addEmployeeBtn = new UI.RoundedButton();
+        updateEmployeeBtn = new UI.RoundedButton();
+        deleteEmployeeBtn = new UI.RoundedButton();
         payrollPanel = new javax.swing.JPanel();
         requestsPanel = new javax.swing.JPanel();
         taxReportsPanel = new javax.swing.JPanel();
@@ -707,19 +710,102 @@ public class AuthorizedFrame extends javax.swing.JFrame {
             employeesTable.getColumnModel().getColumn(4).setResizable(false);
         }
 
+        addEmployeeBtn.setBackground(new java.awt.Color(4, 14, 163));
+        addEmployeeBtn.setBorder(null);
+        addEmployeeBtn.setForeground(new java.awt.Color(255, 255, 255));
+        addEmployeeBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons8-add-user-24.png"))); // NOI18N
+        addEmployeeBtn.setText("Add New");
+        addEmployeeBtn.setAlignmentY(0.0F);
+        addEmployeeBtn.setBorderColor(new java.awt.Color(0, 102, 204));
+        addEmployeeBtn.setBorderPainted(false);
+        addEmployeeBtn.setColor(new java.awt.Color(4, 14, 163));
+        addEmployeeBtn.setColorClick(new java.awt.Color(0, 102, 204));
+        addEmployeeBtn.setColorOver(new java.awt.Color(0, 102, 204));
+        addEmployeeBtn.setFocusPainted(false);
+        addEmployeeBtn.setFont(new java.awt.Font("Poppins SemiBold", 0, 14)); // NOI18N
+        addEmployeeBtn.setIconTextGap(3);
+        addEmployeeBtn.setMargin(new java.awt.Insets(2, 14, 2, 14));
+        addEmployeeBtn.setPreferredSize(new java.awt.Dimension(150, 32));
+        addEmployeeBtn.setRadius(35);
+        addEmployeeBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addEmployeeBtnActionPerformed(evt);
+            }
+        });
+
+        updateEmployeeBtn.setBackground(new java.awt.Color(4, 14, 163));
+        updateEmployeeBtn.setBorder(null);
+        updateEmployeeBtn.setForeground(new java.awt.Color(255, 255, 255));
+        updateEmployeeBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons8-edit-user-24.png"))); // NOI18N
+        updateEmployeeBtn.setText("Update");
+        updateEmployeeBtn.setAlignmentY(0.0F);
+        updateEmployeeBtn.setBorderColor(new java.awt.Color(0, 102, 204));
+        updateEmployeeBtn.setBorderPainted(false);
+        updateEmployeeBtn.setColor(new java.awt.Color(4, 14, 163));
+        updateEmployeeBtn.setColorClick(new java.awt.Color(0, 102, 204));
+        updateEmployeeBtn.setColorOver(new java.awt.Color(0, 102, 204));
+        updateEmployeeBtn.setFocusPainted(false);
+        updateEmployeeBtn.setFont(new java.awt.Font("Poppins SemiBold", 0, 14)); // NOI18N
+        updateEmployeeBtn.setIconTextGap(3);
+        updateEmployeeBtn.setMargin(new java.awt.Insets(2, 14, 2, 14));
+        updateEmployeeBtn.setPreferredSize(new java.awt.Dimension(150, 32));
+        updateEmployeeBtn.setRadius(35);
+        updateEmployeeBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateEmployeeBtnActionPerformed(evt);
+            }
+        });
+
+        deleteEmployeeBtn.setBackground(new java.awt.Color(4, 14, 163));
+        deleteEmployeeBtn.setBorder(null);
+        deleteEmployeeBtn.setForeground(new java.awt.Color(255, 255, 255));
+        deleteEmployeeBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons8-delete-user-24 (1).png"))); // NOI18N
+        deleteEmployeeBtn.setText("Delete");
+        deleteEmployeeBtn.setAlignmentY(0.0F);
+        deleteEmployeeBtn.setBorderColor(new java.awt.Color(0, 102, 204));
+        deleteEmployeeBtn.setBorderPainted(false);
+        deleteEmployeeBtn.setColor(new java.awt.Color(4, 14, 163));
+        deleteEmployeeBtn.setColorClick(new java.awt.Color(0, 102, 204));
+        deleteEmployeeBtn.setColorOver(new java.awt.Color(0, 102, 204));
+        deleteEmployeeBtn.setFocusPainted(false);
+        deleteEmployeeBtn.setFont(new java.awt.Font("Poppins SemiBold", 0, 14)); // NOI18N
+        deleteEmployeeBtn.setIconTextGap(3);
+        deleteEmployeeBtn.setMargin(new java.awt.Insets(2, 14, 2, 14));
+        deleteEmployeeBtn.setPreferredSize(new java.awt.Dimension(150, 32));
+        deleteEmployeeBtn.setRadius(35);
+        deleteEmployeeBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteEmployeeBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout employeesPanelLayout = new javax.swing.GroupLayout(employeesPanel);
         employeesPanel.setLayout(employeesPanelLayout);
         employeesPanelLayout.setHorizontalGroup(
             employeesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(employeesPanelLayout.createSequentialGroup()
-                .addGap(52, 52, 52)
-                .addComponent(jScrollPane2)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, employeesPanelLayout.createSequentialGroup()
+                .addGroup(employeesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(employeesPanelLayout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(addEmployeeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(updateEmployeeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(deleteEmployeeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(employeesPanelLayout.createSequentialGroup()
+                        .addGap(52, 52, 52)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 860, Short.MAX_VALUE)))
                 .addGap(68, 68, 68))
         );
         employeesPanelLayout.setVerticalGroup(
             employeesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, employeesPanelLayout.createSequentialGroup()
-                .addContainerGap(119, Short.MAX_VALUE)
+                .addContainerGap(57, Short.MAX_VALUE)
+                .addGroup(employeesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(addEmployeeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(updateEmployeeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(deleteEmployeeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 447, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(37, 37, 37))
         );
@@ -926,10 +1012,25 @@ public class AuthorizedFrame extends javax.swing.JFrame {
 
     }//GEN-LAST:event_deleteBtnActionPerformed
 
+    private void addEmployeeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addEmployeeBtnActionPerformed
+        AddEmployeeFrame addEmployeeFrame = new AddEmployeeFrame(employeesTable);
+        addEmployeeFrame.setVisible(true);
+    }//GEN-LAST:event_addEmployeeBtnActionPerformed
+
+    private void updateEmployeeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateEmployeeBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_updateEmployeeBtnActionPerformed
+
+    private void deleteEmployeeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteEmployeeBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_deleteEmployeeBtnActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private UI.RoundedButton addEmployeeBtn;
     private UI.RoundedButton addUserBtn;
     private javax.swing.JPanel contentPanel;
     private UI.RoundedButton deleteBtn;
+    private UI.RoundedButton deleteEmployeeBtn;
     private UI.RoundedButton disputesBtn;
     private javax.swing.JPanel disputesPanel;
     private UI.RoundedButton employeesBtn;
@@ -957,6 +1058,7 @@ public class AuthorizedFrame extends javax.swing.JFrame {
     private UI.RoundedButton taxReportsBtn;
     private javax.swing.JPanel taxReportsPanel;
     private UI.RoundedButton updateBtn;
+    private UI.RoundedButton updateEmployeeBtn;
     private UI.RoundedButton usersBtn;
     private javax.swing.JPanel usersPanel;
     private UI.CustomTable usersTable;

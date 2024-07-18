@@ -9,9 +9,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.JOptionPane;
 
 public class DatabaseUserDAO {
 
@@ -47,40 +44,40 @@ public class DatabaseUserDAO {
     return "********";
 }
 
-    public boolean addUserToDatabase(int employeeId, String username, String password, String roleType) throws DatabaseException {
-    try {
-        // Fetch RoleID based on RoleType
-        int roleId = DatabaseUtility.fetchRoleId(roleType);
+        public boolean addUserToDatabase(int employeeId, String username, String password, String roleType) throws DatabaseException {
+        try {
+            // Fetch RoleID based on RoleType
+            int roleId = DatabaseUtility.fetchRoleId(roleType);
 
-        // Hash the password using the PasswordHash utility class
-        String hashedPassword = PasswordHash.hashPassword(password);
+            // Hash the password using the PasswordHash utility class
+            String hashedPassword = PasswordHash.hashPassword(password);
 
-        // Prepare SQL statement to insert user
-        String sql = "INSERT INTO users (EmployeeID, Username, UserPassword, RoleID) VALUES (?, ?, ?, ?)";
-        try (Connection conn = DatabaseConnector.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            // Prepare SQL statement to insert user
+            String sql = "INSERT INTO users (EmployeeID, Username, UserPassword, RoleID) VALUES (?, ?, ?, ?)";
+            try (Connection conn = DatabaseConnector.getConnection();
+                 PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            // Set parameters for the prepared statement
-            stmt.setInt(1, employeeId);
-            stmt.setString(2, username);
-            stmt.setString(3, hashedPassword);
-            stmt.setInt(4, roleId);
+                // Set parameters for the prepared statement
+                stmt.setInt(1, employeeId);
+                stmt.setString(2, username);
+                stmt.setString(3, hashedPassword);
+                stmt.setInt(4, roleId);
 
-            // Execute the update
-            int rowsAffected = stmt.executeUpdate();
+                // Execute the update
+                int rowsAffected = stmt.executeUpdate();
 
-            return rowsAffected > 0; // Return true if user added successfully
+                return rowsAffected > 0; // Return true if user added successfully
+            }
+        } catch (SQLException | HashingException ex) {
+            logError("Error occurred while adding a user to the database", ex);
+            throw new DatabaseException("Error occurred while adding a user to the database", ex);
         }
-    } catch (SQLException | HashingException ex) {
-        logError("Error occurred while adding a user to the database", ex);
-        throw new DatabaseException("Error occurred while adding a user to the database", ex);
     }
-}
-    
-    private void logError(String message, Exception ex) {
-    System.err.println(message);
-    ex.printStackTrace(); // Print detailed stack trace to the error stream
-}
+
+        private void logError(String message, Exception ex) {
+        System.err.println(message);
+        ex.printStackTrace(); // Print detailed stack trace to the error stream
+    }
 
 
  // Method to update an existing user in the database
