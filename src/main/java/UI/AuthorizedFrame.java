@@ -5,12 +5,14 @@ import AccessControl.Roles;
 import entities.Employee;
 import DatabaseConnection.*;
 import DatabaseConnection.DatabaseUserDAO.DatabaseException;
+import UI.AddEmployeeFrame;
 import UI.AddUserFrame;
 import UI.UpdateUserFrame;
 import authentication.AuthenticateUser;
 import authentication.AuthenticationService;
 import authentication.LoginController;
 import entities.User;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -53,7 +55,7 @@ public class AuthorizedFrame extends javax.swing.JFrame {
         
        String employeesTableName = "employees"; // Use your actual table name for employees
        String[] employeesColumnNames = {"EmployeeID", "LastName", "FirstName", "Birthday", "Address","PhoneNumber", "EmpStatus", "Position", "SupervisorID","SSSNumber", "PhilhealthNumber", "PagibigNumber", "TinNumber","BasicSalary", "RiceSubsidy","PhoneAllowance", "ClothingAllowance","GrossSemiMonthlyRate","HourlyRate","DepartmentID"};
-       boolean employeesMaskPassword = false; // Example flag (not relevant for employees, adjust as needed)
+       boolean employeesMaskPassword = true; 
        employeesTable = new CustomTable(employeesTableName, employeesColumnNames, employeesMaskPassword);
        jScrollPane2.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
        jScrollPane2.setViewportView(employeesTable);
@@ -1022,7 +1024,37 @@ public class AuthorizedFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_updateEmployeeBtnActionPerformed
 
     private void deleteEmployeeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteEmployeeBtnActionPerformed
-        // TODO add your handling code here:
+                                          
+    int selectedRow = employeesTable.getSelectedRow();
+    
+    if (selectedRow != -1) {
+        int selectedEmployeeID = Integer.parseInt(employeesTable.getValueAt(selectedRow, 0).toString());
+        String fullName = employeesTable.getValueAt(selectedRow, 1).toString() + " " + employeesTable.getValueAt(selectedRow, 2).toString(); // Assuming columns 1 and 2 are LastName and FirstName
+        
+        int confirmDelete = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete employee '" + fullName + "'?", "Confirm Deletion", JOptionPane.YES_NO_OPTION);
+        
+        if (confirmDelete == JOptionPane.YES_OPTION) {
+            try {
+                // Delete employee from database
+                DatabaseEmployeeDAO.deleteEmployeeFromDatabase(selectedEmployeeID);
+                
+                 if (employeesTable != null) {
+                    // Update table data with new content from the database
+                    employeesTable.updateTableData("employees", new String[]{"EmployeeID", "LastName", "FirstName", "Birthday", "Address", "PhoneNumber", "SSSNumber", "PhilHealthNumber", "TINNumber", "PagIbigNumber", "EmpStatus", "Position", "SupervisorID", "DepartmentID", "BasicSalary", "RiceSubsidy", "PhoneAllowance", "ClothingAllowance", "GrossSemiMonthlyRate", "HourlyRate"}, true);
+                    
+                    JOptionPane.showMessageDialog(null, "Employee '" + fullName + "' deleted successfully.", "Deletion Success", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Failed to delete employee '" + fullName + "'.", "Deletion Error", JOptionPane.ERROR_MESSAGE);
+                }
+                
+            } catch (DatabaseException ex) {
+                JOptionPane.showMessageDialog(null, "Error deleting employee: " + ex.getMessage(), "Deletion Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    } else {
+        JOptionPane.showMessageDialog(null, "Please select an employee to delete.", "No Employee Selected", JOptionPane.WARNING_MESSAGE);
+    }
+
     }//GEN-LAST:event_deleteEmployeeBtnActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

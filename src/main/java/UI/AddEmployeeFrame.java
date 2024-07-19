@@ -704,121 +704,145 @@ public class AddEmployeeFrame extends javax.swing.JFrame {
     private UI.RoundedTextField usernameField3;
     // End of variables declaration//GEN-END:variables
 
-    private void setupConfirmButtonAction() {
-        confirmAddEmpBtn.addActionListener(new ActionListener() {
+  private void setupConfirmButtonAction() {
+    confirmAddEmpBtn.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             addEmployee();
-            
         }
     });
-    }
+}
+
 private void addEmployee() {
-        boolean employeeAdded = false;
-        
+    try {
+        // Fetch the employee details from the relevant fields
+        String lastName = lastNameField.getText();
+        String firstName = firstNameField.getText();
+        Date birthday = birthdayField.getSelectedDate();
 
-        while (!employeeAdded) {
-            try {
-                // Fetch the employee details from the relevant fields
-                String lastName = lastNameField.getText();
-                String firstName = firstNameField.getText();
-                Date birthday = birthdayField.getSelectedDate();
-
-                  if (birthday == null) {
-                 JOptionPane.showMessageDialog(this, "Please select a valid birthday.", "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-
-                String address = addressField.getText();
-                String phoneNumber = phoneNumberField.getText();
-                String sssNumber = sssNumberField.getText();
-                String philhealthNumber = philhealthNumberField.getText();
-                String tinNumber = tinNumberField.getText();
-                String pagibigNumber = pagibigNumberField.getText();
-                String empStatus = (String) empStatusField.getSelectedItem();
-                String position = positionField.getText();
-                String supervisorName = (String) supervisorField.getSelectedItem();
-                String departmentName = (String) departmentField.getSelectedItem();
-                double basicSalary = Double.parseDouble(basicSalaryField.getText());
-                double riceSubsidy = Double.parseDouble(riceSubsidyField.getText());
-                double phoneAllowance = Double.parseDouble(phoneAllowanceField.getText());
-                double clothingAllowance = Double.parseDouble(clothingAllowanceField.getText());
-                double grossSemiMonthlyRate = Double.parseDouble(grossSemiMonthlyRateField.getText());
-                double hourlyRate = Double.parseDouble(hourlyRateField.getText());
-
-                // Validate formats
-                if (!isValidSSSNumber(sssNumber)) {
-                    JOptionPane.showMessageDialog(this, "Invalid SSS Number format. Please enter in ##-#######-# format.", "Input Error", JOptionPane.ERROR_MESSAGE);
-                    return; // Return to allow the user to correct the input
-                }
-
-                if (!isValidPhoneNumber(phoneNumber)) {
-                    JOptionPane.showMessageDialog(this, "Invalid Phone Number format. Please enter in ###-###-### format.", "Input Error", JOptionPane.ERROR_MESSAGE);
-                    return; // Return to allow the user to correct the input
-                }
-                 if (!isValidTinNumber(tinNumber)) {
-                    JOptionPane.showMessageDialog(this, "Invalid TIN Number format. Please enter in ###-###-### format.", "Input Error", JOptionPane.ERROR_MESSAGE);
-                    return; // Return to allow the user to correct the input
-                }
-                  if (!isValidPhilhealthNumber(philhealthNumber)) {
-                    JOptionPane.showMessageDialog(this, "Invalid Philhealth Number format. Please enter a12 digit number.", "Input Error", JOptionPane.ERROR_MESSAGE);
-                    return; // Return to allow the user to correct the input
-                }
-                   if (!isValidPagibigNumber(pagibigNumber)) {
-                    JOptionPane.showMessageDialog(this, "Invalid Pagibig Number format. Please enter a 12 digit number", "Input Error", JOptionPane.ERROR_MESSAGE);
-                    return; // Return to allow the user to correct the input
-                }
-
-                // Create Employee object
-                Employee newEmployee = new Employee(0, lastName, firstName, birthday, address, phoneNumber,
-                        sssNumber, philhealthNumber, tinNumber, pagibigNumber, empStatus, position,
-                        supervisorName, departmentName, basicSalary, riceSubsidy, phoneAllowance, clothingAllowance,
-                        grossSemiMonthlyRate, hourlyRate);
-
-                // Add employee to database
-                DatabaseEmployeeDAO employeeDao = new DatabaseEmployeeDAO();
-                employeeAdded = employeeDao.addEmployee(newEmployee);
-
-                if (employeeAdded) {
-                    // Update employeesTable in AuthorizedFrame
-                    if (employeesTable != null) {
-                        employeesTable.updateTableData("employees", new String[]{"EmployeeID", "LastName", "FirstName", "Birthday", "Address", "PhoneNumber", "SSSNumber", "PhilHealthNumber", "TINNumber", "PagIbigNumber", "EmpStatus", "Position", "SupervisorID", "DepartmentID", "BasicSalary", "RiceSubsidy", "PhoneAllowance", "ClothingAllowance", "GrossSemiMonthlyRate", "HourlyRate"}, true);
-                    }
-
-                    JOptionPane.showMessageDialog(this, "Employee added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-                    dispose(); // Close the frame after successful addition
-                }
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(this, "Invalid input. Please check your entries.", "Input Error", JOptionPane.ERROR_MESSAGE);
-                return; // Return to allow the user to correct the input
-            } catch (DatabaseException ex) {
-                JOptionPane.showMessageDialog(this, "Error adding employee: " + ex.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
-                return; // Return to allow the user to correct the input
-            }
+        if (birthday == null) {
+            JOptionPane.showMessageDialog(this, "Please select a valid birthday.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
         }
-    }
 
-    // Method to validate SSS Number format
-    private boolean isValidSSSNumber(String sssNumber) {
-        // Implement your validation logic here
-        return sssNumber.matches("\\d{2}-\\d{7}-\\d{1}"); 
-    }
+        String address = addressField.getText();
+        String phoneNumber = phoneNumberField.getText();
+        String sssNumber = sssNumberField.getText();
+        String philhealthNumber = philhealthNumberField.getText();
+        String tinNumber = tinNumberField.getText();
+        String pagibigNumber = pagibigNumberField.getText();
+        String empStatus = (String) empStatusField.getSelectedItem();
+        String position = positionField.getText();
+        String supervisorName = (String) supervisorField.getSelectedItem();
+        String departmentName = (String) departmentField.getSelectedItem();
+        double basicSalary = Double.parseDouble(basicSalaryField.getText());
+        double riceSubsidy = Double.parseDouble(riceSubsidyField.getText());
+        double phoneAllowance = Double.parseDouble(phoneAllowanceField.getText());
+        double clothingAllowance = Double.parseDouble(clothingAllowanceField.getText());
+        double grossSemiMonthlyRate = Double.parseDouble(grossSemiMonthlyRateField.getText());
+        double hourlyRate = Double.parseDouble(hourlyRateField.getText());
 
-    // Method to validate Phone Number format
-    private boolean isValidPhoneNumber(String phoneNumber) {
-        // Implement your validation logic here
-        return phoneNumber.matches("\\d{3}-\\d{3}-\\d{3}"); 
+        // Validate formats
+        if (!isValidSSSNumber(sssNumber)) {
+            JOptionPane.showMessageDialog(this, "Invalid SSS Number format. Please enter in ##-#######-# format.", "Input Error", JOptionPane.ERROR_MESSAGE);
+            return; // Return to allow the user to correct the input
+        }
+
+        if (!isValidPhoneNumber(phoneNumber)) {
+            JOptionPane.showMessageDialog(this, "Invalid Phone Number format. Please enter in ###-###-### format.", "Input Error", JOptionPane.ERROR_MESSAGE);
+            return; // Return to allow the user to correct the input
+        }
+        if (!isValidTinNumber(tinNumber)) {
+            JOptionPane.showMessageDialog(this, "Invalid TIN Number format. Please enter in ###-###-### format.", "Input Error", JOptionPane.ERROR_MESSAGE);
+            return; // Return to allow the user to correct the input
+        }
+        if (!isValidPhilhealthNumber(philhealthNumber)) {
+            JOptionPane.showMessageDialog(this, "Invalid Philhealth Number format. Please enter a 12-digit number.", "Input Error", JOptionPane.ERROR_MESSAGE);
+            return; // Return to allow the user to correct the input
+        }
+        if (!isValidPagibigNumber(pagibigNumber)) {
+            JOptionPane.showMessageDialog(this, "Invalid Pagibig Number format. Please enter a 12-digit number.", "Input Error", JOptionPane.ERROR_MESSAGE);
+            return; // Return to allow the user to correct the input
+        }
+
+        // Check for existing unique fields
+        DatabaseEmployeeDAO employeeDao = new DatabaseEmployeeDAO();
+
+        if (employeeDao.isPhoneNumberExists(phoneNumber)) {
+            JOptionPane.showMessageDialog(this, "Phone number already exists. Please enter a unique phone number.", "Duplicate Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (employeeDao.isSSSNumberExists(sssNumber)) {
+            JOptionPane.showMessageDialog(this, "SSS number already exists. Please enter a unique SSS number.", "Duplicate Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (employeeDao.isPhilhealthNumberExists(philhealthNumber)) {
+            JOptionPane.showMessageDialog(this, "PhilHealth number already exists. Please enter a unique PhilHealth number.", "Duplicate Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (employeeDao.isTinNumberExists(tinNumber)) {
+            JOptionPane.showMessageDialog(this, "TIN number already exists. Please enter a unique TIN number.", "Duplicate Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (employeeDao.isPagibigNumberExists(pagibigNumber)) {
+            JOptionPane.showMessageDialog(this, "PagIbig number already exists. Please enter a unique PagIbig number.", "Duplicate Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Create Employee object
+        Employee newEmployee = new Employee(0, lastName, firstName, birthday, address, phoneNumber,
+                sssNumber, philhealthNumber, tinNumber, pagibigNumber, empStatus, position,
+                supervisorName, departmentName, basicSalary, riceSubsidy, phoneAllowance, clothingAllowance,
+                grossSemiMonthlyRate, hourlyRate);
+
+        // Add employee to database
+        boolean employeeAdded = employeeDao.addEmployeeToDatabase(newEmployee);
+
+        if (employeeAdded) {
+            // Update employeesTable in AuthorizedFrame
+            if (employeesTable != null) {
+                // Update table data with new content from the database
+                employeesTable.updateTableData("employees", new String[]{"EmployeeID", "LastName", "FirstName", "Birthday", "Address", "PhoneNumber", "SSSNumber", "PhilHealthNumber", "TINNumber", "PagIbigNumber", "EmpStatus", "Position", "SupervisorID", "DepartmentID", "BasicSalary", "RiceSubsidy", "PhoneAllowance", "ClothingAllowance", "GrossSemiMonthlyRate", "HourlyRate"}, true);
+                employeesTable.revalidate();
+                employeesTable.repaint();
+            }
+
+            JOptionPane.showMessageDialog(this, "Employee added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            dispose(); // Close the frame after successful addition
+        }
+    } catch (NumberFormatException ex) {
+        JOptionPane.showMessageDialog(this, "Invalid input. Please check your entries.", "Input Error", JOptionPane.ERROR_MESSAGE);
+    } catch (DatabaseException | SQLException ex) {
+        JOptionPane.showMessageDialog(this, "Error adding employee: " + ex.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
     }
-     private boolean isValidPhilhealthNumber(String philhealthNumber) {
-        // Implement your validation logic here
-        return philhealthNumber.matches("\\d{12}"); 
-    }
-      private boolean isValidTinNumber(String tinNumber) {
-        // Implement your validation logic here
-        return tinNumber.matches("\\d{3}-\\d{3}-\\d{3}-\\d{3}"); 
-    }
-       private boolean isValidPagibigNumber(String pagibigNumber) {
-        // Implement your validation logic here
-        return pagibigNumber.matches("\\d{12}"); 
-    }
+}
+
+// Method to validate SSS Number format
+private boolean isValidSSSNumber(String sssNumber) {
+    return sssNumber.matches("\\d{2}-\\d{7}-\\d{1}");
+}
+
+// Method to validate Phone Number format
+private boolean isValidPhoneNumber(String phoneNumber) {
+    return phoneNumber.matches("\\d{3}-\\d{3}-\\d{3}");
+}
+
+// Method to validate Philhealth Number format
+private boolean isValidPhilhealthNumber(String philhealthNumber) {
+    return philhealthNumber.matches("\\d{12}");
+}
+
+// Method to validate TIN Number format
+private boolean isValidTinNumber(String tinNumber) {
+    return tinNumber.matches("\\d{3}-\\d{3}-\\d{3}-\\d{3}");
+}
+
+// Method to validate Pagibig Number format
+private boolean isValidPagibigNumber(String pagibigNumber) {
+    return pagibigNumber.matches("\\d{12}");
+}
 }

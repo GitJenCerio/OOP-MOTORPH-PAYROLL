@@ -13,7 +13,7 @@ import java.util.List;
 
 public class DatabaseUtility {
 
-    public static DefaultTableModel fetchDataAndCreateTableModel(String tableName, String[] columnNames, boolean maskPassword) {
+   public static DefaultTableModel fetchDataAndCreateTableModel(String tableName, String[] columnNames, boolean maskPassword) {
     DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
     String query = buildQuery(tableName, columnNames);
 
@@ -27,7 +27,7 @@ public class DatabaseUtility {
             Object[] rowData = new Object[columnNames.length];
             for (int i = 0; i < columnNames.length; i++) {
                 if (maskPassword && columnNames[i].equalsIgnoreCase("UserPassword")) {
-                    rowData[i] = "********"; // Mask the password
+                    rowData[i] = "********"; // Mask the password for usersTable
                 } else {
                     rowData[i] = rs.getObject(columnNames[i]);
                 }
@@ -42,7 +42,6 @@ public class DatabaseUtility {
 
     return tableModel;
 }
-
 
     // Method to fetch dropdown items from a specified table and column
     public static String[] fetchDropdownItems(String tableName, String columnName) {

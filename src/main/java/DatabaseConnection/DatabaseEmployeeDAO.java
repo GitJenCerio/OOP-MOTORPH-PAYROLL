@@ -3,6 +3,7 @@ package DatabaseConnection;
 
 import static DatabaseConnection.DatabaseConnector.getConnection;
 import DatabaseConnection.DatabaseUserDAO.DatabaseException;
+import DatabaseConnection.DatabaseUtility;
 import entities.Employee;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -70,56 +71,69 @@ public class DatabaseEmployeeDAO implements EmployeeDAO {
                 basicSalary, riceSubsidy, phoneAllowance, clothingAllowance, grossSemiMonthlyRate, hourlyRate);
     }
 
-    public boolean addEmployee(Employee employee) throws DatabaseException {
-       String sql = "INSERT INTO employees (LastName, FirstName, Birthday, Address, PhoneNumber, SSSNumber, " +
-                    "PhilHealthNumber, TinNumber, PagIbigNumber, EmpStatus, Position, BasicSalary, RiceSubsidy, " +
-                    "PhoneAllowance, ClothingAllowance, GrossSemiMonthlyRate, HourlyRate, SupervisorID, DepartmentID) " +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+           public boolean addEmployeeToDatabase(Employee employee) throws SQLException, DatabaseException {
+           String sql = "INSERT INTO employees (LastName, FirstName, Birthday, Address, PhoneNumber, SSSNumber, " +
+                        "PhilHealthNumber, TinNumber, PagIbigNumber, EmpStatus, Position, BasicSalary, RiceSubsidy, " +
+                        "PhoneAllowance, ClothingAllowance, GrossSemiMonthlyRate, HourlyRate, SupervisorID, DepartmentID) " +
+                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-       try (Connection conn = DatabaseConnector.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(sql)) {
+           try (Connection conn = DatabaseConnector.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-           stmt.setString(1, employee.getLastName());
-           stmt.setString(2, employee.getFirstName());
-           stmt.setDate(3, new java.sql.Date(employee.getBirthday().getTime()));
-           stmt.setString(4, employee.getAddress());
-           stmt.setString(5, employee.getPhoneNumber());
-           stmt.setString(6, employee.getSssNumber());
-           stmt.setString(7, employee.getPhilHealthNumber());
-           stmt.setString(8, employee.getTinNumber());
-           stmt.setString(9, employee.getPagIbigNumber());
-           stmt.setString(10, employee.getEmpStatus());
-           stmt.setString(11, employee.getPosition());
-           stmt.setDouble(12, employee.getBasicSalary());
-           stmt.setDouble(13, employee.getRiceSubsidy());
-           stmt.setDouble(14, employee.getPhoneAllowance());
-           stmt.setDouble(15, employee.getClothingAllowance());
-           stmt.setDouble(16, employee.getGrossSemiMonthlyRate());
-           stmt.setDouble(17, employee.getHourlyRate());
+               stmt.setString(1, employee.getLastName());
+               stmt.setString(2, employee.getFirstName());
+               stmt.setDate(3, new java.sql.Date(employee.getBirthday().getTime()));
+               stmt.setString(4, employee.getAddress());
+               stmt.setString(5, employee.getPhoneNumber());
+               stmt.setString(6, employee.getSssNumber());
+               stmt.setString(7, employee.getPhilHealthNumber());
+               stmt.setString(8, employee.getTinNumber());
+               stmt.setString(9, employee.getPagIbigNumber());
+               stmt.setString(10, employee.getEmpStatus());
+               stmt.setString(11, employee.getPosition());
+               stmt.setDouble(12, employee.getBasicSalary());
+               stmt.setDouble(13, employee.getRiceSubsidy());
+               stmt.setDouble(14, employee.getPhoneAllowance());
+               stmt.setDouble(15, employee.getClothingAllowance());
+               stmt.setDouble(16, employee.getGrossSemiMonthlyRate());
+               stmt.setDouble(17, employee.getHourlyRate());
 
-           // Fetch SupervisorID and DepartmentID dynamically
-           int supervisorId = DatabaseUtility.fetchSupervisorID(employee.getSupervisorName());
-           int departmentId = DatabaseUtility.fetchDepartmentID(employee.getDepartmentName());
+               // Fetch SupervisorID and DepartmentID dynamically
+               int supervisorId = DatabaseUtility.fetchSupervisorID(employee.getSupervisorName());
+               int departmentId = DatabaseUtility.fetchDepartmentID(employee.getDepartmentName());
 
-           stmt.setInt(18, supervisorId);
-           stmt.setInt(19, departmentId);
+               stmt.setInt(18, supervisorId);
+               stmt.setInt(19, departmentId);
 
-           int affectedRows = stmt.executeUpdate();
+               int rowsAffected = stmt.executeUpdate();
+               return rowsAffected > 0; // Return true if employee added successfully
 
-           return affectedRows == 1; // Return true if one row was affected (employee added successfully)
-
-       } catch (SQLException ex) {
-           logError("Error occurred while adding an employee to the database", ex);
-           throw new DatabaseException("Error occurred while adding an employee to the database", ex);
+           } catch (SQLException ex) {
+               logError("Error occurred while adding an employee to the database", ex);
+               throw new DatabaseException("Error occurred while adding an employee to the database", ex);
+           }
        }
-   }
 
-   private void logError(String message, Exception ex) {
-       System.err.println(message);
-       ex.printStackTrace(); // Print detailed stack trace to the error stream
-   }
+       private void logError(String message, Exception ex) {
+           System.err.println(message);
+           ex.printStackTrace(); // Print detailed stack trace to the error stream
+       }
+        public static void deleteEmployeeFromDatabase(int employeeId) throws DatabaseException {
+        String sql = "DELETE FROM employees WHERE EmployeeID=?";
+        try (Connection conn = DatabaseConnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, employeeId);
+            int rowsAffected = stmt.executeUpdate();
 
-    
+            if (rowsAffected == 0) {
+                throw new DatabaseException("No user found with EmployeeID " + employeeId);
+            }
+        } catch (SQLException ex) {
+            throw new DatabaseException("Error occurred while deleting the Employee from the database", ex);
+        }
+    }
+       
+
         public boolean isPhoneNumberExists(String phoneNumber) throws SQLException {
         String query = "SELECT COUNT(*) FROM employees WHERE PhoneNumber = ?";
         try (Connection connection = getConnection();

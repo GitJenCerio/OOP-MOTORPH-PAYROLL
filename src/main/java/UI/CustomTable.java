@@ -87,21 +87,22 @@ private void setupTable() {
     }
 
     public void updateTableData(String tableName, String[] columnNames, boolean maskPassword) {
-        DefaultTableModel model = (DefaultTableModel) getModel();
-        model.setRowCount(0); // Clear existing rows
+      DefaultTableModel model = (DefaultTableModel) getModel();
+      model.setRowCount(0); // Clear existing rows
 
-        // Fetch updated data and populate the table
-        model = DatabaseUtility.fetchDataAndCreateTableModel(tableName, columnNames, maskPassword);
-        setModel(model);
+      // Fetch updated data and populate the table
+      model = DatabaseUtility.fetchDataAndCreateTableModel(tableName, columnNames, maskPassword);
+      setModel(model);
 
-        // Reapply center alignment to all columns after updating data
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+      // Reapply center alignment to all columns after updating data
+      DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+      centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 
-        for (int columnIndex = 0; columnIndex < getColumnCount(); columnIndex++) {
-            getColumnModel().getColumn(columnIndex).setCellRenderer(centerRenderer);
-        }
-    }
+      for (int columnIndex = 0; columnIndex < getColumnCount(); columnIndex++) {
+          getColumnModel().getColumn(columnIndex).setCellRenderer(centerRenderer);
+      }
+  }
+
 
     // Override prepareRenderer to set alternating row colors
     @Override
