@@ -5,12 +5,15 @@ import AccessControl.Roles;
 import entities.Employee;
 import DatabaseConnection.*;
 import DatabaseConnection.DatabaseUserDAO.DatabaseException;
+import PayrollSystem.PayrollGenerator;
 import components.*;
 import authentication.AuthenticateUser;
 import authentication.AuthenticationService;
 import authentication.LoginController;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -30,6 +33,7 @@ public class AuthorizedFrame extends javax.swing.JFrame {
     private int userRole;
     private CSVUploader csvUploader;
     private JFrame frame;
+    
     
     public AuthorizedFrame(int userId, int userRole) {
         this.userId = userId;
@@ -59,13 +63,14 @@ public class AuthorizedFrame extends javax.swing.JFrame {
        jScrollPane2.setViewportView(employeesTable);
        
         
-       String payrollTableName = "payslip"; 
-       String[] payrollColumnNames = {"PayrollID", "PayslipNo", "EmployeeID", "GrossPay", "HoursWorked", "TotalBenefits", "TotalDeductions", "WithholdingTax", "NetPay"};
-  
-       payrollTable = new CustomTable(payrollTableName, payrollColumnNames, employeesMaskPassword);
-       jScrollPane3.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-       jScrollPane3.setViewportView(payrollTable);
-       
+         String payrollTableName = "payslip";
+         String[] payrollColumnNames = {"PayrollID", "PayslipNo", "PayPeriod", "EmployeeID", "FullName", "GrossPay", "HoursWorked", "TotalBenefits", "TotalDeductions", "WithholdingTax", "NetPay"};
+
+         // Assuming employeesMaskPassword is used for password masking
+         payrollTable = new CustomTable(payrollTableName, payrollColumnNames, employeesMaskPassword);
+         jScrollPane3.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+         jScrollPane3.setViewportView(payrollTable);
+
         
     }
     /**
@@ -112,9 +117,10 @@ public class AuthorizedFrame extends javax.swing.JFrame {
         payrollPanel = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         payrollTable = new UI.CustomTable();
-        addUserBtn1 = new UI.RoundedButton();
+        generatePayrollBtn = new UI.RoundedButton();
         uploadTimeSheetBtn = new UI.RoundedButton();
         filePathTextField = new javax.swing.JTextField();
+        payrollDateRangeChooser = new UI.CalendarRangePicker();
         requestsPanel = new javax.swing.JPanel();
         taxReportsPanel = new javax.swing.JPanel();
         disputesPanel = new javax.swing.JPanel();
@@ -918,23 +924,28 @@ public class AuthorizedFrame extends javax.swing.JFrame {
             payrollTable.getColumnModel().getColumn(4).setResizable(false);
         }
 
-        addUserBtn1.setBackground(new java.awt.Color(4, 14, 163));
-        addUserBtn1.setBorder(null);
-        addUserBtn1.setForeground(new java.awt.Color(255, 255, 255));
-        addUserBtn1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icon-payslip.png"))); // NOI18N
-        addUserBtn1.setText("Generate Payroll");
-        addUserBtn1.setAlignmentY(0.0F);
-        addUserBtn1.setBorderColor(new java.awt.Color(0, 102, 204));
-        addUserBtn1.setBorderPainted(false);
-        addUserBtn1.setColor(new java.awt.Color(4, 14, 163));
-        addUserBtn1.setColorClick(new java.awt.Color(0, 102, 204));
-        addUserBtn1.setColorOver(new java.awt.Color(0, 102, 204));
-        addUserBtn1.setFocusPainted(false);
-        addUserBtn1.setFont(new java.awt.Font("Poppins SemiBold", 0, 14)); // NOI18N
-        addUserBtn1.setIconTextGap(3);
-        addUserBtn1.setMargin(new java.awt.Insets(2, 14, 2, 14));
-        addUserBtn1.setPreferredSize(new java.awt.Dimension(150, 32));
-        addUserBtn1.setRadius(35);
+        generatePayrollBtn.setBackground(new java.awt.Color(4, 14, 163));
+        generatePayrollBtn.setBorder(null);
+        generatePayrollBtn.setForeground(new java.awt.Color(255, 255, 255));
+        generatePayrollBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icon-payslip.png"))); // NOI18N
+        generatePayrollBtn.setText("Generate Payroll");
+        generatePayrollBtn.setAlignmentY(0.0F);
+        generatePayrollBtn.setBorderColor(new java.awt.Color(0, 102, 204));
+        generatePayrollBtn.setBorderPainted(false);
+        generatePayrollBtn.setColor(new java.awt.Color(4, 14, 163));
+        generatePayrollBtn.setColorClick(new java.awt.Color(0, 102, 204));
+        generatePayrollBtn.setColorOver(new java.awt.Color(0, 102, 204));
+        generatePayrollBtn.setFocusPainted(false);
+        generatePayrollBtn.setFont(new java.awt.Font("Poppins SemiBold", 0, 14)); // NOI18N
+        generatePayrollBtn.setIconTextGap(3);
+        generatePayrollBtn.setMargin(new java.awt.Insets(2, 14, 2, 14));
+        generatePayrollBtn.setPreferredSize(new java.awt.Dimension(150, 32));
+        generatePayrollBtn.setRadius(35);
+        generatePayrollBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                generatePayrollBtnActionPerformed(evt);
+            }
+        });
 
         uploadTimeSheetBtn.setBackground(new java.awt.Color(4, 14, 163));
         uploadTimeSheetBtn.setBorder(null);
@@ -978,13 +989,16 @@ public class AuthorizedFrame extends javax.swing.JFrame {
             payrollPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(payrollPanelLayout.createSequentialGroup()
                 .addGap(34, 34, 34)
-                .addGroup(payrollPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(payrollPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(payrollPanelLayout.createSequentialGroup()
                         .addComponent(filePathTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(uploadTimeSheetBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(addUserBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(payrollDateRangeChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(37, 37, 37)
+                        .addComponent(generatePayrollBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(33, 33, 33))
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 870, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(76, Short.MAX_VALUE))
         );
@@ -992,10 +1006,12 @@ public class AuthorizedFrame extends javax.swing.JFrame {
             payrollPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, payrollPanelLayout.createSequentialGroup()
                 .addContainerGap(50, Short.MAX_VALUE)
-                .addGroup(payrollPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(addUserBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(uploadTimeSheetBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(filePathTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(payrollPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, payrollPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(uploadTimeSheetBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(filePathTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(payrollDateRangeChooser, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(generatePayrollBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(41, 41, 41)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 447, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32))
@@ -1292,10 +1308,58 @@ public class AuthorizedFrame extends javax.swing.JFrame {
 
     }//GEN-LAST:event_filePathTextFieldMouseClicked
 
+    private void generatePayrollBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generatePayrollBtnActionPerformed
+    Date startDateRange = payrollDateRangeChooser.getStartDate();
+    Date endDateRange = payrollDateRangeChooser.getEndDate();
+
+    if (startDateRange == null || endDateRange == null) {
+        JOptionPane.showMessageDialog(this, "Please select a valid date range.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    // Convert Date to LocalDate
+    LocalDate startDate = convertToLocalDate(startDateRange);
+    LocalDate endDate = convertToLocalDate(endDateRange);
+
+    if (startDate.isAfter(endDate)) {
+        JOptionPane.showMessageDialog(this, "End date must be after start date.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    Employee employee = employeeDAO.getEmployeeById(userId);
+    String generatedBy = employee.getFirstName() + " " + employee.getLastName();// Ensure this field is correctly initialized
+
+    // Validate generatedBy input
+    if (generatedBy == null || generatedBy.trim().isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Please enter the name of the person generating the payroll.", "Input Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    // Create an instance of PayrollGenerator
+    PayrollGenerator payrollGenerator = new PayrollGenerator();
+
+    try {
+        // Generate payroll for all employees
+        payrollGenerator.generatePayrollForAllEmployees(startDate, endDate, generatedBy);
+
+        // Notify the user of successful payroll generation
+        JOptionPane.showMessageDialog(this, "Payroll has been generated successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+    } catch (Exception e) {
+        // Handle errors and notify the user
+        JOptionPane.showMessageDialog(this, "An error occurred while generating payroll: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    }
+
+// Helper method to convert java.util.Date to java.time.LocalDate
+    private LocalDate convertToLocalDate(Date date) {
+    return date.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+
+    }//GEN-LAST:event_generatePayrollBtnActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private UI.RoundedButton addEmployeeBtn;
     private UI.RoundedButton addUserBtn;
-    private UI.RoundedButton addUserBtn1;
     private javax.swing.JPanel contentPanel;
     private UI.RoundedButton deleteBtn;
     private UI.RoundedButton deleteEmployeeBtn;
@@ -1305,6 +1369,7 @@ public class AuthorizedFrame extends javax.swing.JFrame {
     private javax.swing.JPanel employeesPanel;
     private UI.CustomTable employeesTable;
     private javax.swing.JTextField filePathTextField;
+    private UI.RoundedButton generatePayrollBtn;
     private javax.swing.JLabel headerLabel;
     private UI.RoundedButton homeBtn;
     private javax.swing.JPanel homePanel;
@@ -1321,6 +1386,7 @@ public class AuthorizedFrame extends javax.swing.JFrame {
     private javax.swing.JLabel loggedInUserPosition;
     private UI.RoundedButton logoutBtn;
     private UI.RoundedButton payrollBtn;
+    private UI.CalendarRangePicker payrollDateRangeChooser;
     private javax.swing.JPanel payrollPanel;
     private UI.CustomTable payrollTable;
     private UI.RoundedButton requestsBtn;

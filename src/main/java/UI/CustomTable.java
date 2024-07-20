@@ -1,15 +1,16 @@
+
 package UI;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
+import javax.swing.table.*;
 import java.awt.*;
+import java.text.DecimalFormat;
 import DatabaseConnection.DatabaseUtility;
 
 public class CustomTable extends JTable {
+
+    private static final DecimalFormat currencyFormat = new DecimalFormat("#,##0.00");
+    private static final int CELL_PADDING = 10; // Margin in pixels
 
     public CustomTable() {
         super();
@@ -28,20 +29,26 @@ public class CustomTable extends JTable {
         setShowGrid(false); // Hide grid lines
         setRowHeight(25); // Set row height to 25 pixels
 
-        // Center align text in all columns
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-
-        // Apply center alignment and set dynamic widths to all columns
+        // Apply center alignment and set renderers for all columns
         for (int columnIndex = 0; columnIndex < getColumnCount(); columnIndex++) {
             TableColumn column = getColumnModel().getColumn(columnIndex);
+
+            if (isNumericColumn(columnIndex)) {
+                column.setCellRenderer(new NumericCellRenderer());
+            } else {
+                column.setCellRenderer(new DefaultTableCellRenderer());
+            }
+            
+            // Apply center alignment
+            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+            centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
             column.setCellRenderer(centerRenderer);
 
             // Calculate preferred width based on the widest cell content
             int maxWidth = calculateMaxWidth(columnIndex);
-            int preferredWidth = Math.min(Math.max(maxWidth + 10, 50), 150); // Adjust padding and max width as needed
+            int preferredWidth = Math.min(Math.max(maxWidth + 20, 80), 150); // Adjust padding and max width as needed
             column.setPreferredWidth(preferredWidth);
-            column.setMinWidth(50); // Example minimum width (adjust as needed)
+            column.setMinWidth(70); // Example minimum width (adjust as needed)
         }
 
         setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -50,6 +57,12 @@ public class CustomTable extends JTable {
         // Set table header height
         JTableHeader tableHeader = getTableHeader();
         tableHeader.setPreferredSize(new Dimension(tableHeader.getPreferredSize().width, 35));
+    }
+
+    private boolean isNumericColumn(int columnIndex) {
+        // Implement logic to identify numeric columns, e.g., by checking column names or data types
+        // For example purposes, assume numeric columns are even-indexed
+        return columnIndex % 2 == 0;
     }
 
     private int calculateMaxWidth(int columnIndex) {
@@ -88,11 +101,13 @@ public class CustomTable extends JTable {
         model = DatabaseUtility.fetchDataAndCreateTableModel(tableName, columnNames, maskPassword);
         setModel(model);
 
-        // Reapply center alignment to all columns after updating data
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        // Reapply custom renderer to all columns after updating data
         for (int columnIndex = 0; columnIndex < getColumnCount(); columnIndex++) {
-            getColumnModel().getColumn(columnIndex).setCellRenderer(centerRenderer);
+            if (isNumericColumn(columnIndex)) {
+                getColumnModel().getColumn(columnIndex).setCellRenderer(new NumericCellRenderer());
+            } else {
+                getColumnModel().getColumn(columnIndex).setCellRenderer(new DefaultTableCellRenderer());
+            }
         }
     }
 
@@ -117,4 +132,28 @@ public class CustomTable extends JTable {
 
         return component;
     }
+
+    // Custom cell renderer for numeric columns
+   private static class NumericCellRenderer extends DefaultTableCellRenderer {
+    @Override
+    public Component getTableCellRendererComponent(JTable table, Object value,
+            boolean isSelected, boolean hasFocus, int row, int column) {
+        // Get the default cell renderer component
+        JComponent cell = (JComponent) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+        // Add padding around the cell content
+        cell.setPreferredSize(new Dimension(cell.getPreferredSize().width + CELL_PADDING * 2,
+                cell.getPreferredSize().height));
+        cell.setBorder(BorderFactory.createEmptyBorder(0, CELL_PADDING, 0, CELL_PADDING));
+
+        // Apply currency formatting if the value is numeric
+        if (value instanceof Number) {
+            setText(currencyFormat.format((Number) value));
+        } else {
+            setText(value != null ? value.toString() : "");
+        }
+
+        return cell;
+    }
+}
 }

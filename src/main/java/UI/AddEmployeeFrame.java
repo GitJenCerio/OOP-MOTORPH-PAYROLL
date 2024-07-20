@@ -24,6 +24,7 @@ public class AddEmployeeFrame extends javax.swing.JFrame {
         setupConfirmButtonAction();
         loadDropdownEmpStatus();
        
+       
         
         
         this.employeesTable = employeesTable; // Initialize usersTable reference

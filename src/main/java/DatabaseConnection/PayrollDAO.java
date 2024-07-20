@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,13 +27,14 @@ public class PayrollDAO {
             stmt.setDate(2, java.sql.Date.valueOf(startDate));
             stmt.setDate(3, java.sql.Date.valueOf(endDate));
 
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                int empId = rs.getInt("EmployeeID");
-                LocalDate date = rs.getDate("AttendanceDate").toLocalDate();
-                double hoursWorked = rs.getDouble("HoursWorked");
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    int empId = rs.getInt("EmployeeID");
+                    LocalDate date = rs.getDate("AttendanceDate").toLocalDate();
+                    double hoursWorked = rs.getDouble("HoursWorked");
 
-                attendanceRecords.add(new Attendance(empId, date, hoursWorked));
+                    attendanceRecords.add(new Attendance(empId, date, hoursWorked));
+                }
             }
         } catch (SQLException e) {
             throw new SQLException("Failed to fetch attendance records", e);
@@ -52,13 +54,14 @@ public class PayrollDAO {
             stmt.setDate(2, java.sql.Date.valueOf(startDate));
             stmt.setDate(3, java.sql.Date.valueOf(endDate));
 
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                int empId = rs.getInt("EmployeeID");
-                LocalDate date = rs.getDate("OvertimeDate").toLocalDate();
-                double hoursWorked = rs.getDouble("HoursWorked");
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    int empId = rs.getInt("EmployeeID");
+                    LocalDate date = rs.getDate("OvertimeDate").toLocalDate();
+                    double hoursWorked = rs.getDouble("HoursWorked");
 
-                overtimeRecords.add(new Overtime(empId, date, hoursWorked));
+                    overtimeRecords.add(new Overtime(empId, date, hoursWorked));
+                }
             }
         } catch (SQLException e) {
             throw new SQLException("Failed to fetch approved overtime records", e);
@@ -78,16 +81,17 @@ public class PayrollDAO {
             stmt.setDate(2, java.sql.Date.valueOf(startDate));
             stmt.setDate(3, java.sql.Date.valueOf(endDate));
 
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                int leaveID = rs.getInt("LeaveID");
-                int empId = rs.getInt("EmployeeID");
-                LocalDate leaveStartDate = rs.getDate("StartDate").toLocalDate();
-                LocalDate leaveEndDate = rs.getDate("EndDate").toLocalDate();
-                String leaveType = rs.getString("LeaveType");
-                String leaveStatus = rs.getString("LeaveStatus");
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    int leaveID = rs.getInt("LeaveID");
+                    int empId = rs.getInt("EmployeeID");
+                    LocalDate leaveStartDate = rs.getDate("StartDate").toLocalDate();
+                    LocalDate leaveEndDate = rs.getDate("EndDate").toLocalDate();
+                    String leaveType = rs.getString("LeaveType");
+                    String leaveStatus = rs.getString("LeaveStatus");
 
-                leaveRecords.add(new LeaveRecord(leaveID, empId, leaveType, leaveStartDate, leaveEndDate, leaveStatus));
+                    leaveRecords.add(new LeaveRecord(leaveID, empId, leaveType, leaveStartDate, leaveEndDate, leaveStatus));
+                }
             }
         } catch (SQLException e) {
             throw new SQLException("Failed to fetch approved leave records", e);
@@ -97,14 +101,16 @@ public class PayrollDAO {
 
     // Save payroll record to the database
     public int savePayroll(LocalDate startDate, LocalDate endDate, String generatedBy) throws SQLException {
+        LocalDateTime currentDateTime = LocalDateTime.now();
+
         String sql = "INSERT INTO Payroll (PeriodStartDate, PeriodEndDate, GenerationDate, GeneratedBy) VALUES (?, ?, ?, ?)";
-        
+
         try (Connection conn = DatabaseConnector.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             stmt.setDate(1, java.sql.Date.valueOf(startDate));
             stmt.setDate(2, java.sql.Date.valueOf(endDate));
-            stmt.setTimestamp(3, java.sql.Timestamp.valueOf(LocalDateTime.now()));
+            stmt.setTimestamp(3, java.sql.Timestamp.valueOf(currentDateTime));
             stmt.setString(4, generatedBy);
 
             int rowsInserted = stmt.executeUpdate();
@@ -122,23 +128,21 @@ public class PayrollDAO {
     }
 
     // Save payslip record to the database
-    public void savePayslip(String payslipNo, int payrollId, int employeeId, LocalDate startDate, LocalDate endDate, double grossPay, double hoursWorked, double totalBenefits, double totalDeductions, double withholdingTax, double netPay) throws SQLException {
-        String sql = "INSERT INTO Payslip (PayslipNo, PayrollID, EmployeeID, PeriodStartDate, PeriodEndDate, GrossPay, HoursWorked, TotalBenefits, TotalDeductions, WithholdingTax, NetPay) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        
+    public void savePayslip(String payslipNo, int payrollId, int employeeId, double grossPay, double hoursWorked, double totalBenefits, double totalDeductions, double withholdingTax, double netPay) throws SQLException {
+        String sql = "INSERT INTO Payslip (PayslipNo, PayrollID, EmployeeID, GrossPay, HoursWorked, TotalBenefits, TotalDeductions, WithholdingTax, NetPay) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
         try (Connection conn = DatabaseConnector.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, payslipNo);
             stmt.setInt(2, payrollId);
             stmt.setInt(3, employeeId);
-            stmt.setDate(4, java.sql.Date.valueOf(startDate));
-            stmt.setDate(5, java.sql.Date.valueOf(endDate));
-            stmt.setDouble(6, grossPay);
-            stmt.setDouble(7, hoursWorked);
-            stmt.setDouble(8, totalBenefits);
-            stmt.setDouble(9, totalDeductions);
-            stmt.setDouble(10, withholdingTax);
-            stmt.setDouble(11, netPay);
+            stmt.setDouble(4, grossPay);
+            stmt.setDouble(5, hoursWorked);
+            stmt.setDouble(6, totalBenefits);
+            stmt.setDouble(7, totalDeductions);
+            stmt.setDouble(8, withholdingTax);
+            stmt.setDouble(9, netPay);
 
             stmt.executeUpdate();
         } catch (SQLException e) {

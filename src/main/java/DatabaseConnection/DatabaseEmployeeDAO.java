@@ -10,7 +10,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class DatabaseEmployeeDAO implements EmployeeDAO {
 
@@ -298,4 +300,26 @@ public boolean updateEmployeePersonalInfo(Employee employee) throws SQLException
         return affectedRows > 0;
     }
 }
+
+ public List<Employee> getAllEmployees() {
+        List<Employee> employees = new ArrayList<>();
+        String sql = "SELECT * FROM employees";
+        
+        try (Connection conn = DatabaseConnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            
+            while (rs.next()) {
+                // Retrieve employee details from the result set
+                Employee employee = extractEmployeeFromResultSet(rs);
+                employees.add(employee);
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle or log the exception properly
+        }
+        
+        return employees;
+    }
+
 }

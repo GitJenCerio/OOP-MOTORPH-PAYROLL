@@ -1231,13 +1231,16 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Group type="102" attributes="0">
                               <Component id="filePathTextField" min="-2" pref="186" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="uploadTimeSheetBtn" min="-2" pref="160" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="addUserBtn1" min="-2" pref="160" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="payrollDateRangeChooser" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
+                              <Component id="generatePayrollBtn" min="-2" pref="160" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
                           </Group>
                           <Component id="jScrollPane3" min="-2" pref="870" max="-2" attributes="0"/>
                       </Group>
@@ -1249,10 +1252,13 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace pref="50" max="32767" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="addUserBtn1" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="uploadTimeSheetBtn" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="filePathTextField" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" alignment="1" groupAlignment="3" attributes="0">
+                              <Component id="uploadTimeSheetBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="filePathTextField" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="payrollDateRangeChooser" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="generatePayrollBtn" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
                       <Component id="jScrollPane3" min="-2" pref="447" max="-2" attributes="0"/>
@@ -1370,7 +1376,7 @@
                 </Component>
               </SubComponents>
             </Container>
-            <Component class="UI.RoundedButton" name="addUserBtn1">
+            <Component class="UI.RoundedButton" name="generatePayrollBtn">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="a3" green="e" red="4" type="rgb"/>
@@ -1412,6 +1418,9 @@
                 </Property>
                 <Property name="radius" type="int" value="35"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="generatePayrollBtnActionPerformed"/>
+              </Events>
             </Component>
             <Component class="UI.RoundedButton" name="uploadTimeSheetBtn">
               <Properties>
@@ -1470,6 +1479,8 @@
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="filePathTextFieldMouseClicked"/>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="filePathTextFieldActionPerformed"/>
               </Events>
+            </Component>
+            <Component class="UI.CalendarRangePicker" name="payrollDateRangeChooser">
             </Component>
           </SubComponents>
         </Container>

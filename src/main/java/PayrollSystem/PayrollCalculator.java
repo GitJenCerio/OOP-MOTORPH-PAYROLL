@@ -83,7 +83,7 @@ public class PayrollCalculator {
     }
 
     // Method to calculate gross pay based on total hours worked and hourly rate
-    public double calculateGrossPay(int employeeId, LocalDate startDate, LocalDate endDate, double hourlyRate) throws SQLException {
+     public double calculateGrossPay(int employeeId, LocalDate startDate, LocalDate endDate, double hourlyRate) throws SQLException {
         // Calculate total hours worked
         double totalHoursWorked = calculateTotalHoursWorked(employeeId, startDate, endDate);
 

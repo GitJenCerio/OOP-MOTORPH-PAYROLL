@@ -10,35 +10,53 @@ import java.util.List;
 
 public class DatabaseUtility {
 
-    public static DefaultTableModel fetchDataAndCreateTableModel(String tableName, String[] columnNames, boolean maskPassword) {
-        DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
-        String query = buildQuery(tableName, columnNames);
+  public static DefaultTableModel fetchDataAndCreateTableModel(String tableName, String[] columnNames, boolean maskPassword) {
+    DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
+    String query = buildQuery(tableName, columnNames);
 
-        try (Connection conn = DatabaseConnector.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query);
-             ResultSet rs = stmt.executeQuery()) {
+    try (Connection conn = DatabaseConnector.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(query);
+         ResultSet rs = stmt.executeQuery()) {
 
-            System.out.println("Executing query: " + query);
+        System.out.println("Executing query: " + query);
 
-            while (rs.next()) {
-                Object[] rowData = new Object[columnNames.length];
-                for (int i = 0; i < columnNames.length; i++) {
-                    if (maskPassword && columnNames[i].equalsIgnoreCase("UserPassword")) {
-                        rowData[i] = "********"; // Mask the password for usersTable
-                    } else {
-                        rowData[i] = rs.getObject(columnNames[i]);
-                    }
+        while (rs.next()) {
+            Object[] rowData = new Object[columnNames.length];
+            for (int i = 0; i < columnNames.length; i++) {
+                if (maskPassword && columnNames[i].equalsIgnoreCase("UserPassword")) {
+                    rowData[i] = "********"; // Mask the password for usersTable
+                } else {
+                    rowData[i] = rs.getObject(columnNames[i]);
                 }
-                tableModel.addRow(rowData);
             }
-            System.out.println("Fetched " + tableModel.getRowCount() + " rows from the database.");
-        } catch (SQLException ex) {
-            System.err.println("Error occurred while fetching data from database: " + ex.getMessage());
-            throw new RuntimeException("Error occurred while fetching data from database", ex);
+            tableModel.addRow(rowData);
         }
-
-        return tableModel;
+        System.out.println("Fetched " + tableModel.getRowCount() + " rows from the database.");
+    } catch (SQLException ex) {
+        System.err.println("Error occurred while fetching data from database: " + ex.getMessage());
+        throw new RuntimeException("Error occurred while fetching data from database", ex);
     }
+
+    return tableModel;
+}
+
+private static String buildQuery(String tableName, String[] columnNames) {
+    if (tableName.equals("payslip")) {
+        // Assuming `employees` table has columns `LastName` and `FirstName`
+        return "SELECT p.PayrollID, p.PayslipNo, p.EmployeeID, CONCAT(e.LastName, ', ', e.FirstName) AS FullName, "
+                + "p.GrossPay, p.HoursWorked, p.TotalBenefits, p.TotalDeductions, p.WithholdingTax, p.NetPay, "
+                + "r.PeriodEndDate AS PayPeriod " // Include PeriodEndDate from the payroll table
+                + "FROM " + tableName + " p "
+                + "JOIN employees e ON p.EmployeeID = e.EmployeeID "
+                + "JOIN payroll r ON p.PayrollID = r.PayrollID"; // Join with payroll table
+    } else {
+        // General case for other tables
+        String columns = String.join(", ", columnNames);
+        return "SELECT " + columns + " FROM " + tableName;
+    }
+}
+
+
 
     public static String[] fetchDropdownItems(String tableName, String columnName) {
         String query = "SELECT " + columnName + " FROM " + tableName;
@@ -171,18 +189,6 @@ public class DatabaseUtility {
         return tableModel;
     }
 
-    
-
-    private static String buildQuery(String tableName, String[] columnNames) {
-        if (tableName == null || tableName.trim().isEmpty()) {
-            throw new IllegalArgumentException("Table name must not be null or empty");
-        }
-        if (columnNames == null || columnNames.length == 0) {
-            throw new IllegalArgumentException("Column names must not be null or empty");
-        }
-        String columns = String.join(", ", columnNames);
-        return "SELECT " + columns + " FROM " + tableName;
-    }
 
     public static class DatabaseException extends RuntimeException {
         public DatabaseException(String message) {
