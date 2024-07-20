@@ -114,7 +114,7 @@ public class CustomDropdown extends JPanel {
     public void setSelectedRoleType(String roleType) {
         textField.setText(roleType); 
     }
-      public void setSelectedDepatment(String departmentName) {
+      public void setSelectedDepartment(String departmentName) {
         textField.setText(departmentName); 
     }
       public void setSelectedEmpStatus(String empStatus) {

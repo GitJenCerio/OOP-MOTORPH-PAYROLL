@@ -4,9 +4,11 @@ package UI;
 import AccessControl.Roles;
 import entities.Employee;
 import DatabaseConnection.*;
+import DatabaseConnection.DatabaseUserDAO.DatabaseException;
 import authentication.AuthenticateUser;
 import authentication.AuthenticationService;
 import authentication.LoginController;
+import components.RoundedPanel;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,9 +36,43 @@ public class EmpSelfServiceFrame extends javax.swing.JFrame {
         initComponents();
         displayUserInfo(userId);
         initializeDependencies();
-        simulateHomeButtonClick(); 
+        simulateHomeButtonClick();
+        addressField.setLineWrap(true);
+        addressField.setWrapStyleWord(true);
+        headerLabel.setText(homeBtn.getText()); 
+        hideAllPanels();
+        homePanel.setVisible(true);
         
     }
+    
+private void populateProfileFields(int employeeId) {
+    Employee employee = employeeDAO.getEmployeeById(employeeId);
+    if (employee != null) {
+        lastNameField1.setText(employee.getLastName());
+        firstNameField1.setText(employee.getFirstName());
+        birthdayField.setText(employee.getBirthday().toString()); // Format the date as needed
+        addressField.setText(employee.getAddress());
+        phoneNumberField.setText(employee.getPhoneNumber());
+        sssNumberField.setText(employee.getSssNumber());
+        philhealthNumberField.setText(employee.getPhilhealthNumber());
+        tinNumberField.setText(employee.getTinNumber());
+        pagibigNumberField.setText(employee.getPagibigNumber());
+        statusField.setText(employee.getEmpStatus());
+        positionField.setText(employee.getPosition());
+        supervisorField.setText(employee.getSupervisorName()); // Fetch dynamically if needed
+        departmentField.setText(employee.getDepartmentName()); // Fetch if needed
+        basicSalaryField.setText(String.valueOf(employee.getBasicSalary()));
+        riceSubsidyField.setText(String.valueOf(employee.getRiceSubsidy()));
+        phoneAllowanceField.setText(String.valueOf(employee.getPhoneAllowance()));
+        clothingAllowanceField.setText(String.valueOf(employee.getClothingAllowance()));
+        grossSemiMonthlyRateField.setText(String.valueOf(employee.getGrossSemiMonthlyRate()));
+        hourlyRateField.setText(String.valueOf(employee.getHourlyRate()));
+    } else {
+        JOptionPane.showMessageDialog(this, "Employee not found", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+}
+
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -61,6 +97,54 @@ public class EmpSelfServiceFrame extends javax.swing.JFrame {
         loggedInUserPosition = new javax.swing.JLabel();
         contentPanel = new javax.swing.JPanel();
         profilePanel = new javax.swing.JPanel();
+        jPanel5 = new RoundedPanel(20);
+        jLabel35 = new javax.swing.JLabel();
+        LastNameLbl = new javax.swing.JLabel();
+        lastNameField1 = new javax.swing.JTextField();
+        firstNameLbl = new javax.swing.JLabel();
+        firstNameField1 = new javax.swing.JTextField();
+        birthdayLbl = new javax.swing.JLabel();
+        birthdayField = new javax.swing.JTextField();
+        updatePersonalInfoBtn = new javax.swing.JButton();
+        phoneNumberLbl = new javax.swing.JLabel();
+        phoneNumberField = new javax.swing.JTextField();
+        addressLbl = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        addressField = new javax.swing.JTextArea();
+        jPanel7 = new RoundedPanel(20);
+        statusLbl = new javax.swing.JLabel();
+        positionLbl = new javax.swing.JLabel();
+        supervisorLbl = new javax.swing.JLabel();
+        supervisorField = new javax.swing.JTextField();
+        statusField = new javax.swing.JTextField();
+        positionField = new javax.swing.JTextField();
+        jLabel39 = new javax.swing.JLabel();
+        supervisorLbl1 = new javax.swing.JLabel();
+        departmentField = new javax.swing.JTextField();
+        jPanel8 = new RoundedPanel(20);
+        jLabel38 = new javax.swing.JLabel();
+        basicSalaryLbl = new javax.swing.JLabel();
+        riceSubsidyLbl = new javax.swing.JLabel();
+        riceSubsidyField = new javax.swing.JTextField();
+        phoneAllowanceLbl = new javax.swing.JLabel();
+        phoneAllowanceField = new javax.swing.JTextField();
+        clothingAllowanceLbl = new javax.swing.JLabel();
+        clothingAllowanceField = new javax.swing.JTextField();
+        basicSalaryField = new javax.swing.JTextField();
+        clothingAllowanceLbl1 = new javax.swing.JLabel();
+        grossSemiMonthlyRateField = new javax.swing.JTextField();
+        clothingAllowanceLbl2 = new javax.swing.JLabel();
+        hourlyRateField = new javax.swing.JTextField();
+        jPanel9 = new RoundedPanel(20);
+        jLabel40 = new javax.swing.JLabel();
+        pagibigNumberField = new javax.swing.JTextField();
+        philhealthNumbeLbl1 = new javax.swing.JLabel();
+        tinNumberField = new javax.swing.JTextField();
+        philhealthNumbeLbl2 = new javax.swing.JLabel();
+        philhealthNumbeLbl3 = new javax.swing.JLabel();
+        philhealthNumbeLbl4 = new javax.swing.JLabel();
+        sssNumberField = new javax.swing.JTextField();
+        philhealthNumberField = new javax.swing.JTextField();
         homePanel = new javax.swing.JPanel();
         jLabel22 = new javax.swing.JLabel();
         jLabel23 = new javax.swing.JLabel();
@@ -287,7 +371,7 @@ public class EmpSelfServiceFrame extends javax.swing.JFrame {
                 .addComponent(requestsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(disputesBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 210, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 287, Short.MAX_VALUE)
                 .addComponent(logoutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(38, 38, 38))
         );
@@ -299,15 +383,487 @@ public class EmpSelfServiceFrame extends javax.swing.JFrame {
 
         profilePanel.setBackground(new java.awt.Color(240, 243, 252));
 
+        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel5.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jPanel5.setMaximumSize(new java.awt.Dimension(680, 400));
+        jPanel5.setMinimumSize(new java.awt.Dimension(680, 400));
+        jPanel5.setVerifyInputWhenFocusTarget(false);
+
+        jLabel35.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel35.setFont(new java.awt.Font("Poppins SemiBold", 0, 18)); // NOI18N
+        jLabel35.setForeground(new java.awt.Color(0, 86, 222));
+        jLabel35.setText("Personal Information");
+
+        LastNameLbl.setText("Last Name:");
+
+        lastNameField1.setText("jTextField1");
+        lastNameField1.setMargin(new java.awt.Insets(4, 6, 4, 6));
+
+        firstNameLbl.setText("First Name");
+
+        firstNameField1.setText("jTextField1");
+        firstNameField1.setMargin(new java.awt.Insets(4, 6, 4, 6));
+
+        birthdayLbl.setText("Birthday:");
+
+        birthdayField.setText("jTextField1");
+        birthdayField.setMargin(new java.awt.Insets(4, 6, 4, 6));
+
+        updatePersonalInfoBtn.setBackground(new java.awt.Color(51, 153, 255));
+        updatePersonalInfoBtn.setFont(new java.awt.Font("Poppins SemiBold", 0, 12)); // NOI18N
+        updatePersonalInfoBtn.setForeground(new java.awt.Color(255, 255, 255));
+        updatePersonalInfoBtn.setText("Update");
+        updatePersonalInfoBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updatePersonalInfoBtnActionPerformed(evt);
+            }
+        });
+
+        phoneNumberLbl.setText("Phone Number:");
+
+        phoneNumberField.setText("jTextField1");
+        phoneNumberField.setMargin(new java.awt.Insets(4, 6, 4, 6));
+        phoneNumberField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                phoneNumberFieldActionPerformed(evt);
+            }
+        });
+
+        addressLbl.setText("Address:");
+
+        addressField.setColumns(20);
+        addressField.setRows(5);
+        addressField.setMargin(new java.awt.Insets(4, 6, 4, 6));
+        jScrollPane1.setViewportView(addressField);
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addGap(49, 49, 49)
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(LastNameLbl)
+                                        .addGroup(jPanel5Layout.createSequentialGroup()
+                                            .addGap(2, 2, 2)
+                                            .addComponent(firstNameLbl)))
+                                    .addComponent(birthdayLbl)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                                .addGap(24, 24, 24)
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(addressLbl)
+                                    .addComponent(phoneNumberLbl))))
+                        .addGap(27, 27, 27)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lastNameField1)
+                            .addComponent(firstNameField1)
+                            .addComponent(birthdayField)
+                            .addComponent(phoneNumberField)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addComponent(jLabel35))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(125, 125, 125)
+                        .addComponent(updatePersonalInfoBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(jLabel35)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addComponent(LastNameLbl)
+                        .addGap(16, 16, 16)
+                        .addComponent(firstNameLbl)
+                        .addGap(18, 18, 18)
+                        .addComponent(birthdayLbl)
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(phoneNumberLbl)
+                            .addComponent(phoneNumberField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel5Layout.createSequentialGroup()
+                                        .addGap(32, 32, 32)
+                                        .addComponent(firstNameField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                                        .addComponent(lastNameField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(38, 38, 38)))
+                                .addGap(28, 28, 28))
+                            .addComponent(birthdayField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(22, 22, 22)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(addressLbl))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(updatePersonalInfoBtn)
+                .addGap(45, 45, 45))
+        );
+
+        jPanel7.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel7.setMaximumSize(new java.awt.Dimension(680, 200));
+        jPanel7.setMinimumSize(new java.awt.Dimension(680, 200));
+        jPanel7.setPreferredSize(new java.awt.Dimension(680, 200));
+        jPanel7.setVerifyInputWhenFocusTarget(false);
+
+        statusLbl.setText("Status:");
+
+        positionLbl.setText("Position:");
+
+        supervisorLbl.setText("Supervisor:");
+
+        supervisorField.setEditable(false);
+        supervisorField.setText("jTextField1");
+        supervisorField.setMargin(new java.awt.Insets(4, 6, 4, 6));
+        supervisorField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                supervisorFieldActionPerformed(evt);
+            }
+        });
+
+        statusField.setEditable(false);
+        statusField.setText("jTextField1");
+        statusField.setMargin(new java.awt.Insets(4, 6, 4, 6));
+        statusField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                statusFieldActionPerformed(evt);
+            }
+        });
+
+        positionField.setEditable(false);
+        positionField.setText("jTextField1");
+        positionField.setMargin(new java.awt.Insets(4, 6, 4, 6));
+        positionField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                positionFieldActionPerformed(evt);
+            }
+        });
+
+        jLabel39.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel39.setFont(new java.awt.Font("Poppins SemiBold", 0, 18)); // NOI18N
+        jLabel39.setForeground(new java.awt.Color(0, 86, 222));
+        jLabel39.setText("Employment Information");
+
+        supervisorLbl1.setText("Department:");
+
+        departmentField.setEditable(false);
+        departmentField.setText("jTextField1");
+        departmentField.setMargin(new java.awt.Insets(4, 6, 4, 6));
+        departmentField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                departmentFieldActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addComponent(jLabel39))
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addGap(70, 70, 70)
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(statusLbl, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(positionLbl, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(supervisorLbl, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(supervisorLbl1, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(statusField, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(positionField, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(supervisorField, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(departmentField, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(jLabel39)
+                .addGap(12, 12, 12)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addComponent(statusLbl)
+                        .addGap(14, 14, 14)
+                        .addComponent(positionLbl)
+                        .addGap(14, 14, 14)
+                        .addComponent(supervisorLbl)
+                        .addGap(14, 14, 14)
+                        .addComponent(supervisorLbl1))
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addComponent(statusField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(8, 8, 8)
+                        .addComponent(positionField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(8, 8, 8)
+                        .addComponent(supervisorField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(8, 8, 8)
+                        .addComponent(departmentField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(24, Short.MAX_VALUE))
+        );
+
+        jPanel8.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel8.setMaximumSize(new java.awt.Dimension(680, 200));
+        jPanel8.setMinimumSize(new java.awt.Dimension(680, 200));
+        jPanel8.setVerifyInputWhenFocusTarget(false);
+
+        jLabel38.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel38.setFont(new java.awt.Font("Poppins SemiBold", 0, 18)); // NOI18N
+        jLabel38.setForeground(new java.awt.Color(0, 86, 222));
+        jLabel38.setText("Salary Information");
+
+        basicSalaryLbl.setText("Basic Salary:");
+
+        riceSubsidyLbl.setText("Rice Subsidy");
+
+        riceSubsidyField.setEditable(false);
+        riceSubsidyField.setText("jTextField1");
+        riceSubsidyField.setMargin(new java.awt.Insets(4, 6, 4, 6));
+
+        phoneAllowanceLbl.setText("Phone Allowance");
+
+        phoneAllowanceField.setEditable(false);
+        phoneAllowanceField.setText("jTextField1");
+        phoneAllowanceField.setMargin(new java.awt.Insets(4, 6, 4, 6));
+
+        clothingAllowanceLbl.setText("Clothing Allowance:");
+
+        clothingAllowanceField.setEditable(false);
+        clothingAllowanceField.setText("jTextField1");
+        clothingAllowanceField.setMargin(new java.awt.Insets(4, 6, 4, 6));
+        clothingAllowanceField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clothingAllowanceFieldActionPerformed(evt);
+            }
+        });
+
+        basicSalaryField.setEditable(false);
+        basicSalaryField.setText("jTextField1");
+        basicSalaryField.setMargin(new java.awt.Insets(4, 6, 4, 6));
+
+        clothingAllowanceLbl1.setText("Gross Semi-monthlyRate: ");
+
+        grossSemiMonthlyRateField.setEditable(false);
+        grossSemiMonthlyRateField.setText("jTextField1");
+        grossSemiMonthlyRateField.setMargin(new java.awt.Insets(4, 6, 4, 6));
+        grossSemiMonthlyRateField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                grossSemiMonthlyRateFieldActionPerformed(evt);
+            }
+        });
+
+        clothingAllowanceLbl2.setText("Hourly Rate:");
+
+        hourlyRateField.setEditable(false);
+        hourlyRateField.setText("jTextField1");
+        hourlyRateField.setMargin(new java.awt.Insets(4, 6, 4, 6));
+        hourlyRateField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                hourlyRateFieldActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+        jPanel8.setLayout(jPanel8Layout);
+        jPanel8Layout.setHorizontalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addComponent(jLabel38)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addGap(39, 39, 39)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(basicSalaryLbl, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(riceSubsidyLbl, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(phoneAllowanceLbl, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(basicSalaryField, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
+                    .addComponent(riceSubsidyField)
+                    .addComponent(phoneAllowanceField))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addComponent(clothingAllowanceLbl)
+                        .addGap(18, 18, 18)
+                        .addComponent(clothingAllowanceField, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addComponent(clothingAllowanceLbl1)
+                        .addGap(18, 18, 18)
+                        .addComponent(grossSemiMonthlyRateField, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addComponent(clothingAllowanceLbl2)
+                        .addGap(18, 18, 18)
+                        .addComponent(hourlyRateField, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(85, 85, 85))
+        );
+        jPanel8Layout.setVerticalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(jLabel38)
+                .addGap(28, 28, 28)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(basicSalaryLbl)
+                            .addComponent(basicSalaryField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(riceSubsidyLbl)
+                            .addComponent(riceSubsidyField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(phoneAllowanceField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(phoneAllowanceLbl)))
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(clothingAllowanceLbl)
+                            .addComponent(clothingAllowanceField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(clothingAllowanceLbl1)
+                            .addComponent(grossSemiMonthlyRateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(clothingAllowanceLbl2)
+                            .addComponent(hourlyRateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(52, Short.MAX_VALUE))
+        );
+
+        jPanel9.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel9.setMaximumSize(new java.awt.Dimension(680, 200));
+        jPanel9.setMinimumSize(new java.awt.Dimension(680, 200));
+        jPanel9.setPreferredSize(new java.awt.Dimension(680, 200));
+        jPanel9.setVerifyInputWhenFocusTarget(false);
+
+        jLabel40.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel40.setFont(new java.awt.Font("Poppins SemiBold", 0, 18)); // NOI18N
+        jLabel40.setForeground(new java.awt.Color(0, 86, 222));
+        jLabel40.setText("Government ID Numbers");
+
+        pagibigNumberField.setEditable(false);
+        pagibigNumberField.setText("jTextField1");
+        pagibigNumberField.setMargin(new java.awt.Insets(4, 6, 4, 6));
+
+        philhealthNumbeLbl1.setText("SSS Number");
+
+        tinNumberField.setEditable(false);
+        tinNumberField.setText("jTextField1");
+        tinNumberField.setMargin(new java.awt.Insets(4, 6, 4, 6));
+
+        philhealthNumbeLbl2.setText("Philhealth Number:");
+
+        philhealthNumbeLbl3.setText("Pagibig Number:");
+
+        philhealthNumbeLbl4.setText("TIN");
+
+        sssNumberField.setEditable(false);
+        sssNumberField.setText("jTextField1");
+        sssNumberField.setMargin(new java.awt.Insets(4, 6, 4, 6));
+        sssNumberField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sssNumberFieldActionPerformed(evt);
+            }
+        });
+
+        philhealthNumberField.setEditable(false);
+        philhealthNumberField.setText("jTextField1");
+        philhealthNumberField.setMargin(new java.awt.Insets(4, 6, 4, 6));
+
+        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
+        jPanel9.setLayout(jPanel9Layout);
+        jPanel9Layout.setHorizontalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(jLabel40))
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addGap(31, 31, 31)
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(philhealthNumbeLbl1, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(philhealthNumbeLbl4, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(philhealthNumbeLbl3, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(philhealthNumbeLbl2, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(tinNumberField, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
+                            .addComponent(pagibigNumberField)
+                            .addComponent(sssNumberField)
+                            .addComponent(philhealthNumberField))))
+                .addGap(376, 376, 376))
+        );
+        jPanel9Layout.setVerticalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(jLabel40)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(philhealthNumbeLbl2)
+                    .addComponent(philhealthNumberField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(8, 8, 8)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(philhealthNumbeLbl3)
+                    .addComponent(pagibigNumberField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(8, 8, 8)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(philhealthNumbeLbl4)
+                    .addComponent(tinNumberField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(8, 8, 8)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(philhealthNumbeLbl1)
+                    .addComponent(sssNumberField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(38, 38, 38))
+        );
+
         javax.swing.GroupLayout profilePanelLayout = new javax.swing.GroupLayout(profilePanel);
         profilePanel.setLayout(profilePanelLayout);
         profilePanelLayout.setHorizontalGroup(
             profilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 980, Short.MAX_VALUE)
+            .addGroup(profilePanelLayout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addGroup(profilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(profilePanelLayout.createSequentialGroup()
+                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 436, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(profilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 414, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, 414, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
         profilePanelLayout.setVerticalGroup(
             profilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 603, Short.MAX_VALUE)
+            .addGroup(profilePanelLayout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addGroup(profilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(profilePanelLayout.createSequentialGroup()
+                        .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(16, 16, 16))
         );
 
         contentPanel.add(profilePanel, "card2");
@@ -341,7 +897,7 @@ public class EmpSelfServiceFrame extends javax.swing.JFrame {
                 .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel23)
-                .addContainerGap(174, Short.MAX_VALUE))
+                .addContainerGap(251, Short.MAX_VALUE))
         );
 
         contentPanel.add(homePanel, "card3");
@@ -356,7 +912,7 @@ public class EmpSelfServiceFrame extends javax.swing.JFrame {
         );
         payslipPanelLayout.setVerticalGroup(
             payslipPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 603, Short.MAX_VALUE)
+            .addGap(0, 680, Short.MAX_VALUE)
         );
 
         contentPanel.add(payslipPanel, "card4");
@@ -371,7 +927,7 @@ public class EmpSelfServiceFrame extends javax.swing.JFrame {
         );
         requestsPanelLayout.setVerticalGroup(
             requestsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 603, Short.MAX_VALUE)
+            .addGap(0, 680, Short.MAX_VALUE)
         );
 
         contentPanel.add(requestsPanel, "card6");
@@ -386,7 +942,7 @@ public class EmpSelfServiceFrame extends javax.swing.JFrame {
         );
         disputesPanelLayout.setVerticalGroup(
             disputesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 603, Short.MAX_VALUE)
+            .addGap(0, 680, Short.MAX_VALUE)
         );
 
         contentPanel.add(disputesPanel, "card8");
@@ -407,31 +963,73 @@ public class EmpSelfServiceFrame extends javax.swing.JFrame {
 
     private void profileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_profileBtnActionPerformed
 
-        if (Roles.isAdmin(userRole)) {
-            headerLabel.setText(profileBtn.getText()); 
-            hideAllPanels();
-            profilePanel.setVisible(true);
-        } else {
-            denyAccess();
-        }
+        headerLabel.setText(profileBtn.getText()); 
+        hideAllPanels();
+        profilePanel.setVisible(true);
     }//GEN-LAST:event_profileBtnActionPerformed
 
     private void payslipBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payslipBtnActionPerformed
-     
+        headerLabel.setText(payslipBtn.getText()); 
+        hideAllPanels();
+        payslipPanel.setVisible(true);
     }//GEN-LAST:event_payslipBtnActionPerformed
 
     private void requestsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_requestsBtnActionPerformed
-
+        headerLabel.setText(requestsBtn.getText()); 
+        hideAllPanels();
+        requestsPanel.setVisible(true);
     }//GEN-LAST:event_requestsBtnActionPerformed
 
     private void disputesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_disputesBtnActionPerformed
-    
+        headerLabel.setText(disputesBtn.getText()); 
+        hideAllPanels();
+        disputesPanel.setVisible(true);
     }//GEN-LAST:event_disputesBtnActionPerformed
 
     private void logoutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutBtnActionPerformed
        UI_Login uiLogin = new UI_Login();
        uiLogin.goToLoginUI();
     }//GEN-LAST:event_logoutBtnActionPerformed
+
+    private void positionFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_positionFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_positionFieldActionPerformed
+
+    private void statusFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_statusFieldActionPerformed
+
+    private void supervisorFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_supervisorFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_supervisorFieldActionPerformed
+
+    private void updatePersonalInfoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updatePersonalInfoBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_updatePersonalInfoBtnActionPerformed
+
+    private void departmentFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_departmentFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_departmentFieldActionPerformed
+
+    private void clothingAllowanceFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clothingAllowanceFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_clothingAllowanceFieldActionPerformed
+
+    private void grossSemiMonthlyRateFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_grossSemiMonthlyRateFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_grossSemiMonthlyRateFieldActionPerformed
+
+    private void hourlyRateFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hourlyRateFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_hourlyRateFieldActionPerformed
+
+    private void phoneNumberFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_phoneNumberFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_phoneNumberFieldActionPerformed
+
+    private void sssNumberFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sssNumberFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_sssNumberFieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -476,27 +1074,75 @@ public class EmpSelfServiceFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel LastNameLbl;
+    private javax.swing.JTextArea addressField;
+    private javax.swing.JLabel addressLbl;
+    private javax.swing.JTextField basicSalaryField;
+    private javax.swing.JLabel basicSalaryLbl;
+    private javax.swing.JTextField birthdayField;
+    private javax.swing.JLabel birthdayLbl;
+    private javax.swing.JTextField clothingAllowanceField;
+    private javax.swing.JLabel clothingAllowanceLbl;
+    private javax.swing.JLabel clothingAllowanceLbl1;
+    private javax.swing.JLabel clothingAllowanceLbl2;
     private javax.swing.JPanel contentPanel;
+    private javax.swing.JTextField departmentField;
     private UI.RoundedButton disputesBtn;
     private javax.swing.JPanel disputesPanel;
+    private javax.swing.JTextField firstNameField1;
+    private javax.swing.JLabel firstNameLbl;
+    private javax.swing.JTextField grossSemiMonthlyRateField;
     private javax.swing.JLabel headerLabel;
     private UI.RoundedButton homeBtn;
     private javax.swing.JPanel homePanel;
+    private javax.swing.JTextField hourlyRateField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel35;
+    private javax.swing.JLabel jLabel38;
+    private javax.swing.JLabel jLabel39;
+    private javax.swing.JLabel jLabel40;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField lastNameField1;
     private javax.swing.JLabel loggedInUserName;
     private javax.swing.JLabel loggedInUserPosition;
     private UI.RoundedButton logoutBtn;
+    private javax.swing.JTextField pagibigNumberField;
     private UI.RoundedButton payslipBtn;
     private javax.swing.JPanel payslipPanel;
+    private javax.swing.JLabel philhealthNumbeLbl1;
+    private javax.swing.JLabel philhealthNumbeLbl2;
+    private javax.swing.JLabel philhealthNumbeLbl3;
+    private javax.swing.JLabel philhealthNumbeLbl4;
+    private javax.swing.JTextField philhealthNumberField;
+    private javax.swing.JTextField phoneAllowanceField;
+    private javax.swing.JLabel phoneAllowanceLbl;
+    private javax.swing.JTextField phoneNumberField;
+    private javax.swing.JLabel phoneNumberLbl;
+    private javax.swing.JTextField positionField;
+    private javax.swing.JLabel positionLbl;
     private UI.RoundedButton profileBtn;
     private javax.swing.JPanel profilePanel;
     private UI.RoundedButton requestsBtn;
     private javax.swing.JPanel requestsPanel;
+    private javax.swing.JTextField riceSubsidyField;
+    private javax.swing.JLabel riceSubsidyLbl;
+    private javax.swing.JTextField sssNumberField;
+    private javax.swing.JTextField statusField;
+    private javax.swing.JLabel statusLbl;
+    private javax.swing.JTextField supervisorField;
+    private javax.swing.JLabel supervisorLbl;
+    private javax.swing.JLabel supervisorLbl1;
+    private javax.swing.JTextField tinNumberField;
+    private javax.swing.JButton updatePersonalInfoBtn;
     // End of variables declaration//GEN-END:variables
     
     private void initializeDependencies() {
@@ -513,15 +1159,16 @@ public class EmpSelfServiceFrame extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, "Access Denied, You do not have permission view this Panel", "Error", JOptionPane.ERROR_MESSAGE);
         // Optionally, redirect to home panel or handle as needed
     }
-
-    
-
+     
+     
     
     private void displayUserInfo(int userId) {
         Employee employee = employeeDAO.getEmployeeById(userId);
         if (employee != null) {
             loggedInUserName.setText(employee.getFirstName() + " " + employee.getLastName());
             loggedInUserPosition.setText(employee.getPosition());
+            populateProfileFields(userId);
+            
             
         } else {
             JOptionPane.showMessageDialog(this, "User not found", "Error", JOptionPane.ERROR_MESSAGE);
@@ -534,6 +1181,8 @@ public class EmpSelfServiceFrame extends javax.swing.JFrame {
         requestsPanel.setVisible(false);
         disputesPanel.setVisible(false);
     }
+    
+    
     
 }
 

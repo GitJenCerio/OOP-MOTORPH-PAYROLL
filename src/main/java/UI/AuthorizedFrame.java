@@ -1020,7 +1020,26 @@ public class AuthorizedFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_addEmployeeBtnActionPerformed
 
     private void updateEmployeeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateEmployeeBtnActionPerformed
-        // TODO add your handling code here:
+        int selectedRow = employeesTable.getSelectedRow();
+    if (selectedRow != -1) {
+        String selectedEmployeeId = employeesTable.getValueAt(selectedRow, 0).toString();
+
+        UpdateEmployeeFrame updateEmployeeFrame = null;
+        try {
+            int employeeId = Integer.parseInt(selectedEmployeeId); // Parse selectedUserId to int
+            updateEmployeeFrame = new UpdateEmployeeFrame(employeesTable, employeeId);
+            updateEmployeeFrame.loadEmployeeDetails(employeeId); // Load user details using userId
+            updateEmployeeFrame.setVisible(true);
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "Invalid Employee ID format.", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (DatabaseException ex) {
+            Logger.getLogger(AuthorizedFrame.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+        }
+    } else {
+        JOptionPane.showMessageDialog(null, "Please select a row to update.", "No Row Selected", JOptionPane.WARNING_MESSAGE);
+    }
+
     }//GEN-LAST:event_updateEmployeeBtnActionPerformed
 
     private void deleteEmployeeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteEmployeeBtnActionPerformed

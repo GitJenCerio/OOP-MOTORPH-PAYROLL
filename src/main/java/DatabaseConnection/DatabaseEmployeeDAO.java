@@ -86,9 +86,9 @@ public class DatabaseEmployeeDAO implements EmployeeDAO {
                stmt.setString(4, employee.getAddress());
                stmt.setString(5, employee.getPhoneNumber());
                stmt.setString(6, employee.getSssNumber());
-               stmt.setString(7, employee.getPhilHealthNumber());
+               stmt.setString(7, employee.getPhilhealthNumber());
                stmt.setString(8, employee.getTinNumber());
-               stmt.setString(9, employee.getPagIbigNumber());
+               stmt.setString(9, employee.getPagibigNumber());
                stmt.setString(10, employee.getEmpStatus());
                stmt.setString(11, employee.getPosition());
                stmt.setDouble(12, employee.getBasicSalary());
@@ -234,5 +234,54 @@ public class DatabaseEmployeeDAO implements EmployeeDAO {
 
         return departmentName != null ? departmentName : "Unknown Department";
     }
-    
+
+  public boolean updateEmployeeInDatabase(int employeeId, String newLastName, String newFirstName, java.sql.Date newBirthday, 
+                                        String newAddress, String newPhoneNumber, String newSssNumber, String newPhilhealthNumber, 
+                                        String newTinNumber, String newPagibigNumber, String newEmpStatus, String newPosition, 
+                                        String newSupervisorName, String newDepartmentName, double newBasicSalary, double newRiceSubsidy, 
+                                        double newPhoneAllowance, double newClothingAllowance, double newGrossSemiMonthlyRate, 
+                                        double newHourlyRate) throws SQLException, DatabaseException {
+    String sql = "UPDATE employees SET LastName = ?, FirstName = ?, Birthday = ?, Address = ?, PhoneNumber = ?, SSSNumber = ?, " +
+                 "PhilHealthNumber = ?, TinNumber = ?, PagIbigNumber = ?, EmpStatus = ?, Position = ?, BasicSalary = ?, " +
+                 "RiceSubsidy = ?, PhoneAllowance = ?, ClothingAllowance = ?, GrossSemiMonthlyRate = ?, HourlyRate = ?, " +
+                 "SupervisorID = ?, DepartmentID = ? WHERE EmployeeID = ?";
+
+    try (Connection conn = DatabaseConnector.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+        stmt.setString(1, newLastName);
+        stmt.setString(2, newFirstName);
+        stmt.setDate(3, newBirthday);
+        stmt.setString(4, newAddress);
+        stmt.setString(5, newPhoneNumber);
+        stmt.setString(6, newSssNumber);
+        stmt.setString(7, newPhilhealthNumber);
+        stmt.setString(8, newTinNumber);
+        stmt.setString(9, newPagibigNumber);
+        stmt.setString(10, newEmpStatus);
+        stmt.setString(11, newPosition);
+        stmt.setDouble(12, newBasicSalary);
+        stmt.setDouble(13, newRiceSubsidy);
+        stmt.setDouble(14, newPhoneAllowance);
+        stmt.setDouble(15, newClothingAllowance);
+        stmt.setDouble(16, newGrossSemiMonthlyRate);
+        stmt.setDouble(17, newHourlyRate);
+
+        // Fetch SupervisorID and DepartmentID dynamically
+        int supervisorId = DatabaseUtility.fetchSupervisorID(newSupervisorName);
+        int departmentId = DatabaseUtility.fetchDepartmentID(newDepartmentName);
+
+        stmt.setInt(18, supervisorId);
+        stmt.setInt(19, departmentId);
+        stmt.setInt(20, employeeId);
+
+        int rowsAffected = stmt.executeUpdate();
+        return rowsAffected > 0; // Return true if employee updated successfully
+
+    } catch (SQLException ex) {
+        logError("Error occurred while updating an employee in the database", ex);
+        throw new DatabaseException("Error occurred while updating an employee in the database", ex);
+    }
+}
+
 }

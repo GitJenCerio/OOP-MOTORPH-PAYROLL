@@ -111,11 +111,11 @@ public class Employee {
         this.sssNumber = sssNumber;
     }
 
-    public String getPhilHealthNumber() {
+    public String getPhilhealthNumber() {
         return philHealthNumber;
     }
 
-    public void setPhilHealthNumber(String philHealthNumber) {
+    public void setPhilhealthNumber(String philHealthNumber) {
         this.philHealthNumber = philHealthNumber;
     }
 
@@ -127,11 +127,11 @@ public class Employee {
         this.tinNumber = tinNumber;
     }
 
-    public String getPagIbigNumber() {
+    public String getPagibigNumber() {
         return pagIbigNumber;
     }
 
-    public void setPagIbigNumber(String pagIbigNumber) {
+    public void setPagibigNumber(String pagIbigNumber) {
         this.pagIbigNumber = pagIbigNumber;
     }
 

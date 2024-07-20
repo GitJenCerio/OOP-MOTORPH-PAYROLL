@@ -43,12 +43,12 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jScrollPane1" alignment="0" pref="654" max="32767" attributes="0"/>
+          <Component id="jScrollPane1" alignment="0" pref="650" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jScrollPane1" alignment="0" pref="1036" max="32767" attributes="0"/>
+          <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
@@ -220,7 +220,7 @@
                                                           <Component id="jLabel28" alignment="0" min="-2" max="-2" attributes="0"/>
                                                       </Group>
                                                   </Group>
-                                                  <Component id="confirmAddEmpBtn" min="-2" pref="152" max="-2" attributes="0"/>
+                                                  <Component id="confirmUpdateEmpBtn" min="-2" pref="152" max="-2" attributes="0"/>
                                               </Group>
                                           </Group>
                                           <Component id="tinNumberField" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -232,7 +232,7 @@
                               </Group>
                           </Group>
                       </Group>
-                      <EmptySpace pref="75" max="32767" attributes="0"/>
+                      <EmptySpace pref="73" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -289,7 +289,7 @@
                                       <Group type="102" alignment="0" attributes="0">
                                           <EmptySpace min="-2" pref="65" max="-2" attributes="0"/>
                                           <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace pref="22" max="32767" attributes="0"/>
+                                          <EmptySpace max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
@@ -392,7 +392,7 @@
                           <Component id="phoneAllowanceField" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="65" max="-2" attributes="0"/>
-                      <Component id="confirmAddEmpBtn" min="-2" pref="34" max="-2" attributes="0"/>
+                      <Component id="confirmUpdateEmpBtn" min="-2" pref="34" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -407,10 +407,10 @@
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="66" green="0" red="0" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="UPDATE EMPLOYEE"/>
+                <Property name="text" type="java.lang.String" value="ADD NEW EMPLOYEE"/>
               </Properties>
             </Component>
-            <Component class="UI.RoundedButton" name="confirmAddEmpBtn">
+            <Component class="UI.RoundedButton" name="confirmUpdateEmpBtn">
               <Properties>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="null"/>
@@ -441,7 +441,7 @@
                 <Property name="radius" type="int" value="30"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="confirmAddEmpBtnActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="confirmUpdateEmpBtnActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel5">
