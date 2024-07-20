@@ -284,4 +284,18 @@ public class DatabaseEmployeeDAO implements EmployeeDAO {
     }
 }
 
+public boolean updateEmployeePersonalInfo(Employee employee) throws SQLException {
+    String sql = "UPDATE employees SET lastName = ?, firstName = ?, birthday = ?, address = ?, phoneNumber = ? WHERE employeeId = ?";
+    try (Connection conn = DatabaseConnector.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        pstmt.setString(1, employee.getLastName());
+        pstmt.setString(2, employee.getFirstName());
+        pstmt.setDate(3, new java.sql.Date(employee.getBirthday().getTime()));
+        pstmt.setString(4, employee.getAddress());
+        pstmt.setString(5, employee.getPhoneNumber());
+        pstmt.setInt(6, employee.getEmployeeId());
+
+        int affectedRows = pstmt.executeUpdate();
+        return affectedRows > 0;
+    }
+}
 }

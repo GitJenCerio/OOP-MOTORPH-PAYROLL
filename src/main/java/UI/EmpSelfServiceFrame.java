@@ -48,8 +48,8 @@ public class EmpSelfServiceFrame extends javax.swing.JFrame {
 private void populateProfileFields(int employeeId) {
     Employee employee = employeeDAO.getEmployeeById(employeeId);
     if (employee != null) {
-        lastNameField1.setText(employee.getLastName());
-        firstNameField1.setText(employee.getFirstName());
+        lastNameField.setText(employee.getLastName());
+        firstNameField.setText(employee.getFirstName());
         birthdayField.setText(employee.getBirthday().toString()); // Format the date as needed
         addressField.setText(employee.getAddress());
         phoneNumberField.setText(employee.getPhoneNumber());
@@ -100,9 +100,9 @@ private void populateProfileFields(int employeeId) {
         jPanel5 = new RoundedPanel(20);
         jLabel35 = new javax.swing.JLabel();
         LastNameLbl = new javax.swing.JLabel();
-        lastNameField1 = new javax.swing.JTextField();
+        lastNameField = new javax.swing.JTextField();
         firstNameLbl = new javax.swing.JLabel();
-        firstNameField1 = new javax.swing.JTextField();
+        firstNameField = new javax.swing.JTextField();
         birthdayLbl = new javax.swing.JLabel();
         birthdayField = new javax.swing.JTextField();
         updatePersonalInfoBtn = new javax.swing.JButton();
@@ -396,13 +396,13 @@ private void populateProfileFields(int employeeId) {
 
         LastNameLbl.setText("Last Name:");
 
-        lastNameField1.setText("jTextField1");
-        lastNameField1.setMargin(new java.awt.Insets(4, 6, 4, 6));
+        lastNameField.setText("jTextField1");
+        lastNameField.setMargin(new java.awt.Insets(4, 6, 4, 6));
 
         firstNameLbl.setText("First Name");
 
-        firstNameField1.setText("jTextField1");
-        firstNameField1.setMargin(new java.awt.Insets(4, 6, 4, 6));
+        firstNameField.setText("jTextField1");
+        firstNameField.setMargin(new java.awt.Insets(4, 6, 4, 6));
 
         birthdayLbl.setText("Birthday:");
 
@@ -460,8 +460,8 @@ private void populateProfileFields(int employeeId) {
                                     .addComponent(phoneNumberLbl))))
                         .addGap(27, 27, 27)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(lastNameField1)
-                            .addComponent(firstNameField1)
+                            .addComponent(lastNameField)
+                            .addComponent(firstNameField)
                             .addComponent(birthdayField)
                             .addComponent(phoneNumberField)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)))
@@ -497,9 +497,9 @@ private void populateProfileFields(int employeeId) {
                                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel5Layout.createSequentialGroup()
                                         .addGap(32, 32, 32)
-                                        .addComponent(firstNameField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(firstNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                                        .addComponent(lastNameField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(lastNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(38, 38, 38)))
                                 .addGap(28, 28, 28))
                             .addComponent(birthdayField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
@@ -857,7 +857,7 @@ private void populateProfileFields(int employeeId) {
                 .addGap(18, 18, 18)
                 .addGroup(profilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(profilePanelLayout.createSequentialGroup()
-                        .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE)
+                        .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -1004,7 +1004,14 @@ private void populateProfileFields(int employeeId) {
     }//GEN-LAST:event_supervisorFieldActionPerformed
 
     private void updatePersonalInfoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updatePersonalInfoBtnActionPerformed
-        // TODO add your handling code here:
+    
+        try {
+            updateEmployeeProfile(userId);
+        } catch (SQLException ex) {
+            Logger.getLogger(EmpSelfServiceFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
     }//GEN-LAST:event_updatePersonalInfoBtnActionPerformed
 
     private void departmentFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_departmentFieldActionPerformed
@@ -1089,7 +1096,7 @@ private void populateProfileFields(int employeeId) {
     private javax.swing.JTextField departmentField;
     private UI.RoundedButton disputesBtn;
     private javax.swing.JPanel disputesPanel;
-    private javax.swing.JTextField firstNameField1;
+    private javax.swing.JTextField firstNameField;
     private javax.swing.JLabel firstNameLbl;
     private javax.swing.JTextField grossSemiMonthlyRateField;
     private javax.swing.JLabel headerLabel;
@@ -1111,7 +1118,7 @@ private void populateProfileFields(int employeeId) {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField lastNameField1;
+    private javax.swing.JTextField lastNameField;
     private javax.swing.JLabel loggedInUserName;
     private javax.swing.JLabel loggedInUserPosition;
     private UI.RoundedButton logoutBtn;
@@ -1182,8 +1189,33 @@ private void populateProfileFields(int employeeId) {
         disputesPanel.setVisible(false);
     }
     
-    
-    
+   private void updateEmployeeProfile(int employeeId) throws SQLException {
+    try {
+        // Use default constructor and set individual fields
+        Employee employee = new Employee();
+        employee.setEmployeeId(employeeId);
+        employee.setLastName(lastNameField.getText());
+        employee.setFirstName(firstNameField.getText());
+
+        // Parse and set the date
+        String birthdayText = birthdayField.getText();
+        java.sql.Date birthday = java.sql.Date.valueOf(birthdayText); // Ensure the date format is correct
+        employee.setBirthday(birthday);
+
+        // Set the remaining personal details
+        employee.setAddress(addressField.getText());
+        employee.setPhoneNumber(phoneNumberField.getText());
+
+        // Update only personal information in the database
+        boolean updated = employeeDAO.updateEmployeePersonalInfo(employee);
+        if (updated) {
+            JOptionPane.showMessageDialog(this, "Profile updated successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "Profile update failed", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+    } catch (IllegalArgumentException ex) {
+        JOptionPane.showMessageDialog(this, "Error updating profile: " + ex.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+    }
 }
-
-
+}

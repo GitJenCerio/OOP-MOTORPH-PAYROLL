@@ -14,6 +14,7 @@ import java.util.List;
 
 public class PayrollDAO {
 
+    // Fetch attendance records within the specified date range
     public List<Attendance> fetchAttendanceRecords(int employeeId, LocalDate startDate, LocalDate endDate) throws SQLException {
         List<Attendance> attendanceRecords = new ArrayList<>();
         String sql = "SELECT EmployeeID, AttendanceDate, HoursWorked FROM attendance WHERE EmployeeID = ? AND AttendanceDate BETWEEN ? AND ?";
@@ -31,9 +32,6 @@ public class PayrollDAO {
                 LocalDate date = rs.getDate("AttendanceDate").toLocalDate();
                 double hoursWorked = rs.getDouble("HoursWorked");
 
-                // Print fetched data
-                System.out.println("EmployeeID: " + empId + ", AttendanceDate: " + date + ", HoursWorked: " + hoursWorked);
-
                 attendanceRecords.add(new Attendance(empId, date, hoursWorked));
             }
         } catch (SQLException e) {
@@ -42,6 +40,7 @@ public class PayrollDAO {
         return attendanceRecords;
     }
 
+    // Fetch approved overtime records within the specified date range
     public List<Overtime> fetchApprovedOvertimeRecords(int employeeId, LocalDate startDate, LocalDate endDate) throws SQLException {
         List<Overtime> overtimeRecords = new ArrayList<>();
         String sql = "SELECT EmployeeID, OvertimeDate, HoursWorked FROM overtimerequest WHERE EmployeeID = ? AND OvertimeDate BETWEEN ? AND ? AND ApprovalStatus = 'Approved'";
@@ -53,15 +52,11 @@ public class PayrollDAO {
             stmt.setDate(2, java.sql.Date.valueOf(startDate));
             stmt.setDate(3, java.sql.Date.valueOf(endDate));
 
-
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 int empId = rs.getInt("EmployeeID");
                 LocalDate date = rs.getDate("OvertimeDate").toLocalDate();
                 double hoursWorked = rs.getDouble("HoursWorked");
-
-                // Print fetched data
-                System.out.println("EmployeeID: " + empId + ", OvertimeDate: " + date + ", HoursWorked: " + hoursWorked);
 
                 overtimeRecords.add(new Overtime(empId, date, hoursWorked));
             }
@@ -71,6 +66,7 @@ public class PayrollDAO {
         return overtimeRecords;
     }
 
+    // Fetch approved leave records within the specified date range
     public List<LeaveRecord> fetchApprovedLeaveRecords(int employeeId, LocalDate startDate, LocalDate endDate) throws SQLException {
         List<LeaveRecord> leaveRecords = new ArrayList<>();
         String sql = "SELECT LeaveID, EmployeeID, StartDate, EndDate, LeaveType, LeaveStatus FROM leaverequest WHERE EmployeeID = ? AND StartDate BETWEEN ? AND ? AND LeaveStatus = 'Approved'";
@@ -81,7 +77,7 @@ public class PayrollDAO {
             stmt.setInt(1, employeeId);
             stmt.setDate(2, java.sql.Date.valueOf(startDate));
             stmt.setDate(3, java.sql.Date.valueOf(endDate));
-      
+
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 int leaveID = rs.getInt("LeaveID");
@@ -91,10 +87,6 @@ public class PayrollDAO {
                 String leaveType = rs.getString("LeaveType");
                 String leaveStatus = rs.getString("LeaveStatus");
 
-                // Print fetched data
-                System.out.println("LeaveID: " + leaveID + ", EmployeeID: " + empId + ", StartDate: " + leaveStartDate +
-                        ", EndDate: " + leaveEndDate + ", LeaveType: " + leaveType + ", LeaveStatus: " + leaveStatus);
-
                 leaveRecords.add(new LeaveRecord(leaveID, empId, leaveType, leaveStartDate, leaveEndDate, leaveStatus));
             }
         } catch (SQLException e) {
@@ -102,6 +94,8 @@ public class PayrollDAO {
         }
         return leaveRecords;
     }
+
+    // Save payroll record to the database
     public int savePayroll(LocalDate startDate, LocalDate endDate, String generatedBy) throws SQLException {
         String sql = "INSERT INTO Payroll (PeriodStartDate, PeriodEndDate, GenerationDate, GeneratedBy) VALUES (?, ?, ?, ?)";
         
@@ -127,6 +121,7 @@ public class PayrollDAO {
         return -1;
     }
 
+    // Save payslip record to the database
     public void savePayslip(String payslipNo, int payrollId, int employeeId, LocalDate startDate, LocalDate endDate, double grossPay, double hoursWorked, double totalBenefits, double totalDeductions, double withholdingTax, double netPay) throws SQLException {
         String sql = "INSERT INTO Payslip (PayslipNo, PayrollID, EmployeeID, PeriodStartDate, PeriodEndDate, GrossPay, HoursWorked, TotalBenefits, TotalDeductions, WithholdingTax, NetPay) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
@@ -145,10 +140,7 @@ public class PayrollDAO {
             stmt.setDouble(10, withholdingTax);
             stmt.setDouble(11, netPay);
 
-            int rowsInserted = stmt.executeUpdate();
-            if (rowsInserted > 0) {
-                System.out.println("A new payslip record was inserted successfully.");
-            }
+            stmt.executeUpdate();
         } catch (SQLException e) {
             throw new SQLException("Failed to save payslip record", e);
         }

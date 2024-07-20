@@ -44,12 +44,7 @@ public class User {
     }
 
     private String getRoleTypeById(int roleId) {
-        try {
-            return DatabaseUtility.fetchRoleType(roleId);
-        } catch (DatabaseException ex) {
-            // Log the exception or rethrow as a runtime exception for handling higher up
-            System.err.println("Error fetching role type for roleId " + roleId + ": " + ex.getMessage());
-            throw new RuntimeException(ex); // Rethrow as a runtime exception
-        }
+        return DatabaseUtility.fetchRoleType(roleId); // Log the exception or rethrow as a runtime exception for handling higher up
+        // Rethrow as a runtime exception
     }
 }

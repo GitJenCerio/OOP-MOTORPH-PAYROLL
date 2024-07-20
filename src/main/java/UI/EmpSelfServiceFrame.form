@@ -498,7 +498,7 @@
                       <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="jPanel7" pref="206" max="32767" attributes="0"/>
+                              <Component id="jPanel7" max="32767" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="jPanel9" min="-2" pref="206" max="-2" attributes="0"/>
                           </Group>
@@ -564,8 +564,8 @@
                                   </Group>
                                   <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="lastNameField1" max="32767" attributes="0"/>
-                                      <Component id="firstNameField1" max="32767" attributes="0"/>
+                                      <Component id="lastNameField" max="32767" attributes="0"/>
+                                      <Component id="firstNameField" max="32767" attributes="0"/>
                                       <Component id="birthdayField" max="32767" attributes="0"/>
                                       <Component id="phoneNumberField" max="32767" attributes="0"/>
                                       <Component id="jScrollPane1" alignment="0" pref="213" max="32767" attributes="0"/>
@@ -610,10 +610,10 @@
                                           <Group type="103" groupAlignment="0" attributes="0">
                                               <Group type="102" alignment="0" attributes="0">
                                                   <EmptySpace min="32" pref="32" max="-2" attributes="0"/>
-                                                  <Component id="firstNameField1" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="firstNameField" min="-2" max="-2" attributes="0"/>
                                               </Group>
                                               <Group type="102" alignment="1" attributes="0">
-                                                  <Component id="lastNameField1" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="lastNameField" min="-2" max="-2" attributes="0"/>
                                                   <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
                                               </Group>
                                           </Group>
@@ -655,7 +655,7 @@
                     <Property name="text" type="java.lang.String" value="Last Name:"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="lastNameField1">
+                <Component class="javax.swing.JTextField" name="lastNameField">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="jTextField1"/>
                     <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
@@ -668,7 +668,7 @@
                     <Property name="text" type="java.lang.String" value="First Name"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="firstNameField1">
+                <Component class="javax.swing.JTextField" name="firstNameField">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="jTextField1"/>
                     <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">

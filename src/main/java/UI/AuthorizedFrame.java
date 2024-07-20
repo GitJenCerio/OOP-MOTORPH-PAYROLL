@@ -5,23 +5,19 @@ import AccessControl.Roles;
 import entities.Employee;
 import DatabaseConnection.*;
 import DatabaseConnection.DatabaseUserDAO.DatabaseException;
-import UI.AddEmployeeFrame;
-import UI.AddUserFrame;
-import UI.UpdateUserFrame;
+import components.*;
 import authentication.AuthenticateUser;
 import authentication.AuthenticationService;
 import authentication.LoginController;
-import entities.User;
-import java.sql.SQLException;
-import java.util.List;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
-import static javax.swing.JTable.AUTO_RESIZE_OFF;
 import static javax.swing.JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS;
 import javax.swing.SwingUtilities;
-import javax.swing.table.DefaultTableModel;
 
 public class AuthorizedFrame extends javax.swing.JFrame {
 
@@ -32,12 +28,14 @@ public class AuthorizedFrame extends javax.swing.JFrame {
     // User details
     private int userId;
     private int userRole;
-   
+    private CSVUploader csvUploader;
+    private JFrame frame;
     
     public AuthorizedFrame(int userId, int userRole) {
         this.userId = userId;
         this.userRole = userRole;
         this.employeeDAO = new DatabaseEmployeeDAO();
+        csvUploader = new CSVUploader();
    
         initComponents();
         displayUserInfo(userId);
@@ -45,7 +43,7 @@ public class AuthorizedFrame extends javax.swing.JFrame {
         simulateHomeButtonClick();
        
         
-        String usersTableName = "users"; // Use your actual table name for users
+        String usersTableName = "users"; 
         String[] usersColumnNames = {"UserID", "EmployeeID", "Username", "UserPassword", "RoleID"}; // Example column names for users
         boolean usersMaskPassword = true; // Example flag for masking passwords
         usersTable = new CustomTable(usersTableName, usersColumnNames, usersMaskPassword);
@@ -53,14 +51,22 @@ public class AuthorizedFrame extends javax.swing.JFrame {
         jScrollPane1.setViewportView(usersTable);
 
         
-       String employeesTableName = "employees"; // Use your actual table name for employees
+       String employeesTableName = "employees"; 
        String[] employeesColumnNames = {"EmployeeID", "LastName", "FirstName", "Birthday", "Address","PhoneNumber", "EmpStatus", "Position", "SupervisorID","SSSNumber", "PhilhealthNumber", "PagibigNumber", "TinNumber","BasicSalary", "RiceSubsidy","PhoneAllowance", "ClothingAllowance","GrossSemiMonthlyRate","HourlyRate","DepartmentID"};
        boolean employeesMaskPassword = true; 
        employeesTable = new CustomTable(employeesTableName, employeesColumnNames, employeesMaskPassword);
        jScrollPane2.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
        jScrollPane2.setViewportView(employeesTable);
-      
-             
+       
+        
+       String payrollTableName = "payslip"; 
+       String[] payrollColumnNames = {"PayrollID", "PayslipNo", "EmployeeID", "GrossPay", "HoursWorked", "TotalBenefits", "TotalDeductions", "WithholdingTax", "NetPay"};
+  
+       payrollTable = new CustomTable(payrollTableName, payrollColumnNames, employeesMaskPassword);
+       jScrollPane3.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+       jScrollPane3.setViewportView(payrollTable);
+       
+        
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -104,6 +110,11 @@ public class AuthorizedFrame extends javax.swing.JFrame {
         updateEmployeeBtn = new UI.RoundedButton();
         deleteEmployeeBtn = new UI.RoundedButton();
         payrollPanel = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        payrollTable = new UI.CustomTable();
+        addUserBtn1 = new UI.RoundedButton();
+        uploadTimeSheetBtn = new UI.RoundedButton();
+        filePathTextField = new javax.swing.JTextField();
         requestsPanel = new javax.swing.JPanel();
         taxReportsPanel = new javax.swing.JPanel();
         disputesPanel = new javax.swing.JPanel();
@@ -697,7 +708,6 @@ public class AuthorizedFrame extends javax.swing.JFrame {
         employeesTable.setRequestFocusEnabled(false);
         employeesTable.setRowHeight(40);
         employeesTable.setRowMargin(5);
-        employeesTable.setRowSelectionAllowed(true);
         employeesTable.setSelectionBackground(new java.awt.Color(0, 153, 255));
         employeesTable.setSelectionForeground(new java.awt.Color(255, 255, 255));
         employeesTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -816,15 +826,179 @@ public class AuthorizedFrame extends javax.swing.JFrame {
 
         payrollPanel.setBackground(new java.awt.Color(240, 243, 252));
 
+        jScrollPane3.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jScrollPane3.setForeground(new java.awt.Color(255, 255, 255));
+        jScrollPane3.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jScrollPane3.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+
+        payrollTable.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        payrollTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "User ID", "Employee ID", "Username", "Password", "Role ID"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        payrollTable.setFillsViewportHeight(true);
+        payrollTable.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        payrollTable.setGridColor(new java.awt.Color(255, 255, 255));
+        payrollTable.setMaximumSize(new java.awt.Dimension(375, 800));
+        payrollTable.setMinimumSize(new java.awt.Dimension(375, 800));
+        payrollTable.setPreferredScrollableViewportSize(new java.awt.Dimension(300, 600));
+        payrollTable.setPreferredSize(new java.awt.Dimension(375, 800));
+        payrollTable.setRequestFocusEnabled(false);
+        payrollTable.setRowHeight(40);
+        payrollTable.setRowMargin(5);
+        payrollTable.setSelectionBackground(new java.awt.Color(0, 153, 255));
+        payrollTable.setSelectionForeground(new java.awt.Color(255, 255, 255));
+        payrollTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        payrollTable.getTableHeader().setResizingAllowed(false);
+        payrollTable.getTableHeader().setReorderingAllowed(false);
+        jScrollPane3.setViewportView(payrollTable);
+        if (payrollTable.getColumnModel().getColumnCount() > 0) {
+            payrollTable.getColumnModel().getColumn(0).setResizable(false);
+            payrollTable.getColumnModel().getColumn(1).setResizable(false);
+            payrollTable.getColumnModel().getColumn(2).setResizable(false);
+            payrollTable.getColumnModel().getColumn(3).setResizable(false);
+            payrollTable.getColumnModel().getColumn(4).setResizable(false);
+        }
+
+        addUserBtn1.setBackground(new java.awt.Color(4, 14, 163));
+        addUserBtn1.setBorder(null);
+        addUserBtn1.setForeground(new java.awt.Color(255, 255, 255));
+        addUserBtn1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icon-payslip.png"))); // NOI18N
+        addUserBtn1.setText("Generate Payroll");
+        addUserBtn1.setAlignmentY(0.0F);
+        addUserBtn1.setBorderColor(new java.awt.Color(0, 102, 204));
+        addUserBtn1.setBorderPainted(false);
+        addUserBtn1.setColor(new java.awt.Color(4, 14, 163));
+        addUserBtn1.setColorClick(new java.awt.Color(0, 102, 204));
+        addUserBtn1.setColorOver(new java.awt.Color(0, 102, 204));
+        addUserBtn1.setFocusPainted(false);
+        addUserBtn1.setFont(new java.awt.Font("Poppins SemiBold", 0, 14)); // NOI18N
+        addUserBtn1.setIconTextGap(3);
+        addUserBtn1.setMargin(new java.awt.Insets(2, 14, 2, 14));
+        addUserBtn1.setPreferredSize(new java.awt.Dimension(150, 32));
+        addUserBtn1.setRadius(35);
+
+        uploadTimeSheetBtn.setBackground(new java.awt.Color(4, 14, 163));
+        uploadTimeSheetBtn.setBorder(null);
+        uploadTimeSheetBtn.setForeground(new java.awt.Color(255, 255, 255));
+        uploadTimeSheetBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icon-upload.png"))); // NOI18N
+        uploadTimeSheetBtn.setText("Upload Timesheet");
+        uploadTimeSheetBtn.setAlignmentY(0.0F);
+        uploadTimeSheetBtn.setBorderColor(new java.awt.Color(0, 102, 204));
+        uploadTimeSheetBtn.setBorderPainted(false);
+        uploadTimeSheetBtn.setColor(new java.awt.Color(4, 14, 163));
+        uploadTimeSheetBtn.setColorClick(new java.awt.Color(0, 102, 204));
+        uploadTimeSheetBtn.setColorOver(new java.awt.Color(0, 102, 204));
+        uploadTimeSheetBtn.setFocusPainted(false);
+        uploadTimeSheetBtn.setFont(new java.awt.Font("Poppins SemiBold", 0, 14)); // NOI18N
+        uploadTimeSheetBtn.setIconTextGap(3);
+        uploadTimeSheetBtn.setMargin(new java.awt.Insets(2, 14, 2, 14));
+        uploadTimeSheetBtn.setPreferredSize(new java.awt.Dimension(150, 32));
+        uploadTimeSheetBtn.setRadius(35);
+        uploadTimeSheetBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uploadTimeSheetBtnActionPerformed(evt);
+            }
+        });
+
+        filePathTextField.setForeground(new java.awt.Color(153, 153, 153));
+        filePathTextField.setText("Click to select file..");
+        filePathTextField.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                filePathTextFieldMouseClicked(evt);
+            }
+        });
+        filePathTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                filePathTextFieldActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout payrollPanelLayout = new javax.swing.GroupLayout(payrollPanel);
         payrollPanel.setLayout(payrollPanelLayout);
         payrollPanelLayout.setHorizontalGroup(
             payrollPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 980, Short.MAX_VALUE)
+            .addGroup(payrollPanelLayout.createSequentialGroup()
+                .addGap(34, 34, 34)
+                .addGroup(payrollPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(payrollPanelLayout.createSequentialGroup()
+                        .addComponent(filePathTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(uploadTimeSheetBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(addUserBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 870, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(76, Short.MAX_VALUE))
         );
         payrollPanelLayout.setVerticalGroup(
             payrollPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 603, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, payrollPanelLayout.createSequentialGroup()
+                .addContainerGap(50, Short.MAX_VALUE)
+                .addGroup(payrollPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(addUserBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(uploadTimeSheetBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(filePathTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(41, 41, 41)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 447, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32))
         );
 
         contentPanel.add(payrollPanel, "card5");
@@ -1076,9 +1250,52 @@ public class AuthorizedFrame extends javax.swing.JFrame {
 
     }//GEN-LAST:event_deleteEmployeeBtnActionPerformed
 
+    private void uploadTimeSheetBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uploadTimeSheetBtnActionPerformed
+
+     String filePath = filePathTextField.getText();
+
+    if (filePath != null && !filePath.isEmpty() && !filePath.equals("Click to select file...")) {
+        boolean uploadSuccess = csvUploader.uploadCSV(filePath);
+
+        if (uploadSuccess) {
+            JOptionPane.showMessageDialog(AuthorizedFrame.this, "File uploaded successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(AuthorizedFrame.this, "File upload failed. Please check the file format and data.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    } else {
+        JOptionPane.showMessageDialog(AuthorizedFrame.this, "No file selected. Please select a file first.", "Warning", JOptionPane.WARNING_MESSAGE);
+    }
+    
+      
+    }//GEN-LAST:event_uploadTimeSheetBtnActionPerformed
+
+    private void filePathTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filePathTextFieldActionPerformed
+
+       
+    }//GEN-LAST:event_filePathTextFieldActionPerformed
+
+    private void filePathTextFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_filePathTextFieldMouseClicked
+      ActionListener fileSelectedListener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            // Get the selected file path from the ActionEvent
+            String selectedFilePath = e.getActionCommand();
+            if (selectedFilePath != null && !selectedFilePath.isEmpty()) {
+                filePathTextField.setText(selectedFilePath);
+            }
+        }
+    };
+
+    // Create and show the CSVFileChooser
+    CSVFileChooser fileChooser = new CSVFileChooser(filePathTextField, fileSelectedListener);
+    fileChooser.showFileChooser();
+
+    }//GEN-LAST:event_filePathTextFieldMouseClicked
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private UI.RoundedButton addEmployeeBtn;
     private UI.RoundedButton addUserBtn;
+    private UI.RoundedButton addUserBtn1;
     private javax.swing.JPanel contentPanel;
     private UI.RoundedButton deleteBtn;
     private UI.RoundedButton deleteEmployeeBtn;
@@ -1087,6 +1304,7 @@ public class AuthorizedFrame extends javax.swing.JFrame {
     private UI.RoundedButton employeesBtn;
     private javax.swing.JPanel employeesPanel;
     private UI.CustomTable employeesTable;
+    private javax.swing.JTextField filePathTextField;
     private javax.swing.JLabel headerLabel;
     private UI.RoundedButton homeBtn;
     private javax.swing.JPanel homePanel;
@@ -1098,11 +1316,13 @@ public class AuthorizedFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel loggedInUserName;
     private javax.swing.JLabel loggedInUserPosition;
     private UI.RoundedButton logoutBtn;
     private UI.RoundedButton payrollBtn;
     private javax.swing.JPanel payrollPanel;
+    private UI.CustomTable payrollTable;
     private UI.RoundedButton requestsBtn;
     private javax.swing.JPanel requestsPanel;
     private UI.RoundedTextField roundedTextField1;
@@ -1110,6 +1330,7 @@ public class AuthorizedFrame extends javax.swing.JFrame {
     private javax.swing.JPanel taxReportsPanel;
     private UI.RoundedButton updateBtn;
     private UI.RoundedButton updateEmployeeBtn;
+    private UI.RoundedButton uploadTimeSheetBtn;
     private UI.RoundedButton usersBtn;
     private javax.swing.JPanel usersPanel;
     private UI.CustomTable usersTable;

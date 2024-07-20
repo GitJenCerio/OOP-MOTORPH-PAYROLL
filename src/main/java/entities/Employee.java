@@ -54,6 +54,10 @@ public class Employee {
         this.hourlyRate = hourlyRate;
     }
 
+    public Employee() {
+        
+    }
+
     // Getters and setters
     public int getEmployeeId() {
         return employeeId;
